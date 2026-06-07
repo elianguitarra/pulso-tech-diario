@@ -75,6 +75,10 @@ def set_gh_secret(name: str, value: str) -> None:
     subprocess.run(["gh", "secret", "set", name], input=value, text=True, check=True)
 
 
+def run_publish_workflow() -> None:
+    subprocess.run(["gh", "workflow", "run", "publish-blogger.yml", "--ref", "main"], check=True)
+
+
 def request_json(url: str, token: str) -> dict:
     request = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}", "Accept": "application/json"})
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -103,7 +107,10 @@ def choose_blog(access_token: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate Blogger OAuth refresh token.")
     parser.add_argument("--store-gh-secrets", action="store_true", help="Store values with gh secret set.")
+    parser.add_argument("--run-workflow", action="store_true", help="Run the first Blogger publish workflow after storing secrets.")
     args = parser.parse_args()
+    if args.run_workflow and not args.store_gh_secrets:
+        raise SystemExit("--run-workflow requires --store-gh-secrets.")
 
     print("Create an OAuth client in Google Cloud as a Desktop app, then paste its values here.")
     client_id = read_secret("GOOGLE_CLIENT_ID: ")
@@ -160,6 +167,9 @@ def main() -> None:
         for name, value in values.items():
             set_gh_secret(name, value)
         print("\nGitHub Secrets saved.")
+        if args.run_workflow:
+            run_publish_workflow()
+            print("First publish workflow started. Check it with: gh run list --workflow publish-blogger.yml")
     else:
         print("\nRun these commands from the project folder. Paste each value when prompted:")
         for name in values:

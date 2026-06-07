@@ -41,6 +41,12 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 
 El asistente abre Google en tu navegador, captura la autorizacion en `localhost`, lista tus blogs y guarda los valores con `gh secret set`. No pegues secretos en el chat.
 
+Para guardar secretos y lanzar la primera publicacion inmediatamente:
+
+```powershell
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_oauth.py --store-gh-secrets --run-workflow
+```
+
 Si prefieres revisar antes de guardar:
 
 ```powershell
@@ -103,6 +109,12 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 El workflow `.github/workflows/publish-blogger.yml` corre todos los dias a las 12:10 UTC y publica un nuevo post si no existe uno para esa fecha. Tambien puedes ejecutarlo manualmente desde la pestana **Actions** del repositorio.
 
 Aunque la publicacion final sera Blogger, GitHub Actions sigue siendo util como motor gratuito de automatizacion. No aloja el sitio: solo despierta el script diario y manda el post a Blogspot.
+
+Despues de correr el asistente con `--run-workflow`, puedes ver el primer despliegue con:
+
+```powershell
+gh run list --workflow publish-blogger.yml
+```
 
 El publicador usa endpoints oficiales de Blogger API v3:
 
