@@ -21,7 +21,7 @@ def env(name: str, default: str = "") -> str:
 
 
 def optional_env(name: str, default: str = "") -> str:
-    return os.environ.get(name, default).strip()
+    return os.environ.get(name, "").strip() or default
 
 
 def build_email_html(items: list[build.Item]) -> str:
