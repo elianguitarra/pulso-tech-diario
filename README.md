@@ -27,6 +27,8 @@ La cuenta Google debe autorizar el alcance `https://www.googleapis.com/auth/blog
 
 ### Conexion OAuth segura
 
+Guia detallada con Cloud Shell: [docs/OAUTH_CLOUD_SHELL.md](docs/OAUTH_CLOUD_SHELL.md).
+
 1. Crea un blog gratis en [Blogger](https://www.blogger.com/).
 2. En [Google Cloud Console](https://console.cloud.google.com/), crea un proyecto.
 3. Activa la **Blogger API v3**.

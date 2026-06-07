@@ -113,6 +113,7 @@ def main() -> None:
         raise SystemExit("--run-workflow requires --store-gh-secrets.")
 
     print("Create an OAuth client in Google Cloud as a Desktop app, then paste its values here.")
+    print("Cloud Shell can prepare the project, but run this script locally because it listens on localhost.")
     client_id = read_secret("GOOGLE_CLIENT_ID: ")
     client_secret = read_secret("GOOGLE_CLIENT_SECRET: ")
     state = secrets.token_urlsafe(24)
