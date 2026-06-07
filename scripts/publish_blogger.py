@@ -16,6 +16,7 @@ import html
 import json
 import os
 import sys
+import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -116,8 +117,21 @@ def request_json(url: str, method: str = "GET", token: str | None = None, payloa
     if token:
         headers["Authorization"] = f"Bearer {token}"
     request = urllib.request.Request(url, data=data, headers=headers, method=method)
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            if exc.code not in {429, 500, 502, 503, 504} or attempt == 4:
+                raise
+            wait = 8 * (attempt + 1)
+            print(f"Google API returned {exc.code}; waiting {wait}s before retry {attempt + 2}/5")
+            time.sleep(wait)
+    raise RuntimeError("unreachable retry state")
+
+
+def throttle_write() -> None:
+    time.sleep(3)
 
 
 def paginated_items(url: str, token: str, key: str = "items") -> list[dict]:
@@ -214,13 +228,12 @@ def ensure_base_pages(blog_id: str, token: str) -> None:
         payload = page_payload(title, content)
         existing = existing_pages.get(title)
         if existing and existing.get("id"):
-            update_url = f"{BLOGGER_API}/blogs/{blog_id}/pages/{existing['id']}"
-            request_json(update_url, method="PUT", token=token, payload=payload)
-            print(f"Updated page: {title}")
+            print(f"Page already exists: {title}")
         else:
             insert_url = f"{BLOGGER_API}/blogs/{blog_id}/pages"
             request_json(insert_url, method="POST", token=token, payload=payload)
             print(f"Created page: {title}")
+            throttle_write()
 
 
 def find_post_by_title(blog_id: str, token: str, title: str) -> dict | None:
@@ -243,13 +256,12 @@ def ensure_evergreen_posts(blog_id: str, token: str) -> None:
         payload = post_payload(title, post["content"], post["labels"])
         existing = find_post_by_title(blog_id, token, title)
         if existing and existing.get("id"):
-            update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
-            request_json(update_url, method="PUT", token=token, payload=payload)
-            print(f"Updated evergreen post: {title}")
+            print(f"Evergreen post already exists: {title}")
         else:
             insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
             request_json(insert_url, method="POST", token=token, payload=payload)
             print(f"Created evergreen post: {title}")
+            throttle_write()
 
 
 def publish() -> None:
