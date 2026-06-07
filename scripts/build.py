@@ -277,8 +277,10 @@ def svg_for_item(item: Item, index: int) -> str:
         nodes.append(f'<circle cx="{x}" cy="{y}" r="{size}" fill="{secondary}" opacity="0.78"/>')
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="{html.escape(item.category)}">
   <rect width="1200" height="630" fill="{bg}"/>
-  <path d="M0 455 C180 390 298 522 474 446 C650 370 774 230 1200 274 L1200 630 L0 630 Z" fill="{primary}" opacity="0.20"/>
-  <path d="M0 214 C180 120 308 264 514 184 C748 94 846 150 1200 82 L1200 0 L0 0 Z" fill="{secondary}" opacity="0.15"/>
+  <path d="M0 455 C180 390 298 522 474 446 C650 370 774 230 1200 274 L1200 630 L0 630 Z" fill="{primary}" opacity="0.32"/>
+  <path d="M0 214 C180 120 308 264 514 184 C748 94 846 150 1200 82 L1200 0 L0 0 Z" fill="{secondary}" opacity="0.24"/>
+  <path d="M-40 602 C260 500 450 620 710 462 C910 340 1010 332 1260 294" fill="none" stroke="{secondary}" stroke-width="18" opacity="0.52"/>
+  <path d="M92 72 L1108 72 L1108 558 L92 558 Z" fill="none" stroke="{primary}" stroke-width="4" opacity="0.46"/>
   {''.join(rings)}
   <g opacity="0.55">{''.join(nodes)}</g>
   <g transform="translate(84 96)">
@@ -292,13 +294,14 @@ def svg_for_item(item: Item, index: int) -> str:
   </g>
   <g transform="translate(570 132)">
     <circle cx="206" cy="154" r="132" fill="{primary}" opacity="0.92"/>
+    <circle cx="206" cy="154" r="166" fill="none" stroke="{secondary}" stroke-width="10" opacity="0.48"/>
     <circle cx="206" cy="154" r="82" fill="{bg}" opacity="0.32"/>
     <path d="M206 34 L244 118 L336 128 L266 188 L286 280 L206 232 L126 280 L146 188 L76 128 L168 118 Z" fill="{secondary}" opacity="0.92"/>
     <path d="M30 314 L430 314" stroke="{paper}" stroke-width="6" opacity="0.42"/>
     <path d="M74 356 L388 356" stroke="{paper}" stroke-width="4" opacity="0.26"/>
   </g>
-  <text x="84" y="504" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800">{html.escape(label[:28])}</text>
-  <text x="84" y="558" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="24" opacity="0.82">Imagen original generada automaticamente por Pulso Tech Diario</text>
+  <text x="84" y="504" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900">{html.escape(label[:28])}</text>
+  <text x="84" y="558" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" opacity="0.86">Pulso Tech Diario | {html.escape(item.category.title())}</text>
 </svg>"""
 
 
