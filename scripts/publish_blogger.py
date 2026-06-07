@@ -179,20 +179,24 @@ def post_html(items: list[build.Item]) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     blocks = [
         f"""
-<p><strong>Pulso Tech Diario</strong> selecciona automaticamente las noticias tecnologicas mas relevantes del dia y las presenta con visuales editoriales de alto contraste.</p>
-<p><em>Actualizado: {today} UTC.</em></p>
+<div style="margin:0 0 28px;padding:28px;border-radius:18px;background:#07111f;color:#ecfeff;border:1px solid #164e63;">
+  <p style="margin:0 0 10px;color:#67e8f9;font-weight:800;text-transform:uppercase;letter-spacing:.08em;">Pulso Tech Diario</p>
+  <h1 style="margin:0;font-size:36px;line-height:1.05;color:#ffffff;">Tecnologia importante, filtrada con criterio.</h1>
+  <p style="margin:14px 0 0;color:#cbd5e1;font-size:17px;line-height:1.6;">Noticias relevantes, contexto rapido y visuales editoriales para leer mejor hacia donde se mueve la industria.</p>
+  <p style="margin:14px 0 0;color:#facc15;font-weight:700;">Actualizado: {today} UTC</p>
+</div>
 """
     ]
     for index, item in enumerate(items, start=1):
         svg = compact_svg(build.svg_for_item(item, index))
         blocks.append(
             f"""
-<section style="border-top:1px solid #d9e2ec;padding:24px 0;margin:0;">
-  <div style="width:100%;max-width:900px;overflow:hidden;border-radius:8px;">{svg}</div>
-  <p style="margin:16px 0 6px;color:#667085;font-weight:700;text-transform:uppercase;">#{index} - {html.escape(item.category)} - {html.escape(item.source)}</p>
-  <h2 style="margin:0 0 10px;font-size:28px;line-height:1.15;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener">{html.escape(item.title)}</a></h2>
-  <p>{html.escape(item.summary or build.reading_angle(item))}</p>
-  <p><strong>Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
+<section style="border:1px solid #d9e2ec;border-radius:18px;padding:18px;margin:0 0 26px;background:#ffffff;box-shadow:0 10px 30px rgba(15,23,42,.08);">
+  <div style="width:100%;max-width:980px;overflow:hidden;border-radius:14px;background:#0f172a;">{svg}</div>
+  <p style="margin:18px 0 8px;color:#0f766e;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.06em;">#{index} · {html.escape(item.category)} · {html.escape(item.source)}</p>
+  <h2 style="margin:0 0 12px;font-size:30px;line-height:1.13;color:#172033;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#172033;text-decoration:none;">{html.escape(item.title)}</a></h2>
+  <p style="margin:0 0 12px;color:#334155;font-size:16px;line-height:1.65;">{html.escape(item.summary or build.reading_angle(item))}</p>
+  <p style="margin:0;padding:14px 16px;border-left:5px solid #f59e0b;background:#fff7ed;color:#123f3c;font-weight:700;line-height:1.55;"><strong>Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
 </section>
 """
         )

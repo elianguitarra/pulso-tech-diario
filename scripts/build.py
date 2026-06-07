@@ -25,6 +25,8 @@ PUBLIC = ROOT / "public"
 ASSET_DIR = PUBLIC / "assets" / "images"
 FEATURE_ASSET_SOURCE = ROOT / "assets" / "features"
 FEATURE_ASSET_DEST = PUBLIC / "assets" / "features"
+BRAND_ASSET_SOURCE = ROOT / "assets" / "brand"
+BRAND_ASSET_DEST = PUBLIC / "assets" / "brand"
 
 SITE_NAME = "Pulso Tech Diario"
 SITE_DESCRIPTION = (
@@ -772,6 +774,11 @@ def write_static(items: list[Item]) -> None:
         for asset in FEATURE_ASSET_SOURCE.iterdir():
             if asset.is_file():
                 shutil.copy2(asset, FEATURE_ASSET_DEST / asset.name)
+    if BRAND_ASSET_SOURCE.exists():
+        BRAND_ASSET_DEST.mkdir(parents=True, exist_ok=True)
+        for asset in BRAND_ASSET_SOURCE.iterdir():
+            if asset.is_file():
+                shutil.copy2(asset, BRAND_ASSET_DEST / asset.name)
     (PUBLIC / "index.html").write_text(render_index(items, image_paths), encoding="utf-8")
     for filename, page in STATIC_PAGES.items():
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
