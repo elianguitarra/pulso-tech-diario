@@ -14,15 +14,19 @@ import build
 import publish_blogger
 
 
+def clean_env_value(value: str) -> str:
+    return value.replace("\ufeff", "").replace("\u200b", "").strip()
+
+
 def env(name: str, default: str = "") -> str:
-    value = os.environ.get(name, default).strip()
+    value = clean_env_value(os.environ.get(name, default))
     if not value:
         raise SystemExit(f"Missing required environment variable: {name}")
     return value
 
 
 def optional_env(name: str, default: str = "") -> str:
-    return os.environ.get(name, "").strip() or default
+    return clean_env_value(os.environ.get(name, "")) or default
 
 
 def build_email_html(items: list[build.Item]) -> str:
