@@ -179,7 +179,7 @@ def post_html(items: list[build.Item]) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     blocks = [
         f"""
-<p><strong>Pulso Tech Diario</strong> selecciona automaticamente las noticias tecnologicas mas relevantes del dia. Cada bloque incluye una imagen original generada por el propio sistema.</p>
+<p><strong>Pulso Tech Diario</strong> selecciona automaticamente las noticias tecnologicas mas relevantes del dia y las presenta con visuales editoriales de alto contraste.</p>
 <p><em>Actualizado: {today} UTC.</em></p>
 """
     ]
