@@ -142,7 +142,10 @@ def main() -> None:
     )
     if not oauth_ready and not email_ready:
         print("\nNext step:")
-        print("Option A, no Google Cloud payment: configure Blogger Mail2Blogger + SMTP secrets.")
+        print(
+            "Option A, no Google Cloud payment: C:\\Users\\malow\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe "
+            "scripts\\setup_email.py --run-workflow"
+        )
         print(
             "Option B, OAuth: C:\\Users\\malow\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe "
             "scripts\\setup_oauth.py --store-gh-secrets --run-workflow"

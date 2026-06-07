@@ -56,6 +56,13 @@ gh secret set SMTP_PASSWORD
 gh secret set SMTP_FROM
 ```
 
+O usa el asistente local:
+
+```powershell
+cd "C:\Users\malow\Documents\New project\pulso-tech-diario"
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --run-workflow
+```
+
 Despues ejecuta el workflow `Publicar por Email` desde GitHub Actions o con:
 
 ```powershell
