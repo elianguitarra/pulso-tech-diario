@@ -38,9 +38,10 @@ def make_message() -> EmailMessage:
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     subject_prefix = optional_env("EMAIL_SUBJECT_PREFIX", "Pulso Tech Diario")
+    smtp_username = env("SMTP_USERNAME")
     message = EmailMessage()
     message["Subject"] = f"{subject_prefix}: {today}"
-    message["From"] = env("SMTP_FROM")
+    message["From"] = optional_env("SMTP_FROM", smtp_username)
     message["To"] = env("BLOGGER_MAIL_TO")
     reply_to = optional_env("SMTP_REPLY_TO")
     if reply_to:

@@ -7,6 +7,7 @@ import json
 import shutil
 import subprocess
 import sys
+import urllib.request
 from dataclasses import dataclass
 
 
@@ -23,9 +24,8 @@ EMAIL_SECRETS = {
     "SMTP_HOST",
     "SMTP_USERNAME",
     "SMTP_PASSWORD",
-    "SMTP_FROM",
 }
-OPTIONAL_SECRETS = {"ADSENSE_CLIENT"}
+OPTIONAL_SECRETS = {"ADSENSE_CLIENT", "SMTP_FROM"}
 
 
 @dataclass
@@ -119,6 +119,18 @@ def check_latest_runs() -> list[Check]:
     return checks
 
 
+def check_pages_live() -> Check:
+    try:
+        request = urllib.request.Request(PAGES_URL, headers={"User-Agent": "PulsoTechDoctor/1.0"})
+        with urllib.request.urlopen(request, timeout=30) as response:
+            body = response.read().decode("utf-8", errors="replace")
+            ok = response.status == 200 and "Pulso Tech Diario" in body and 'class="story"' in body
+            detail = f"status={response.status} bytes={len(body)} url={PAGES_URL}"
+            return Check("GitHub Pages live", ok, detail)
+    except Exception as exc:
+        return Check("GitHub Pages live", False, str(exc))
+
+
 def print_checks(checks: list[Check]) -> None:
     for check in checks:
         mark = "OK" if check.ok else "NO"
@@ -134,6 +146,7 @@ def main() -> None:
         checks.extend(check_workflows())
         checks.extend(check_secrets())
         checks.extend(check_latest_runs())
+        checks.append(check_pages_live())
     print_checks(checks)
 
     oauth_ready = all(
@@ -142,7 +155,8 @@ def main() -> None:
     email_ready = all(
         check.ok for check in checks if check.name.startswith("Email secret ") and check.name.removeprefix("Email secret ") in EMAIL_SECRETS
     )
-    if not oauth_ready and not email_ready:
+    pages_ready = any(check.name == "GitHub Pages live" and check.ok for check in checks)
+    if not oauth_ready and not email_ready and not pages_ready:
         print("\nNext step:")
         print(
             "Option A, no Google Cloud payment: C:\\Users\\malow\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe "
@@ -165,7 +179,12 @@ def main() -> None:
     if infrastructure_failure:
         raise SystemExit(1)
 
-    route = "OAuth Blogger API" if oauth_ready else "Mail2Blogger email"
+    if oauth_ready:
+        route = "OAuth Blogger API"
+    elif email_ready:
+        route = "Mail2Blogger email"
+    else:
+        route = "GitHub Pages public preview"
     print(f"\nReady: required automation checks passed via {route}.")
     print(f"Public preview: {PAGES_URL}")
 

@@ -49,7 +49,7 @@ Luego guarda estos secretos en GitHub:
 - `SMTP_PORT`: normalmente `587`.
 - `SMTP_USERNAME`: usuario del correo remitente.
 - `SMTP_PASSWORD`: password SMTP o app password.
-- `SMTP_FROM`: correo remitente.
+- `SMTP_FROM`: correo remitente. Opcional si es igual a `SMTP_USERNAME`.
 
 Comandos:
 
@@ -113,6 +113,8 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 
 El doctor revisa GitHub CLI, autenticacion, workflows, secrets requeridos y ultimas corridas.
 
+El doctor tambien revisa que la version publica de GitHub Pages responda con contenido real.
+
 ## Crecimiento y visibilidad
 
 El sitio incluye:
@@ -153,6 +155,20 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 ```
 
 Luego abre `public/index.html`.
+
+## Verificacion publica
+
+La version publica debe responder en:
+
+```text
+https://elianguitarra.github.io/pulso-tech-diario/
+```
+
+Puedes verificarla con:
+
+```powershell
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\doctor.py
+```
 
 ## Publicacion manual de prueba
 
