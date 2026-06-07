@@ -64,6 +64,12 @@ En `SMTP_PASSWORD` usa un **App Password** de Google, no tu contrasena normal de
 
 https://support.google.com/mail/answer/185833
 
+Si solo necesitas cambiar el password SMTP despues de crear el App Password:
+
+```powershell
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --password-only --run-workflow
+```
+
 Comandos:
 
 ```powershell

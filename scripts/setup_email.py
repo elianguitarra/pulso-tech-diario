@@ -39,7 +39,18 @@ def run_publish_workflow() -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Configure Mail2Blogger email publishing.")
     parser.add_argument("--run-workflow", action="store_true", help="Run the first email publish workflow after saving secrets.")
+    parser.add_argument("--password-only", action="store_true", help="Only update SMTP_PASSWORD, useful after creating a Gmail App Password.")
     args = parser.parse_args()
+
+    if args.password_only:
+        print("Updating only SMTP_PASSWORD. Use a Gmail App Password, not your normal Gmail password.")
+        print("Official help: https://support.google.com/mail/answer/185833")
+        set_gh_secret("SMTP_PASSWORD", prompt("SMTP_PASSWORD", secret=True))
+        print("\nSMTP_PASSWORD GitHub Secret saved.")
+        if args.run_workflow:
+            run_publish_workflow()
+            print("Email publish workflow started. Check it with: gh run list --workflow publish-email.yml")
+        return
 
     print("Configure Blogger Mail2Blogger + SMTP. Do not paste these values in chat.")
     print("For Gmail use SMTP_SSL=false, SMTP_STARTTLS=true, SMTP_PORT=587.")
