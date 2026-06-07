@@ -42,13 +42,17 @@ def main() -> None:
     args = parser.parse_args()
 
     print("Configure Blogger Mail2Blogger + SMTP. Do not paste these values in chat.")
+    print("For Gmail use SMTP_SSL=false, SMTP_STARTTLS=true, SMTP_PORT=587.")
+    print("For Gmail SMTP_PASSWORD must be a Google App Password, not your normal password.")
+    print("Official help: https://support.google.com/mail/answer/185833")
+    smtp_username = prompt("SMTP_USERNAME")
     values = {
         "BLOGGER_MAIL_TO": prompt("BLOGGER_MAIL_TO"),
         "SMTP_HOST": prompt("SMTP_HOST", DEFAULTS["SMTP_HOST"]),
         "SMTP_PORT": prompt("SMTP_PORT", DEFAULTS["SMTP_PORT"]),
-        "SMTP_USERNAME": prompt("SMTP_USERNAME"),
+        "SMTP_USERNAME": smtp_username,
         "SMTP_PASSWORD": prompt("SMTP_PASSWORD", secret=True),
-        "SMTP_FROM": prompt("SMTP_FROM"),
+        "SMTP_FROM": prompt("SMTP_FROM", smtp_username, required=False),
         "SMTP_SSL": prompt("SMTP_SSL", DEFAULTS["SMTP_SSL"]),
         "SMTP_STARTTLS": prompt("SMTP_STARTTLS", DEFAULTS["SMTP_STARTTLS"]),
         "EMAIL_SUBJECT_PREFIX": prompt("EMAIL_SUBJECT_PREFIX", DEFAULTS["EMAIL_SUBJECT_PREFIX"], required=False),

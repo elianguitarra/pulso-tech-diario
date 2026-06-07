@@ -51,6 +51,19 @@ Luego guarda estos secretos en GitHub:
 - `SMTP_PASSWORD`: password SMTP o app password.
 - `SMTP_FROM`: correo remitente. Opcional si es igual a `SMTP_USERNAME`.
 
+Para Gmail usa:
+
+```text
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SSL=false
+SMTP_STARTTLS=true
+```
+
+En `SMTP_PASSWORD` usa un **App Password** de Google, no tu contrasena normal de Gmail. Google requiere verificacion en 2 pasos para crear app passwords:
+
+https://support.google.com/mail/answer/185833
+
 Comandos:
 
 ```powershell

@@ -6,6 +6,7 @@ from __future__ import annotations
 import os
 import smtplib
 import ssl
+import sys
 from datetime import datetime, timezone
 from email.message import EmailMessage
 
@@ -84,4 +85,12 @@ def publish() -> None:
 
 
 if __name__ == "__main__":
-    publish()
+    try:
+        publish()
+    except smtplib.SMTPAuthenticationError as exc:
+        sys.stderr.write(
+            "SMTP authentication failed. If you use Gmail, SMTP_PASSWORD must be a Google App Password, "
+            "not your normal Gmail password. Enable 2-Step Verification and create one at "
+            "https://myaccount.google.com/apppasswords\n"
+        )
+        raise
