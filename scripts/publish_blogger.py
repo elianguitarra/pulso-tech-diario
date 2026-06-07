@@ -4,10 +4,8 @@
 Required environment variables:
 - BLOGGER_BLOG_ID
 - GOOGLE_CLIENT_ID
-- GOOGLE_REFRESH_TOKEN
-
-Optional environment variables:
 - GOOGLE_CLIENT_SECRET
+- GOOGLE_REFRESH_TOKEN
 """
 
 from __future__ import annotations
@@ -136,15 +134,14 @@ def paginated_items(url: str, token: str, key: str = "items") -> list[dict]:
 
 
 def get_access_token() -> str:
-    fields = {
-        "client_id": required_env("GOOGLE_CLIENT_ID"),
-        "refresh_token": required_env("GOOGLE_REFRESH_TOKEN"),
-        "grant_type": "refresh_token",
-    }
-    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "").strip()
-    if client_secret:
-        fields["client_secret"] = client_secret
-    form = urllib.parse.urlencode(fields).encode("utf-8")
+    form = urllib.parse.urlencode(
+        {
+            "client_id": required_env("GOOGLE_CLIENT_ID"),
+            "client_secret": required_env("GOOGLE_CLIENT_SECRET"),
+            "refresh_token": required_env("GOOGLE_REFRESH_TOKEN"),
+            "grant_type": "refresh_token",
+        }
+    ).encode("utf-8")
     request = urllib.request.Request(
         TOKEN_URL,
         data=form,

@@ -49,7 +49,7 @@ Selecciona el proyecto `PROJECT_ID` y configura:
 
 Nota importante: si la app queda en modo `Testing`, Google puede hacer que el refresh token expire despues de 7 dias. Para automatizacion diaria real, pasa la app a `Production` cuando la consola lo permita.
 
-## 3. Crear OAuth Client para Cloud Shell
+## 3. Crear OAuth Client tipo Desktop app
 
 Entra a:
 
@@ -58,37 +58,16 @@ https://console.cloud.google.com/auth/clients
 Pasos:
 
 1. Click `Create client`.
-2. Si quieres hacerlo todo desde Cloud Shell, usa Application type: `TVs and Limited Input devices`.
-3. Name: `Pulso Tech Diario Cloud Shell OAuth`.
+2. Application type: `Desktop app`.
+3. Name: `Pulso Tech Diario Local OAuth`.
 4. Click `Create`.
 5. Copia y guarda:
    - `GOOGLE_CLIENT_ID`
+   - `GOOGLE_CLIENT_SECRET`
 
-Algunos clientes tambien muestran `GOOGLE_CLIENT_SECRET`; si aparece, guardalo. Si no aparece, el flujo de dispositivo funciona solo con `GOOGLE_CLIENT_ID`.
+Guarda el `GOOGLE_CLIENT_SECRET` en un lugar seguro. Google puede mostrarlo completo solo al crearlo.
 
-Si prefieres el flujo local clasico, crea Application type: `Desktop app` y usa `scripts/setup_oauth.py` desde Windows.
-
-## 4. Autorizar Blogger desde Cloud Shell
-
-En Cloud Shell:
-
-```bash
-git clone https://github.com/elianguitarra/pulso-tech-diario.git
-cd pulso-tech-diario
-gh auth login
-python3 scripts/setup_oauth_device.py --store-gh-secrets --run-workflow
-```
-
-El asistente:
-
-1. Pide `GOOGLE_CLIENT_ID`.
-2. Muestra una URL de verificacion y un codigo.
-3. Abres la URL, escribes el codigo y autorizas Blogger.
-4. Lista tus blogs.
-5. Guarda `BLOGGER_BLOG_ID`, `GOOGLE_CLIENT_ID` y `GOOGLE_REFRESH_TOKEN` en GitHub Secrets.
-6. Lanza el workflow `publish-blogger.yml`.
-
-## 5. Alternativa local con Desktop app
+## 4. Autorizar Blogger localmente y publicar
 
 Este paso debe correr en Windows/local, no en Cloud Shell, porque el asistente escucha en `localhost` para recibir el callback OAuth.
 
@@ -107,7 +86,7 @@ El asistente:
 6. Guarda `BLOGGER_BLOG_ID`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` y `GOOGLE_REFRESH_TOKEN` en GitHub Secrets.
 7. Lanza el primer workflow `publish-blogger.yml`.
 
-## 6. Revisar el primer despliegue
+## 5. Revisar el primer despliegue
 
 ```powershell
 gh run list --workflow publish-blogger.yml
