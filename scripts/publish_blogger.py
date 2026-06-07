@@ -172,7 +172,8 @@ def get_access_token() -> str:
 
 
 def compact_svg(svg: str) -> str:
-    return " ".join(svg.split())
+    svg = " ".join(svg.split())
+    return svg.replace("<svg ", '<svg style="display:block;width:100%;height:auto;" ', 1)
 
 
 def post_html(items: list[build.Item]) -> str:
@@ -225,8 +226,9 @@ def post_html(items: list[build.Item]) -> str:
         if index == 1:
             blocks.append(
                 f"""
-    <section style="display:grid;grid-template-columns:1.12fr .88fr;margin:0 0 42px;background:#ff7058;color:#201512;min-height:330px;">
-      <div style="padding:48px 42px 36px;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:0 0 42px;background:#ff7058;color:#201512;">
+      <tr>
+        <td width="58%" valign="middle" style="width:58%;padding:48px 42px 36px;">
         <p style="margin:0 0 18px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#5b1d16;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
         <h2 style="margin:0 0 14px;font-size:40px;line-height:1.02;font-style:italic;font-weight:900;color:#201512;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#201512;text-decoration:none;">{html.escape(item.title)}</a></h2>
         <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:#3c201b;">{html.escape(item.summary or build.reading_angle(item))}</p>
@@ -234,24 +236,27 @@ def post_html(items: list[build.Item]) -> str:
           <span>Compartir</span>
           <a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#5b1d16;text-decoration:none;">Leer fuente</a>
         </div>
-      </div>
-      <div style="overflow:hidden;background:#0f172a;display:flex;align-items:stretch;">{svg}</div>
-    </section>
+        </td>
+        <td width="42%" valign="middle" style="width:42%;background:#0f172a;padding:0;line-height:0;">{svg}</td>
+      </tr>
+    </table>
     <p style="margin:0 0 24px;color:#f7f1e8;font-size:13px;font-weight:900;">Notas recientes</p>
 """
             )
         else:
             blocks.append(
                 f"""
-    <section style="display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:28px;align-items:center;margin:0 0 42px;padding:0 0 34px;border-bottom:1px solid #2b2b2b;">
-      <div>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:0 0 42px;border-bottom:1px solid #2b2b2b;">
+      <tr>
+        <td valign="middle" style="padding:0 28px 34px 0;">
         <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
         <h2 style="margin:0 0 12px;font-size:32px;line-height:1.05;font-style:italic;font-weight:900;color:#ff7058;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#ff7058;text-decoration:none;">{html.escape(item.title)}</a></h2>
         <p style="margin:0 0 16px;color:#f1e7dd;font-size:15px;line-height:1.75;">{html.escape(item.summary or build.reading_angle(item))}</p>
         <p style="margin:0;color:#c8b8aa;font-size:13px;line-height:1.6;"><strong style="color:#f7f1e8;">Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
-      </div>
-      <div style="overflow:hidden;background:#0f172a;border:1px solid #2f2f2f;">{svg}</div>
-    </section>
+        </td>
+        <td width="240" valign="middle" style="width:240px;padding:0 0 34px 0;line-height:0;background:#0f172a;border:1px solid #2f2f2f;">{svg}</td>
+      </tr>
+    </table>
 """
             )
     adsense_client = os.environ.get("ADSENSE_CLIENT", "").strip()
