@@ -9,6 +9,7 @@ Blog automatizado que publica un resumen diario de noticias tecnologicas relevan
 - Puntua las notas por frescura, fuente y tema.
 - Crea una imagen SVG original incrustada para cada nota, construida automaticamente a partir de su tema.
 - Crea o actualiza paginas base del blog: `Acerca de`, `Politica editorial`, `Privacidad` y `Contacto`.
+- Crea o actualiza posts evergreen originales para sembrar el blog con contenido util y monetizable.
 - GitHub Actions lo ejecuta todos los dias a las 12:10 UTC y publica en tu blog de Blogger.
 
 ## Publicacion gratuita en Blogger
@@ -51,6 +52,7 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 El sitio incluye:
 
 - Paginas de confianza para lectores y revision de AdSense.
+- Posts evergreen propios sobre metodologia, glosario de IA y senales de industria.
 - Etiquetas tematicas para que Blogger agrupe los posts por tecnologia, IA y noticias tech.
 - Titulares enlazados a fuentes originales para evitar copiar contenido completo.
 - Imagenes propias por nota para mejorar vistas previas y diferenciacion visual.

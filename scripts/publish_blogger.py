@@ -47,6 +47,56 @@ BASE_PAGES = {
 """,
 }
 
+EVERGREEN_POSTS = [
+    {
+        "title": "Como leer tecnologia sin ruido: metodo Pulso Tech",
+        "labels": ["tecnologia", "guia", "pulso tech diario"],
+        "content": """
+<p>La tecnologia produce demasiadas noticias para leerlas todas. Pulso Tech Diario usa una regla sencilla: priorizar senales que puedan cambiar productos, trabajo, seguridad, inversion o comportamiento de usuarios.</p>
+<h2>1. Frescura con contexto</h2>
+<p>Una noticia reciente importa mas cuando encaja en una tendencia mayor: nuevas capacidades de inteligencia artificial, cambios en chips, regulacion, ciberseguridad o plataformas que concentran usuarios.</p>
+<h2>2. Fuente y trazabilidad</h2>
+<p>Cada resumen enlaza a la fuente original o a la publicacion que reporta la noticia. El objetivo no es sustituir al articulo completo, sino ayudarte a decidir que merece tu atencion.</p>
+<h2>3. Impacto practico</h2>
+<p>Una nota se vuelve relevante cuando responde una pregunta: que cambia para usuarios, empresas, desarrolladores, creadores o inversores.</p>
+<h2>4. Menos volumen, mas senal</h2>
+<p>El blog no intenta cubrirlo todo. Prefiere una seleccion corta con imagenes originales, etiquetas claras y una explicacion rapida de por que importa.</p>
+""",
+    },
+    {
+        "title": "Glosario rapido de inteligencia artificial para lectores ocupados",
+        "labels": ["inteligencia artificial", "guia", "tecnologia"],
+        "content": """
+<p>La inteligencia artificial avanza rapido, pero muchas noticias usan los mismos terminos. Este glosario explica los conceptos que aparecen con mas frecuencia en Pulso Tech Diario.</p>
+<h2>Modelo fundacional</h2>
+<p>Sistema entrenado con grandes cantidades de datos que puede adaptarse a tareas como texto, codigo, imagenes, audio o analisis.</p>
+<h2>Agente</h2>
+<p>Software que no solo responde, sino que puede planear pasos, usar herramientas y completar tareas con cierto grado de autonomia.</p>
+<h2>Inferencia</h2>
+<p>Momento en el que un modelo ya entrenado genera una respuesta. Es importante porque consume computo, energia y dinero.</p>
+<h2>Ventana de contexto</h2>
+<p>Cantidad de informacion que un modelo puede considerar al responder. Ventanas mas grandes permiten analizar documentos, historiales o proyectos completos.</p>
+<h2>Modelo abierto</h2>
+<p>Modelo que permite algun nivel de descarga, inspeccion o uso local. No todos los modelos abiertos tienen las mismas licencias ni el mismo nivel de transparencia.</p>
+""",
+    },
+    {
+        "title": "Senales que miramos cada dia en chips, seguridad y startups",
+        "labels": ["chips", "ciberseguridad", "startups", "guia"],
+        "content": """
+<p>Las noticias tecnologicas suelen parecer aisladas. Pulso Tech Diario las agrupa en senales porque una sola nota rara vez explica todo el movimiento de la industria.</p>
+<h2>Chips</h2>
+<p>Seguimos avances en GPU, semiconductores, fabricacion y eficiencia energetica porque determinan que tan rapido pueden crecer la IA, los dispositivos y la nube.</p>
+<h2>Ciberseguridad</h2>
+<p>Brechas, vulnerabilidades y ataques importan cuando exponen datos, cambian practicas de defensa o afectan infraestructura usada por muchas personas.</p>
+<h2>Startups</h2>
+<p>Financiamientos, adquisiciones y lanzamientos muestran donde se esta formando competencia nueva. No todo anuncio importa, pero algunos revelan mercados que estan naciendo.</p>
+<h2>Consumo y plataformas</h2>
+<p>Aplicaciones, sistemas operativos, redes sociales y buscadores afectan habitos diarios. Por eso una decision de producto puede tener impacto cultural y economico.</p>
+""",
+    },
+]
+
 
 def required_env(name: str) -> str:
     value = os.environ.get(name, "").strip()
@@ -144,6 +194,15 @@ def page_payload(title: str, content: str) -> dict:
     }
 
 
+def post_payload(title: str, content: str, labels: list[str]) -> dict:
+    return {
+        "kind": "blogger#post",
+        "title": title,
+        "labels": labels,
+        "content": content.strip(),
+    }
+
+
 def ensure_base_pages(blog_id: str, token: str) -> None:
     query = urllib.parse.urlencode({"fetchBodies": "false", "maxResults": "50"})
     url = f"{BLOGGER_API}/blogs/{blog_id}/pages?{query}"
@@ -161,33 +220,47 @@ def ensure_base_pages(blog_id: str, token: str) -> None:
             print(f"Created page: {title}")
 
 
-def already_published(blog_id: str, token: str, title: str) -> bool:
+def find_post_by_title(blog_id: str, token: str, title: str) -> dict | None:
     query = urllib.parse.urlencode({"q": title, "maxResults": "5"})
     url = f"{BLOGGER_API}/blogs/{blog_id}/posts?{query}"
     try:
         payload = request_json(url, token=token)
     except Exception:
-        return False
-    return any(post.get("title") == title for post in payload.get("items", []))
+        return None
+    return next((post for post in payload.get("items", []) if post.get("title") == title), None)
+
+
+def already_published(blog_id: str, token: str, title: str) -> bool:
+    return find_post_by_title(blog_id, token, title) is not None
+
+
+def ensure_evergreen_posts(blog_id: str, token: str) -> None:
+    for post in EVERGREEN_POSTS:
+        title = post["title"]
+        payload = post_payload(title, post["content"], post["labels"])
+        existing = find_post_by_title(blog_id, token, title)
+        if existing and existing.get("id"):
+            update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+            request_json(update_url, method="PUT", token=token, payload=payload)
+            print(f"Updated evergreen post: {title}")
+        else:
+            insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
+            request_json(insert_url, method="POST", token=token, payload=payload)
+            print(f"Created evergreen post: {title}")
 
 
 def publish() -> None:
     blog_id = required_env("BLOGGER_BLOG_ID")
     token = get_access_token()
     ensure_base_pages(blog_id, token)
+    ensure_evergreen_posts(blog_id, token)
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = f"Pulso Tech Diario: {today}"
     if already_published(blog_id, token, title):
         print(f"Post already exists: {title}")
         return
-    payload = {
-        "kind": "blogger#post",
-        "blog": {"id": blog_id},
-        "title": title,
-        "labels": ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"],
-        "content": post_html(items),
-    }
+    payload = post_payload(title, post_html(items), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
     result = request_json(url, method="POST", token=token, payload=payload)
     print(f"Published: {result.get('url', result.get('id'))}")
