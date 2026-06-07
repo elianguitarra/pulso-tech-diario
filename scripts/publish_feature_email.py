@@ -26,22 +26,16 @@ SUMMARY = (
 def post_html() -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     return f"""
-<article>
-  <p><em>Publicado por Pulso Tech Diario el {today}.</em></p>
-  <h1>{TITLE}</h1>
-  <p><img src="{IMAGE_URL}" alt="Ilustracion original sobre IA local en laptops y PCs" style="max-width:100%;height:auto;border-radius:12px;"></p>
-  <p><strong>La noticia:</strong> Nvidia presento RTX Spark, un superchip pensado para llevar cargas de inteligencia artificial directamente a laptops, mini PCs y estaciones Windows. La compania lo posiciona como hardware para la era de los agentes personales de IA: asistentes que no solo responden, sino que pueden trabajar de forma continua dentro del equipo.</p>
-  <p>El movimiento importa porque cambia el centro de gravedad de la IA. Hasta ahora, gran parte de la experiencia dependia de servidores remotos: escribes una instruccion, viaja a la nube, vuelve una respuesta. Con chips como RTX Spark, una parte mayor del trabajo puede ejecutarse localmente, cerca de tus archivos, apps y flujos cotidianos.</p>
-  <h2>Por que puede cambiar el PC</h2>
-  <p>Nvidia habla de hasta 1 petaflop de computo de IA y 128 GB de memoria unificada para atender agentes en el dispositivo. Microsoft tambien entro en escena con hardware Surface basado en esta plataforma, lo que sugiere que Windows quiere dejar de ser solo un sistema para abrir apps y convertirse en un entorno donde los agentes actuen entre aplicaciones.</p>
-  <p>La apuesta tambien presiona a Apple, Intel, AMD y Qualcomm. Apple ya demostro que integrar CPU, GPU, memoria y software puede redefinir una categoria. Nvidia intenta llevar esa misma logica al mundo Windows, pero con su ventaja historica: CUDA, GPUs RTX y herramientas para desarrolladores de IA.</p>
-  <h2>La lectura practica</h2>
-  <p>Para usuarios comunes, esto no significa que manana todos necesiten una laptop de IA. Significa que el mercado empieza a preparar maquinas donde tareas como resumir archivos grandes, analizar proyectos, generar contenido, asistir en codigo o automatizar acciones puedan ocurrir con mas privacidad y menor latencia.</p>
-  <p>Para empresas y creadores, la senal es mas clara: la IA local puede reducir costos de nube, facilitar pruebas con modelos privados y abrir una nueva categoria de software. El reto sera precio, bateria, compatibilidad real de apps y si los agentes son suficientemente utiles como para justificar comprar hardware nuevo.</p>
-  <h2>Conclusion</h2>
-  <p>RTX Spark no es solo otro chip anunciado en una feria. Es una declaracion de direccion: la proxima batalla de la IA no estara solo en centros de datos, sino tambien en la computadora personal. Si funciona, el PC podria volver a sentirse como una plataforma nueva.</p>
-  <p><strong>Fuentes:</strong> <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Microsoft-Reinvent-Windows-PCs-for-the-Age-of-Personal-AI/default.aspx" target="_blank" rel="noopener">Nvidia</a>, <a href="https://www.axios.com/2026/06/01/microsoft-nvidia-surface-ultra-rtx-spark" target="_blank" rel="noopener">Axios</a>, <a href="https://www.tomshardware.com/laptops/nvidia-unveils-rtx-spark-superchip-at-computex-2026-new-platform-promises-to-turn-windows-into-an-agentic-ai-os-with-arm-cpu-blackwell-gpu-and-128gb-unified-memory" target="_blank" rel="noopener">Tom's Hardware</a>.</p>
-</article>
+<p><em>Publicado por Pulso Tech Diario el {today}.</em></p>
+<p><img src="{IMAGE_URL}" alt="Ilustracion original sobre IA local en laptops y PCs"></p>
+<p><strong>La noticia:</strong> Nvidia presento RTX Spark, un superchip pensado para llevar cargas de inteligencia artificial directamente a laptops, mini PCs y estaciones Windows. La compania lo posiciona como hardware para la era de los agentes personales de IA: asistentes que no solo responden, sino que pueden trabajar de forma continua dentro del equipo.</p>
+<p>El movimiento importa porque cambia el centro de gravedad de la IA. Hasta ahora, gran parte de la experiencia dependia de servidores remotos: escribes una instruccion, viaja a la nube, vuelve una respuesta. Con chips como RTX Spark, una parte mayor del trabajo puede ejecutarse localmente, cerca de tus archivos, apps y flujos cotidianos.</p>
+<p><strong>Por que puede cambiar el PC:</strong> Nvidia habla de hasta 1 petaflop de computo de IA y 128 GB de memoria unificada para atender agentes en el dispositivo. Microsoft tambien entro en escena con hardware Surface basado en esta plataforma, lo que sugiere que Windows quiere dejar de ser solo un sistema para abrir apps y convertirse en un entorno donde los agentes actuen entre aplicaciones.</p>
+<p>La apuesta tambien presiona a Apple, Intel, AMD y Qualcomm. Apple ya demostro que integrar CPU, GPU, memoria y software puede redefinir una categoria. Nvidia intenta llevar esa misma logica al mundo Windows, pero con su ventaja historica: CUDA, GPUs RTX y herramientas para desarrolladores de IA.</p>
+<p><strong>La lectura practica:</strong> Para usuarios comunes, esto no significa que manana todos necesiten una laptop de IA. Significa que el mercado empieza a preparar maquinas donde tareas como resumir archivos grandes, analizar proyectos, generar contenido, asistir en codigo o automatizar acciones puedan ocurrir con mas privacidad y menor latencia.</p>
+<p>Para empresas y creadores, la senal es mas clara: la IA local puede reducir costos de nube, facilitar pruebas con modelos privados y abrir una nueva categoria de software. El reto sera precio, bateria, compatibilidad real de apps y si los agentes son suficientemente utiles como para justificar comprar hardware nuevo.</p>
+<p><strong>Conclusion:</strong> RTX Spark no es solo otro chip anunciado en una feria. Es una declaracion de direccion: la proxima batalla de la IA no estara solo en centros de datos, sino tambien en la computadora personal. Si funciona, el PC podria volver a sentirse como una plataforma nueva.</p>
+<p><strong>Fuentes:</strong> <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Microsoft-Reinvent-Windows-PCs-for-the-Age-of-Personal-AI/default.aspx">Nvidia</a>, <a href="https://www.axios.com/2026/06/01/microsoft-nvidia-surface-ultra-rtx-spark">Axios</a>, <a href="https://www.tomshardware.com/laptops/nvidia-unveils-rtx-spark-superchip-at-computex-2026-new-platform-promises-to-turn-windows-into-an-agentic-ai-os-with-arm-cpu-blackwell-gpu-and-128gb-unified-memory">Tom's Hardware</a>.</p>
 """
 
 
