@@ -8,6 +8,7 @@ Blog automatizado que publica un resumen diario de noticias tecnologicas relevan
 - `scripts/publish_blogger.py` crea un post diario en Blogger con la API oficial.
 - Puntua las notas por frescura, fuente y tema.
 - Crea una imagen SVG original incrustada para cada nota, construida automaticamente a partir de su tema.
+- Crea o actualiza paginas base del blog: `Acerca de`, `Politica editorial`, `Privacidad` y `Contacto`.
 - GitHub Actions lo ejecuta todos los dias a las 12:10 UTC y publica en tu blog de Blogger.
 
 ## Publicacion gratuita en Blogger
@@ -49,9 +50,8 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 
 El sitio incluye:
 
-- Meta tags Open Graph y Twitter Card para compartir bien en redes.
-- `sitemap.xml` y `robots.txt` para indexacion.
-- RSS propio para suscriptores y agregadores.
+- Paginas de confianza para lectores y revision de AdSense.
+- Etiquetas tematicas para que Blogger agrupe los posts por tecnologia, IA y noticias tech.
 - Titulares enlazados a fuentes originales para evitar copiar contenido completo.
 - Imagenes propias por nota para mejorar vistas previas y diferenciacion visual.
 - Preparacion para AdSense desde Blogger, incluyendo soporte para `ads.txt` personalizado.
@@ -101,3 +101,9 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 El workflow `.github/workflows/publish-blogger.yml` corre todos los dias a las 12:10 UTC y publica un nuevo post si no existe uno para esa fecha. Tambien puedes ejecutarlo manualmente desde la pestana **Actions** del repositorio.
 
 Aunque la publicacion final sera Blogger, GitHub Actions sigue siendo util como motor gratuito de automatizacion. No aloja el sitio: solo despierta el script diario y manda el post a Blogspot.
+
+El publicador usa endpoints oficiales de Blogger API v3:
+
+- Posts: `POST /blogs/{blogId}/posts`
+- Pages: `POST /blogs/{blogId}/pages`
+- Pages update: `PUT /blogs/{blogId}/pages/{pageId}`
