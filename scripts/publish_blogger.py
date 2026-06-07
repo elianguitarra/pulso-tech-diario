@@ -273,10 +273,13 @@ def publish() -> None:
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = f"Pulso Tech Diario: {today}"
-    if already_published(blog_id, token, title):
-        print(f"Post already exists: {title}")
-        return
+    existing = find_post_by_title(blog_id, token, title)
     payload = post_payload(title, post_html(items), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
+    if existing and existing.get("id"):
+        update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+        result = request_json(update_url, method="PUT", token=token, payload=payload)
+        print(f"Updated daily post: {result.get('url', result.get('id'))}")
+        return
     url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
     result = request_json(url, method="POST", token=token, payload=payload)
     print(f"Published: {result.get('url', result.get('id'))}")
