@@ -262,46 +262,149 @@ def svg_for_item(item: Item, index: int) -> str:
     bg, primary, secondary, paper = palette_for(item.category)
     title_words = [word for word in re.findall(r"[A-Za-z0-9]+", item.title) if len(word) > 3][:3]
     label = " ".join(title_words).upper() or item.category.upper()
-    phase = (sum(ord(ch) for ch in item.title) % 12) + 4
-    rings = []
-    for n in range(7):
-        radius = 40 + n * 28 + (phase % 5)
-        opacity = 0.10 + (n % 3) * 0.03
-        rings.append(
-            f'<circle cx="{160 + n * 72}" cy="{120 + (n % 2) * 70}" r="{radius}" '
-            f'fill="none" stroke="{primary}" stroke-width="2" opacity="{opacity:.2f}"/>'
-        )
-    nodes = []
-    for n in range(12):
-        x = 70 + ((n * 97 + phase * 13) % 760)
-        y = 72 + ((n * 61 + phase * 19) % 310)
-        size = 5 + (n % 4) * 2
-        nodes.append(f'<circle cx="{x}" cy="{y}" r="{size}" fill="{secondary}" opacity="0.78"/>')
+    seed = sum(ord(ch) for ch in item.title) + index * 31
+
+    def micro_grid() -> str:
+        lines = []
+        for n in range(18):
+            x = 60 + ((seed + n * 67) % 1080)
+            y = 52 + ((seed * 3 + n * 41) % 500)
+            lines.append(
+                f'<path d="M{x} {y} h{36 + (n % 4) * 22} v{18 + (n % 3) * 16}" '
+                f'fill="none" stroke="{paper}" stroke-width="2" opacity="0.16"/>'
+            )
+            lines.append(f'<circle cx="{x}" cy="{y}" r="{3 + n % 3}" fill="{secondary}" opacity="0.55"/>')
+        return "".join(lines)
+
+    def chip_visual() -> str:
+        pins = []
+        for n in range(12):
+            pins.append(f'<rect x="{365 + n * 38}" y="156" width="14" height="52" rx="5" fill="{primary}" opacity="0.86"/>')
+            pins.append(f'<rect x="{365 + n * 38}" y="422" width="14" height="52" rx="5" fill="{primary}" opacity="0.50"/>')
+        return f"""
+  <g transform="translate(250 95)">
+    <rect x="110" y="85" width="500" height="360" rx="42" fill="{paper}" opacity="0.95"/>
+    <rect x="166" y="138" width="388" height="254" rx="28" fill="{bg}" opacity="0.92"/>
+    {''.join(pins)}
+    <path d="M232 276 C276 194 360 180 418 238 C498 220 540 290 502 354 C452 428 304 416 252 344 C226 324 220 300 232 276 Z" fill="{primary}"/>
+    <circle cx="310" cy="278" r="18" fill="{secondary}"/>
+    <circle cx="430" cy="278" r="18" fill="{secondary}"/>
+    <path d="M314 334 C354 362 406 362 446 334" fill="none" stroke="{paper}" stroke-width="14" stroke-linecap="round"/>
+  </g>"""
+
+    def orbit_visual() -> str:
+        arcs = []
+        for n in range(5):
+            arcs.append(
+                f'<ellipse cx="720" cy="288" rx="{170 + n * 38}" ry="{58 + n * 21}" '
+                f'fill="none" stroke="{primary if n % 2 else secondary}" stroke-width="{5 if n < 2 else 3}" '
+                f'opacity="{0.72 - n * 0.10}" transform="rotate({-28 + n * 15} 720 288)"/>'
+            )
+        return f"""
+  <g>
+    <circle cx="720" cy="288" r="118" fill="{primary}" opacity="0.92"/>
+    <circle cx="720" cy="288" r="62" fill="{bg}" opacity="0.35"/>
+    {''.join(arcs)}
+    <circle cx="905" cy="226" r="22" fill="{secondary}"/>
+    <circle cx="532" cy="365" r="15" fill="{paper}" opacity="0.88"/>
+    <path d="M170 470 C330 385 430 492 570 410 C710 328 846 448 1040 332" fill="none" stroke="{paper}" stroke-width="12" opacity="0.28"/>
+  </g>"""
+
+    def security_visual() -> str:
+        locks = []
+        for n in range(5):
+            x = 250 + n * 132
+            y = 150 + (n % 2) * 120
+            locks.append(
+                f'<rect x="{x}" y="{y + 42}" width="82" height="68" rx="14" fill="{paper}" opacity="0.92"/>'
+                f'<path d="M{x + 18} {y + 48} v-22 c0-48 46-48 46 0 v22" fill="none" stroke="{secondary}" stroke-width="12" stroke-linecap="round"/>'
+            )
+        return f"""
+  <g>
+    <path d="M660 90 L950 196 V330 C950 462 842 540 660 586 C478 540 370 462 370 330 V196 Z" fill="{primary}" opacity="0.90"/>
+    <path d="M660 154 L872 232 V330 C872 420 790 480 660 518 C530 480 448 420 448 330 V232 Z" fill="{bg}" opacity="0.44"/>
+    <path d="M590 324 L642 376 L744 260" fill="none" stroke="{secondary}" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    {''.join(locks)}
+  </g>"""
+
+    def city_visual() -> str:
+        buildings = []
+        for n in range(11):
+            x = 420 + n * 58
+            h = 150 + ((seed + n * 29) % 210)
+            buildings.append(f'<rect x="{x}" y="{482 - h}" width="42" height="{h}" fill="{paper}" opacity="{0.50 + (n % 3) * 0.12}"/>')
+            for w in range(3):
+                buildings.append(f'<rect x="{x + 9}" y="{492 - h + w * 38}" width="8" height="18" fill="{secondary}" opacity="0.70"/>')
+        return f"""
+  <g>
+    <path d="M0 500 H1200 V630 H0 Z" fill="{primary}" opacity="0.35"/>
+    {''.join(buildings)}
+    <path d="M90 438 C270 382 360 492 530 410 C690 332 784 420 1038 296" fill="none" stroke="{secondary}" stroke-width="18" opacity="0.70"/>
+    <circle cx="1010" cy="282" r="46" fill="{secondary}" opacity="0.92"/>
+  </g>"""
+
+    def product_visual() -> str:
+        cards = []
+        for n in range(4):
+            x = 560 + (n % 2) * 230
+            y = 110 + (n // 2) * 170
+            cards.append(
+                f'<rect x="{x}" y="{y}" width="190" height="126" rx="24" fill="{paper}" opacity="{0.92 - n * 0.08}"/>'
+                f'<rect x="{x + 24}" y="{y + 26}" width="96" height="12" rx="6" fill="{primary}"/>'
+                f'<rect x="{x + 24}" y="{y + 58}" width="132" height="10" rx="5" fill="{bg}" opacity="0.28"/>'
+                f'<circle cx="{x + 146}" cy="{y + 86}" r="22" fill="{secondary}"/>'
+            )
+        return f"""
+  <g>
+    <rect x="140" y="120" width="330" height="390" rx="42" fill="{paper}" opacity="0.95"/>
+    <rect x="175" y="176" width="260" height="270" rx="26" fill="{bg}" opacity="0.88"/>
+    <path d="M220 314 h172 M220 362 h116" stroke="{primary}" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="305" cy="232" r="42" fill="{secondary}"/>
+    {''.join(cards)}
+  </g>"""
+
+    def startup_visual() -> str:
+        bars = []
+        for n in range(7):
+            h = 42 + ((seed + n * 43) % 210)
+            bars.append(f'<rect x="{170 + n * 70}" y="{505 - h}" width="42" height="{h}" rx="16" fill="{primary if n % 2 else secondary}" opacity="0.82"/>')
+        return f"""
+  <g>
+    <path d="M770 104 C842 132 906 202 926 282 C826 304 740 380 684 492 C620 404 560 330 462 292 C514 198 610 126 770 104 Z" fill="{primary}" opacity="0.95"/>
+    <circle cx="742" cy="254" r="54" fill="{paper}" opacity="0.92"/>
+    <path d="M654 494 C604 538 542 552 470 560 C478 488 492 426 536 376" fill="{secondary}" opacity="0.72"/>
+    <path d="M808 414 C876 454 930 508 978 582" stroke="{secondary}" stroke-width="18" stroke-linecap="round"/>
+    {''.join(bars)}
+  </g>"""
+
+    templates = {
+        "chips": chip_visual,
+        "inteligencia artificial": product_visual,
+        "ciberseguridad": security_visual,
+        "web y plataformas": city_visual,
+        "startups": startup_visual,
+        "ciencia": orbit_visual,
+        "consumo": product_visual,
+        "tecnologia": orbit_visual,
+    }
+    fallback_variants = [chip_visual, orbit_visual, security_visual, city_visual, product_visual, startup_visual]
+    visual = templates.get(item.category, fallback_variants[index % len(fallback_variants)])
+    if item.category in {"tecnologia", "inteligencia artificial", "consumo"}:
+        visual = fallback_variants[(index + seed) % len(fallback_variants)]
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="{html.escape(item.category)}">
+  <defs>
+    <radialGradient id="halo{index}" cx="70%" cy="28%" r="62%">
+      <stop offset="0" stop-color="{secondary}" stop-opacity="0.58"/>
+      <stop offset="0.55" stop-color="{primary}" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="{bg}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
   <rect width="1200" height="630" fill="{bg}"/>
-  <path d="M0 455 C180 390 298 522 474 446 C650 370 774 230 1200 274 L1200 630 L0 630 Z" fill="{primary}" opacity="0.32"/>
-  <path d="M0 214 C180 120 308 264 514 184 C748 94 846 150 1200 82 L1200 0 L0 0 Z" fill="{secondary}" opacity="0.24"/>
-  <path d="M-40 602 C260 500 450 620 710 462 C910 340 1010 332 1260 294" fill="none" stroke="{secondary}" stroke-width="18" opacity="0.52"/>
-  <path d="M92 72 L1108 72 L1108 558 L92 558 Z" fill="none" stroke="{primary}" stroke-width="4" opacity="0.46"/>
-  {''.join(rings)}
-  <g opacity="0.55">{''.join(nodes)}</g>
-  <g transform="translate(84 96)">
-    <rect x="0" y="0" width="424" height="274" rx="22" fill="{paper}" opacity="0.95"/>
-    <rect x="34" y="40" width="188" height="15" rx="7" fill="{primary}"/>
-    <rect x="34" y="84" width="326" height="12" rx="6" fill="{bg}" opacity="0.22"/>
-    <rect x="34" y="116" width="292" height="12" rx="6" fill="{bg}" opacity="0.18"/>
-    <rect x="34" y="169" width="86" height="68" rx="14" fill="{primary}" opacity="0.90"/>
-    <rect x="140" y="169" width="86" height="68" rx="14" fill="{secondary}" opacity="0.88"/>
-    <rect x="246" y="169" width="86" height="68" rx="14" fill="{bg}" opacity="0.14"/>
-  </g>
-  <g transform="translate(570 132)">
-    <circle cx="206" cy="154" r="132" fill="{primary}" opacity="0.92"/>
-    <circle cx="206" cy="154" r="166" fill="none" stroke="{secondary}" stroke-width="10" opacity="0.48"/>
-    <circle cx="206" cy="154" r="82" fill="{bg}" opacity="0.32"/>
-    <path d="M206 34 L244 118 L336 128 L266 188 L286 280 L206 232 L126 280 L146 188 L76 128 L168 118 Z" fill="{secondary}" opacity="0.92"/>
-    <path d="M30 314 L430 314" stroke="{paper}" stroke-width="6" opacity="0.42"/>
-    <path d="M74 356 L388 356" stroke="{paper}" stroke-width="4" opacity="0.26"/>
-  </g>
+  <rect width="1200" height="630" fill="url(#halo{index})"/>
+  <path d="M0 504 C210 410 336 548 536 456 C750 358 880 318 1200 360 L1200 630 L0 630 Z" fill="{primary}" opacity="0.23"/>
+  {micro_grid()}
+  {visual()}
+  <rect x="58" y="54" width="1084" height="522" rx="0" fill="none" stroke="{paper}" stroke-width="3" opacity="0.22"/>
   <text x="84" y="504" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900">{html.escape(label[:28])}</text>
   <text x="84" y="558" fill="{paper}" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" opacity="0.86">Pulso Tech Diario | {html.escape(item.category.title())}</text>
 </svg>"""
