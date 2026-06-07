@@ -45,13 +45,27 @@ En Blogger:
 Luego guarda estos secretos en GitHub:
 
 - `BLOGGER_MAIL_TO`: la direccion secreta de Mail2Blogger.
-- `SMTP_HOST`: servidor SMTP, por ejemplo `smtp.gmail.com`.
+- `SMTP_HOST`: servidor SMTP, por ejemplo `smtp-relay.brevo.com`.
 - `SMTP_PORT`: normalmente `587`.
 - `SMTP_USERNAME`: usuario del correo remitente.
 - `SMTP_PASSWORD`: password SMTP o app password.
 - `SMTP_FROM`: correo remitente. Opcional si es igual a `SMTP_USERNAME`.
 
-Para Gmail usa:
+Ruta recomendada sin Gmail App Password: Brevo SMTP. Brevo tiene plan gratis con acceso SMTP y 300 emails al dia, suficiente para publicar un post diario. Crea una cuenta gratis en Brevo, entra a SMTP & API, genera una clave SMTP y usa:
+
+```text
+SMTP_HOST=smtp-relay.brevo.com
+SMTP_PORT=587
+SMTP_SSL=false
+SMTP_STARTTLS=true
+SMTP_USERNAME=tu_login_smtp_de_brevo
+SMTP_PASSWORD=tu_clave_smtp_de_brevo
+SMTP_FROM=el_remitente_verificado_en_brevo
+```
+
+En `SMTP_SSL` pon `false`. En `SMTP_STARTTLS` pon `true`.
+
+Para Gmail, solo si tu cuenta permite App Passwords, usa:
 
 ```text
 SMTP_HOST=smtp.gmail.com
@@ -64,10 +78,12 @@ En `SMTP_PASSWORD` usa un **App Password** de Google, no tu contrasena normal de
 
 https://support.google.com/mail/answer/185833
 
+Si Google dice "La opcion de configuracion que buscas no esta disponible para tu cuenta", cambia a Brevo SMTP o a otro proveedor SMTP. Ese bloqueo es de la cuenta Google, no del proyecto.
+
 Si solo necesitas cambiar el password SMTP despues de crear el App Password:
 
 ```powershell
-C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --password-only --run-workflow
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --provider gmail --password-only --run-workflow
 ```
 
 Comandos:
@@ -85,7 +101,7 @@ O usa el asistente local:
 
 ```powershell
 cd "C:\Users\malow\Documents\New project\pulso-tech-diario"
-C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --run-workflow
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_email.py --provider brevo --run-workflow
 ```
 
 Despues ejecuta el workflow `Publicar por Email` desde GitHub Actions o con:

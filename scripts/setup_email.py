@@ -8,13 +8,31 @@ import getpass
 import subprocess
 
 
-DEFAULTS = {
-    "SMTP_HOST": "smtp.gmail.com",
-    "SMTP_PORT": "587",
-    "SMTP_SSL": "false",
-    "SMTP_STARTTLS": "true",
-    "EMAIL_SUBJECT_PREFIX": "Pulso Tech Diario",
+PROVIDER_DEFAULTS = {
+    "gmail": {
+        "SMTP_HOST": "smtp.gmail.com",
+        "SMTP_PORT": "587",
+        "SMTP_SSL": "false",
+        "SMTP_STARTTLS": "true",
+        "help": "Gmail requires a Google App Password. Normal Gmail passwords are rejected.",
+    },
+    "brevo": {
+        "SMTP_HOST": "smtp-relay.brevo.com",
+        "SMTP_PORT": "587",
+        "SMTP_SSL": "false",
+        "SMTP_STARTTLS": "true",
+        "help": "Brevo SMTP uses the Brevo login as SMTP_USERNAME and an SMTP key as SMTP_PASSWORD.",
+    },
+    "custom": {
+        "SMTP_HOST": "",
+        "SMTP_PORT": "587",
+        "SMTP_SSL": "false",
+        "SMTP_STARTTLS": "true",
+        "help": "Use the SMTP values from your email provider.",
+    },
 }
+
+DEFAULT_SUBJECT_PREFIX = "Pulso Tech Diario"
 
 
 def prompt(name: str, default: str = "", secret: bool = False, required: bool = True) -> str:
@@ -38,13 +56,22 @@ def run_publish_workflow() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Configure Mail2Blogger email publishing.")
+    parser.add_argument(
+        "--provider",
+        choices=sorted(PROVIDER_DEFAULTS),
+        default="brevo",
+        help="SMTP provider preset. Default: brevo, because it avoids Gmail App Password limits.",
+    )
     parser.add_argument("--run-workflow", action="store_true", help="Run the first email publish workflow after saving secrets.")
     parser.add_argument("--password-only", action="store_true", help="Only update SMTP_PASSWORD, useful after creating a Gmail App Password.")
     args = parser.parse_args()
+    defaults = PROVIDER_DEFAULTS[args.provider]
 
     if args.password_only:
-        print("Updating only SMTP_PASSWORD. Use a Gmail App Password, not your normal Gmail password.")
-        print("Official help: https://support.google.com/mail/answer/185833")
+        print("Updating only SMTP_PASSWORD.")
+        print(defaults["help"])
+        if args.provider == "gmail":
+            print("Official help: https://support.google.com/mail/answer/185833")
         set_gh_secret("SMTP_PASSWORD", prompt("SMTP_PASSWORD", secret=True))
         print("\nSMTP_PASSWORD GitHub Secret saved.")
         if args.run_workflow:
@@ -53,20 +80,21 @@ def main() -> None:
         return
 
     print("Configure Blogger Mail2Blogger + SMTP. Do not paste these values in chat.")
-    print("For Gmail use SMTP_SSL=false, SMTP_STARTTLS=true, SMTP_PORT=587.")
-    print("For Gmail SMTP_PASSWORD must be a Google App Password, not your normal password.")
-    print("Official help: https://support.google.com/mail/answer/185833")
+    print(f"Provider preset: {args.provider}")
+    print(defaults["help"])
+    if args.provider == "gmail":
+        print("Official help: https://support.google.com/mail/answer/185833")
     smtp_username = prompt("SMTP_USERNAME")
     values = {
         "BLOGGER_MAIL_TO": prompt("BLOGGER_MAIL_TO"),
-        "SMTP_HOST": prompt("SMTP_HOST", DEFAULTS["SMTP_HOST"]),
-        "SMTP_PORT": prompt("SMTP_PORT", DEFAULTS["SMTP_PORT"]),
+        "SMTP_HOST": prompt("SMTP_HOST", defaults["SMTP_HOST"]),
+        "SMTP_PORT": prompt("SMTP_PORT", defaults["SMTP_PORT"]),
         "SMTP_USERNAME": smtp_username,
         "SMTP_PASSWORD": prompt("SMTP_PASSWORD", secret=True),
         "SMTP_FROM": prompt("SMTP_FROM", smtp_username, required=False),
-        "SMTP_SSL": prompt("SMTP_SSL", DEFAULTS["SMTP_SSL"]),
-        "SMTP_STARTTLS": prompt("SMTP_STARTTLS", DEFAULTS["SMTP_STARTTLS"]),
-        "EMAIL_SUBJECT_PREFIX": prompt("EMAIL_SUBJECT_PREFIX", DEFAULTS["EMAIL_SUBJECT_PREFIX"], required=False),
+        "SMTP_SSL": prompt("SMTP_SSL", defaults["SMTP_SSL"]),
+        "SMTP_STARTTLS": prompt("SMTP_STARTTLS", defaults["SMTP_STARTTLS"]),
+        "EMAIL_SUBJECT_PREFIX": prompt("EMAIL_SUBJECT_PREFIX", DEFAULT_SUBJECT_PREFIX, required=False),
     }
 
     reply_to = prompt("SMTP_REPLY_TO", values["SMTP_FROM"], required=False)

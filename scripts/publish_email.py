@@ -89,8 +89,9 @@ if __name__ == "__main__":
         publish()
     except smtplib.SMTPAuthenticationError as exc:
         sys.stderr.write(
-            "SMTP authentication failed. If you use Gmail, SMTP_PASSWORD must be a Google App Password, "
-            "not your normal Gmail password. Enable 2-Step Verification and create one at "
-            "https://myaccount.google.com/apppasswords\n"
+            "SMTP authentication failed. Check SMTP_USERNAME and SMTP_PASSWORD for your provider. "
+            "For Gmail, SMTP_PASSWORD must be a Google App Password, not your normal Gmail password. "
+            "If Google App Passwords are unavailable for your account, use a free SMTP relay such as Brevo "
+            "with SMTP_HOST=smtp-relay.brevo.com, SMTP_PORT=587, SMTP_SSL=false, SMTP_STARTTLS=true.\n"
         )
         raise
