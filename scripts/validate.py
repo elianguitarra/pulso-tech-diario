@@ -47,7 +47,18 @@ def require(path: Path) -> None:
 def validate() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build.py")], check=True, cwd=ROOT)
 
-    for relative in ["index.html", "style.css", "feed.xml", "sitemap.xml", "robots.txt", "data.json"]:
+    for relative in [
+        "index.html",
+        "style.css",
+        "feed.xml",
+        "sitemap.xml",
+        "robots.txt",
+        "data.json",
+        "acerca.html",
+        "politica-editorial.html",
+        "privacidad.html",
+        "contacto.html",
+    ]:
         require(PUBLIC / relative)
 
     parser = SiteParser()
@@ -62,7 +73,11 @@ def validate() -> None:
         fail("expected story links")
 
     ET.parse(PUBLIC / "feed.xml")
-    ET.parse(PUBLIC / "sitemap.xml")
+    sitemap_root = ET.parse(PUBLIC / "sitemap.xml").getroot()
+    sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
+    for page in ["acerca.html", "politica-editorial.html", "privacidad.html", "contacto.html"]:
+        if page not in sitemap_text:
+            fail(f"sitemap missing {page}")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:

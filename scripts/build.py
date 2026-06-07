@@ -33,6 +33,44 @@ ADSENSE_CLIENT = os.environ.get("ADSENSE_CLIENT", "").strip()
 ADSENSE_TOP_SLOT = os.environ.get("ADSENSE_TOP_SLOT", "").strip()
 ADSENSE_IN_ARTICLE_SLOT = os.environ.get("ADSENSE_IN_ARTICLE_SLOT", "").strip()
 
+STATIC_PAGES = {
+    "acerca.html": {
+        "title": "Acerca de",
+        "description": "Pulso Tech Diario resume tecnologia relevante cada dia con fuentes publicas, enlaces originales e imagenes propias.",
+        "body": """
+<p><strong>Pulso Tech Diario</strong> es un sitio automatizado que resume noticias tecnologicas relevantes cada dia.</p>
+<p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
+<p>El sistema revisa fuentes publicas por RSS, ordena las notas por frescura, relevancia tematica y fuente, y enlaza siempre al articulo original.</p>
+""",
+    },
+    "politica-editorial.html": {
+        "title": "Politica editorial",
+        "description": "Criterios editoriales de Pulso Tech Diario para seleccionar, resumir y enlazar noticias tecnologicas.",
+        "body": """
+<p>Pulso Tech Diario no copia articulos completos. Cada entrada usa resumen editorial propio y enlaces directos a las fuentes originales.</p>
+<p>Las notas se seleccionan automaticamente con reglas de relevancia, pero el sitio prioriza contenido informativo, trazable y util para lectores interesados en tecnologia.</p>
+<p>Las imagenes que acompanan cada noticia son ilustraciones SVG originales generadas automaticamente para este sitio. No representan capturas ni fotografias de los articulos enlazados.</p>
+""",
+    },
+    "privacidad.html": {
+        "title": "Privacidad",
+        "description": "Informacion de privacidad, cookies y anuncios para lectores de Pulso Tech Diario.",
+        "body": """
+<p>Este sitio se publica como una pagina estatica gratuita en GitHub Pages. El hosting puede procesar datos tecnicos habituales como direccion IP, navegador, dispositivo, fecha de acceso y registros de seguridad.</p>
+<p>Si el sitio muestra anuncios mediante Google AdSense, Google y sus socios pueden usar cookies o identificadores para servir, medir y personalizar anuncios segun la configuracion del usuario.</p>
+<p>Como lector puedes administrar cookies y preferencias de anuncios desde tu navegador y desde las herramientas de privacidad de Google.</p>
+""",
+    },
+    "contacto.html": {
+        "title": "Contacto",
+        "description": "Contacto editorial y tecnico de Pulso Tech Diario.",
+        "body": """
+<p>Para consultas editoriales, correcciones o propuestas relacionadas con Pulso Tech Diario, usa el perfil publico asociado al proyecto en GitHub.</p>
+<p>Repositorio del sistema: <a href="https://github.com/elianguitarra/pulso-tech-diario" target="_blank" rel="noopener">github.com/elianguitarra/pulso-tech-diario</a>.</p>
+""",
+    },
+}
+
 SOURCES = [
     ("The Verge", "https://www.theverge.com/rss/index.xml"),
     ("Ars Technica", "https://feeds.arstechnica.com/arstechnica/index"),
@@ -348,6 +386,8 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     </a>
     <nav aria-label="Acciones">
       <a href="feed.xml">RSS</a>
+      <a href="acerca.html">Acerca</a>
+      <a href="privacidad.html">Privacidad</a>
       <a href="https://twitter.com/intent/tweet?text={urllib.parse.quote(SITE_NAME)}&url={urllib.parse.quote(SITE_URL + '/')}" target="_blank" rel="noopener">Compartir</a>
     </nav>
   </header>
@@ -379,6 +419,49 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
   <footer>
     <p>Creado para publicarse gratis con GitHub Pages. Las imagenes son SVG originales generadas por el build diario.</p>
     <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
+    <p><a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+  </footer>
+</body>
+</html>"""
+
+
+def render_static_page(filename: str, page: dict[str, str]) -> str:
+    title = page["title"]
+    description = page["description"]
+    body = page["body"]
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{esc(title)} | {SITE_NAME}</title>
+  <meta name="description" content="{esc(description)}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{SITE_URL}/{filename}">
+  {adsense_head()}
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="{SITE_NAME}">
+      <span class="brand-mark">PT</span>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="./">Inicio</a>
+      <a href="feed.xml">RSS</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+  <main class="page">
+    <p class="kicker">Informacion del sitio</p>
+    <h1>{esc(title)}</h1>
+    <div class="page-body">
+      {body}
+    </div>
+  </main>
+  <footer>
+    <p><a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
 </body>
 </html>"""
@@ -582,6 +665,31 @@ footer {
   color: var(--muted);
   font-size: 14px;
 }
+footer a { color: var(--ink); font-weight: 750; }
+.page {
+  min-height: 62vh;
+  padding: 58px 0 72px;
+  max-width: 780px;
+}
+.page h1 {
+  font-size: clamp(40px, 7vw, 74px);
+  line-height: 1;
+  margin-bottom: 28px;
+}
+.page-body {
+  display: grid;
+  gap: 18px;
+  color: #334155;
+  font-size: 19px;
+  line-height: 1.7;
+}
+.page-body p { margin: 0; }
+.page-body a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 @media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .grid { grid-template-columns: 1fr 1fr; }
@@ -627,6 +735,15 @@ def render_feed(items: list[Item]) -> str:
 
 def render_sitemap() -> str:
     today = datetime.now(timezone.utc).date().isoformat()
+    page_urls = "\n".join(
+        f"""  <url>
+    <loc>{SITE_URL}/{filename}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>"""
+        for filename in STATIC_PAGES
+    )
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -635,6 +752,7 @@ def render_sitemap() -> str:
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+{page_urls}
 </urlset>
 """
 
@@ -643,6 +761,8 @@ def write_static(items: list[Item]) -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     image_paths = save_images(items)
     (PUBLIC / "index.html").write_text(render_index(items, image_paths), encoding="utf-8")
+    for filename, page in STATIC_PAGES.items():
+        (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
     (PUBLIC / "feed.xml").write_text(render_feed(items), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(), encoding="utf-8")
