@@ -19,7 +19,7 @@ jobs:
           python-version: "3.12"
 
       - name: Compilar scripts
-        run: python -m py_compile scripts/build.py scripts/publish_blogger.py scripts/publish_email.py scripts/setup_email.py scripts/setup_oauth.py scripts/validate.py scripts/doctor.py scripts/submit_indexnow.py
+        run: python -m py_compile scripts/build.py scripts/publish_blogger.py scripts/publish_email.py scripts/publish_feature_email.py scripts/setup_email.py scripts/setup_oauth.py scripts/validate.py scripts/doctor.py scripts/submit_indexnow.py
 
       - name: Validar build de preview
         run: python scripts/validate.py
