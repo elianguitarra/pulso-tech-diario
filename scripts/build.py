@@ -32,6 +32,7 @@ SITE_URL = os.environ.get("SITE_URL", "https://elianguitarra.github.io/pulso-tec
 ADSENSE_CLIENT = os.environ.get("ADSENSE_CLIENT", "").strip()
 ADSENSE_TOP_SLOT = os.environ.get("ADSENSE_TOP_SLOT", "").strip()
 ADSENSE_IN_ARTICLE_SLOT = os.environ.get("ADSENSE_IN_ARTICLE_SLOT", "").strip()
+INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "pulso-tech-diario-2026-indexnow-key").strip()
 
 STATIC_PAGES = {
     "acerca.html": {
@@ -769,6 +770,7 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "robots.txt").write_text(
         f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8"
     )
+    (PUBLIC / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY, encoding="utf-8")
     ads_txt = PUBLIC / "ads.txt"
     if valid_adsense_client():
         ads_txt.write_text(

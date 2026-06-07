@@ -45,3 +45,9 @@ jobs:
       - name: Publicar en Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Avisar a IndexNow
+        continue-on-error: true
+        run: python scripts/submit_indexnow.py --sitemap public/sitemap.xml
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}

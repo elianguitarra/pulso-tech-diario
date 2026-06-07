@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -13,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "public"
+INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "pulso-tech-diario-2026-indexnow-key").strip()
 
 
 class SiteParser(HTMLParser):
@@ -58,6 +60,7 @@ def validate() -> None:
         "politica-editorial.html",
         "privacidad.html",
         "contacto.html",
+        f"{INDEXNOW_KEY}.txt",
     ]:
         require(PUBLIC / relative)
 
@@ -87,6 +90,10 @@ def validate() -> None:
     images = list(image_dir.glob("*.svg"))
     if len(images) != parser.story_count:
         fail(f"expected {parser.story_count} generated svg images, found {len(images)}")
+
+    key_text = (PUBLIC / f"{INDEXNOW_KEY}.txt").read_text(encoding="utf-8").strip()
+    if key_text != INDEXNOW_KEY:
+        fail("IndexNow key file content does not match expected key")
 
     print(
         "validation ok:",

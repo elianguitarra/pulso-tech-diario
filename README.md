@@ -160,6 +160,7 @@ El sitio incluye:
 - Titulares enlazados a fuentes originales para evitar copiar contenido completo.
 - Imagenes propias por nota para mejorar vistas previas y diferenciacion visual.
 - Preparacion para AdSense desde Blogger, incluyendo soporte para `ads.txt` personalizado.
+- `robots.txt`, `sitemap.xml`, RSS e IndexNow para facilitar rastreo y descubrimiento automatico.
 
 ## AdSense
 
@@ -182,6 +183,8 @@ Siguientes pasos recomendados despues de publicarlo:
 - Enviar `sitemap.xml` a Google Search Console cuando quieras acelerar indexacion.
 - Compartir la URL diaria en X, LinkedIn, Reddit o comunidades tech.
 - Agregar la URL al perfil de GitHub y a cualquier bio publica.
+
+El workflow de GitHub Pages avisa a IndexNow despues de cada despliegue diario. Google Search Console todavia requiere verificacion manual de propiedad si quieres ver reportes de Google, pero el sitio ya publica sitemap, robots y RSS sin intervencion diaria.
 
 ## Preview local
 
