@@ -16,6 +16,12 @@ Blog automatizado que publica un resumen diario de noticias tecnologicas relevan
 
 Blogger es gratis y puede usarse con subdominio `blogspot.com`. Es una buena opcion para AdSense porque pertenece a Google y tiene panel de monetizacion propio.
 
+Tambien existe una version publica de respaldo en GitHub Pages:
+
+`https://elianguitarra.github.io/pulso-tech-diario/`
+
+Esa version es gratis y se reconstruye a diario. La ruta Blogger/Mail2Blogger sigue siendo la recomendada para monetizacion con AdSense.
+
 Para publicar automaticamente hacen falta estos secretos en el repositorio que ejecuta la automatizacion:
 
 - `BLOGGER_BLOG_ID`
@@ -165,6 +171,8 @@ El workflow `.github/workflows/publish-blogger.yml` corre todos los dias a las 1
 Aunque la publicacion final sera Blogger, GitHub Actions sigue siendo util como motor gratuito de automatizacion. No aloja el sitio: solo despierta el script diario y manda el post a Blogspot.
 
 Si usas la ruta sin Google Cloud, el workflow `.github/workflows/publish-email.yml` envia el post diario por Mail2Blogger todos los dias a las 12:20 UTC.
+
+El workflow `.github/workflows/pages.yml` publica una version estatica gratis en GitHub Pages todos los dias a las 12:30 UTC.
 
 Despues de correr el asistente con `--run-workflow`, puedes ver el primer despliegue con:
 

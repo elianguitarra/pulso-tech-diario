@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 
 REPO = "elianguitarra/pulso-tech-diario"
+PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario/"
 REQUIRED_SECRETS = {
     "BLOGGER_BLOG_ID",
     "GOOGLE_CLIENT_ID",
@@ -74,6 +75,7 @@ def check_workflows() -> list[Check]:
         return [Check("Workflows", False, result.stderr.strip())]
     output = result.stdout
     return [
+        Check("Workflow pages", "Publicar GitHub Pages" in output and "active" in output, "pages.yml"),
         Check("Workflow publicar", "Publicar en Blogger" in output and "active" in output, "publish-blogger.yml"),
         Check("Workflow email", "Publicar por Email" in output and "active" in output, "publish-email.yml"),
         Check("Workflow validar", "Validar generador" in output and "active" in output, "validate.yml"),
@@ -106,7 +108,7 @@ def check_latest_runs() -> list[Check]:
         return [Check("Workflow runs", False, result.stderr.strip())]
     runs = json.loads(result.stdout or "[]")
     checks: list[Check] = []
-    for workflow in ["Validar generador", "Publicar en Blogger", "Publicar por Email"]:
+    for workflow in ["Validar generador", "Publicar GitHub Pages", "Publicar en Blogger", "Publicar por Email"]:
         run_data = next((item for item in runs if item.get("workflowName") == workflow), None)
         if not run_data:
             checks.append(Check(f"Ultimo run {workflow}", False, "no runs yet"))
@@ -165,6 +167,7 @@ def main() -> None:
 
     route = "OAuth Blogger API" if oauth_ready else "Mail2Blogger email"
     print(f"\nReady: required automation checks passed via {route}.")
+    print(f"Public preview: {PAGES_URL}")
 
 
 if __name__ == "__main__":
