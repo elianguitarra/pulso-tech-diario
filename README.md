@@ -25,6 +25,43 @@ Para publicar automaticamente hacen falta estos secretos en el repositorio que e
 
 La cuenta Google debe autorizar el alcance `https://www.googleapis.com/auth/blogger`. Sin esa autorizacion, ningun sistema externo puede crear posts en tu blog.
 
+### Alternativa sin Google Cloud: Mail2Blogger
+
+Si Google Cloud te pide pago, usa Mail2Blogger. Blogger permite publicar enviando un correo a una direccion secreta del blog.
+
+En Blogger:
+
+1. Ve a `Settings`.
+2. Busca `Email`.
+3. En `Post using email` / `Mail2Blogger`, crea una direccion secreta.
+4. Elige publicar inmediatamente o guardar como borrador, segun prefieras.
+
+Luego guarda estos secretos en GitHub:
+
+- `BLOGGER_MAIL_TO`: la direccion secreta de Mail2Blogger.
+- `SMTP_HOST`: servidor SMTP, por ejemplo `smtp.gmail.com`.
+- `SMTP_PORT`: normalmente `587`.
+- `SMTP_USERNAME`: usuario del correo remitente.
+- `SMTP_PASSWORD`: password SMTP o app password.
+- `SMTP_FROM`: correo remitente.
+
+Comandos:
+
+```powershell
+gh secret set BLOGGER_MAIL_TO
+gh secret set SMTP_HOST
+gh secret set SMTP_PORT
+gh secret set SMTP_USERNAME
+gh secret set SMTP_PASSWORD
+gh secret set SMTP_FROM
+```
+
+Despues ejecuta el workflow `Publicar por Email` desde GitHub Actions o con:
+
+```powershell
+gh workflow run publish-email.yml --ref main
+```
+
 ### Conexion OAuth segura
 
 Guia detallada con Cloud Shell: [docs/OAUTH_CLOUD_SHELL.md](docs/OAUTH_CLOUD_SHELL.md).
@@ -54,6 +91,14 @@ Si prefieres revisar antes de guardar:
 ```powershell
 C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\setup_oauth.py
 ```
+
+Para revisar el estado de configuracion en cualquier momento:
+
+```powershell
+C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\doctor.py
+```
+
+El doctor revisa GitHub CLI, autenticacion, workflows, secrets requeridos y ultimas corridas.
 
 ## Crecimiento y visibilidad
 
@@ -111,6 +156,8 @@ C:\Users\malow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 El workflow `.github/workflows/publish-blogger.yml` corre todos los dias a las 12:10 UTC y publica un nuevo post si no existe uno para esa fecha. Tambien puedes ejecutarlo manualmente desde la pestana **Actions** del repositorio.
 
 Aunque la publicacion final sera Blogger, GitHub Actions sigue siendo util como motor gratuito de automatizacion. No aloja el sitio: solo despierta el script diario y manda el post a Blogspot.
+
+Si usas la ruta sin Google Cloud, el workflow `.github/workflows/publish-email.yml` envia el post diario por Mail2Blogger todos los dias a las 12:20 UTC.
 
 Despues de correr el asistente con `--run-workflow`, puedes ver el primer despliegue con:
 

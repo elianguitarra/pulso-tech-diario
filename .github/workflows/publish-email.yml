@@ -1,0 +1,32 @@
+name: Publicar por Email
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 12 * * *"
+
+jobs:
+  publish-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Enviar post diario a Blogger por email
+        run: python scripts/publish_email.py
+        env:
+          BLOGGER_MAIL_TO: ${{ secrets.BLOGGER_MAIL_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          SMTP_REPLY_TO: ${{ secrets.SMTP_REPLY_TO }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+          SMTP_STARTTLS: ${{ secrets.SMTP_STARTTLS }}
+          EMAIL_SUBJECT_PREFIX: ${{ secrets.EMAIL_SUBJECT_PREFIX }}

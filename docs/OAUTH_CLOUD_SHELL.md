@@ -4,6 +4,8 @@ Esta guia prepara Google Cloud para que `scripts/setup_oauth.py` pueda publicar 
 
 No pegues `GOOGLE_CLIENT_SECRET` ni `GOOGLE_REFRESH_TOKEN` en chats, issues o commits. El asistente local los guarda como GitHub Secrets.
 
+Si Google Cloud te pide pago o no quieres usar OAuth, usa la alternativa Mail2Blogger documentada en el README. Esa ruta solo necesita una direccion secreta de Blogger y un correo SMTP.
+
 ## 1. Preparar Google Cloud desde Cloud Shell
 
 Abre Google Cloud Console y entra a Cloud Shell:
@@ -96,4 +98,3 @@ Si el workflow termina bien, Blogger tendra:
 - Paginas base: Acerca de, Politica editorial, Privacidad, Contacto.
 - Posts evergreen originales.
 - Post diario con noticias tecnologicas e imagenes SVG originales.
-
