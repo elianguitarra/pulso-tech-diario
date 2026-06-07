@@ -17,6 +17,7 @@ IMAGE_URL = f"{SITE_URL}/assets/features/rtx-spark-ai-pc.svg"
 
 
 TITLE = "Nvidia y Microsoft quieren que la IA viva dentro de tu PC"
+EMAIL_TITLE = "Nvidia RTX Spark: IA local en PCs"
 SUMMARY = (
     "El anuncio de RTX Spark marca una nueva fase: computadoras Windows capaces de ejecutar agentes de IA "
     "localmente, con menos dependencia de la nube y una competencia mas directa contra Apple, Intel y AMD."
@@ -43,13 +44,20 @@ def make_message() -> EmailMessage:
     smtp_username = env("SMTP_USERNAME")
     subject_prefix = optional_env("EMAIL_SUBJECT_PREFIX", "Pulso Tech Diario")
     message = EmailMessage()
-    message["Subject"] = f"{subject_prefix}: {TITLE}"
+    message["Subject"] = f"{subject_prefix}: {EMAIL_TITLE}"
     message["From"] = optional_env("SMTP_FROM", smtp_username)
     message["To"] = env("BLOGGER_MAIL_TO")
     reply_to = optional_env("SMTP_REPLY_TO")
     if reply_to:
         message["Reply-To"] = reply_to
-    message.set_content(f"{TITLE}\n\n{SUMMARY}\n\nFuente visual: {IMAGE_URL}")
+    message.set_content(
+        f"{TITLE}\n\n"
+        f"{SUMMARY}\n\n"
+        f"Imagen original: {IMAGE_URL}\n\n"
+        "Fuente Nvidia: https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Microsoft-Reinvent-Windows-PCs-for-the-Age-of-Personal-AI/default.aspx\n"
+        "Fuente Axios: https://www.axios.com/2026/06/01/microsoft-nvidia-surface-ultra-rtx-spark\n"
+        "Fuente Tom's Hardware: https://www.tomshardware.com/laptops/nvidia-unveils-rtx-spark-superchip-at-computex-2026-new-platform-promises-to-turn-windows-into-an-agentic-ai-os-with-arm-cpu-blackwell-gpu-and-128gb-unified-memory\n"
+    )
     message.add_alternative(post_html(), subtype="html")
     return message
 
