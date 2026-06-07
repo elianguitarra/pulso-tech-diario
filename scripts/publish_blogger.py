@@ -208,6 +208,61 @@ def post_html(items: list[build.Item]) -> str:
     return "\n".join(blocks)
 
 
+def post_html(items: list[build.Item]) -> str:
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    blocks = [
+        f"""
+<div style="background:#151515;color:#f7f1e8;padding:30px 28px 36px;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:980px;margin:0 auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 28px;">
+      <div style="font-weight:900;font-style:italic;letter-spacing:.04em;text-transform:uppercase;color:#ffffff;">Pulso Tech Diario</div>
+      <div style="color:#ff7058;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;">Actualizado {today} UTC</div>
+    </div>
+"""
+    ]
+    for index, item in enumerate(items, start=1):
+        svg = compact_svg(build.svg_for_item(item, index))
+        if index == 1:
+            blocks.append(
+                f"""
+    <section style="display:grid;grid-template-columns:1.12fr .88fr;margin:0 0 42px;background:#ff7058;color:#201512;min-height:330px;">
+      <div style="padding:48px 42px 36px;">
+        <p style="margin:0 0 18px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#5b1d16;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
+        <h2 style="margin:0 0 14px;font-size:40px;line-height:1.02;font-style:italic;font-weight:900;color:#201512;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#201512;text-decoration:none;">{html.escape(item.title)}</a></h2>
+        <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:#3c201b;">{html.escape(item.summary or build.reading_angle(item))}</p>
+        <div style="display:flex;justify-content:space-between;gap:16px;color:#5b1d16;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">
+          <span>Compartir</span>
+          <a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#5b1d16;text-decoration:none;">Leer fuente</a>
+        </div>
+      </div>
+      <div style="overflow:hidden;background:#0f172a;display:flex;align-items:stretch;">{svg}</div>
+    </section>
+    <p style="margin:0 0 24px;color:#f7f1e8;font-size:13px;font-weight:900;">Notas recientes</p>
+"""
+            )
+        else:
+            blocks.append(
+                f"""
+    <section style="display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:28px;align-items:center;margin:0 0 42px;padding:0 0 34px;border-bottom:1px solid #2b2b2b;">
+      <div>
+        <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
+        <h2 style="margin:0 0 12px;font-size:32px;line-height:1.05;font-style:italic;font-weight:900;color:#ff7058;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#ff7058;text-decoration:none;">{html.escape(item.title)}</a></h2>
+        <p style="margin:0 0 16px;color:#f1e7dd;font-size:15px;line-height:1.75;">{html.escape(item.summary or build.reading_angle(item))}</p>
+        <p style="margin:0;color:#c8b8aa;font-size:13px;line-height:1.6;"><strong style="color:#f7f1e8;">Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
+      </div>
+      <div style="overflow:hidden;background:#0f172a;border:1px solid #2f2f2f;">{svg}</div>
+    </section>
+"""
+            )
+    adsense_client = os.environ.get("ADSENSE_CLIENT", "").strip()
+    if adsense_client:
+        blocks.append(
+            '<p style="color:#c8b8aa;"><small>Monetizacion: este blog esta preparado para AdSense desde la configuracion de Blogger y ads.txt personalizado.</small></p>'
+        )
+    blocks.append("  </div>\n</div>")
+    return "\n".join(blocks)
+
+
 def page_payload(title: str, content: str) -> dict:
     return {
         "kind": "blogger#page",
