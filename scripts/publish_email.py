@@ -88,6 +88,13 @@ if __name__ == "__main__":
     try:
         publish()
     except smtplib.SMTPAuthenticationError as exc:
+        response = exc.smtp_error.decode("utf-8", errors="replace") if isinstance(exc.smtp_error, bytes) else str(exc.smtp_error)
+        if "Unauthorized IP address" in response:
+            sys.stderr.write(
+                "Brevo rejected this GitHub Actions runner with: Unauthorized IP address. "
+                "In Brevo, disable SMTP key IP blocking or authorize the runner IP printed earlier in this job.\n"
+            )
+            raise
         sys.stderr.write(
             "SMTP authentication failed. Check SMTP_USERNAME and SMTP_PASSWORD for your provider. "
             "For Gmail, SMTP_PASSWORD must be a Google App Password, not your normal Gmail password. "

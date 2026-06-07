@@ -17,6 +17,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Mostrar IP publica del runner
+        continue-on-error: true
+        run: |
+          echo "GitHub runner public IP:"
+          curl -fsS https://api.ipify.org || true
+          echo
+
       - name: Enviar post diario a Blogger por email
         run: python scripts/publish_email.py
         env:
