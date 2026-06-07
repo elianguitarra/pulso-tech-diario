@@ -14,8 +14,8 @@ import publish_blogger
 from publish_email import env, optional_env
 
 
-TITLE = "Nvidia y Microsoft quieren que la IA viva dentro de tu PC"
-EMAIL_TITLE = "Nvidia RTX Spark: IA local en PCs"
+TITLE = "Nvidia y Microsoft quieren llevar la inteligencia artificial al centro de tu PC"
+EMAIL_TITLE = "Nvidia RTX Spark: la inteligencia artificial llega a las PCs"
 SUMMARY = (
     "El anuncio de RTX Spark marca una nueva fase: computadoras Windows capaces de ejecutar agentes de IA "
     "localmente, con menos dependencia de la nube y una competencia mas directa contra Apple, Intel y AMD."
@@ -39,8 +39,9 @@ def post_html() -> str:
         score=100,
     )
     analysis = """
-<p><strong>Analisis de Pulso Tech:</strong> esta noticia importa porque el PC vuelve a ser campo de batalla. Si la IA local madura, tareas como resumir documentos, analizar codigo, automatizar flujos y trabajar con archivos privados podrian ejecutarse dentro del equipo, sin depender siempre de servidores remotos.</p>
-<p>La promesa aun debe probar precio, bateria, compatibilidad y utilidad real de los agentes. Pero la direccion es clara: la proxima etapa de la IA no solo se jugara en centros de datos, tambien en la computadora que usamos todos los dias.</p>
+<p><strong>Analisis de Pulso Tech:</strong> esta noticia importa porque la computadora personal vuelve a ser campo de batalla. Durante los ultimos anos, la inteligencia artificial se sintio como algo que vivia principalmente en la nube. Con propuestas como RTX Spark, Nvidia y Microsoft quieren que una parte de esa inteligencia funcione directamente dentro del equipo.</p>
+<p>El cambio puede ser relevante para tareas cotidianas: resumir documentos largos, analizar carpetas de trabajo, revisar codigo, generar contenido o ejecutar asistentes que entiendan mejor el contexto local del usuario. La ventaja seria menor latencia, mas privacidad y menos dependencia de servidores externos.</p>
+<p>Tambien hay dudas importantes. Falta ver precio, consumo de energia, compatibilidad de aplicaciones y si los agentes seran lo bastante utiles como para justificar comprar hardware nuevo. Pero la direccion es clara: la proxima etapa de la inteligencia artificial no solo se jugara en centros de datos, tambien en la computadora que usamos todos los dias.</p>
 <p><strong>Fuentes adicionales:</strong> <a href="https://www.axios.com/2026/06/01/microsoft-nvidia-surface-ultra-rtx-spark">Axios</a> y <a href="https://www.tomshardware.com/laptops/nvidia-unveils-rtx-spark-superchip-at-computex-2026-new-platform-promises-to-turn-windows-into-an-agentic-ai-os-with-arm-cpu-blackwell-gpu-and-128gb-unified-memory">Tom's Hardware</a>.</p>
 """
     return publish_blogger.post_html([item]) + analysis

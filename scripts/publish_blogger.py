@@ -120,7 +120,8 @@ def request_json(url: str, method: str = "GET", token: str | None = None, payloa
     for attempt in range(5):
         try:
             with urllib.request.urlopen(request, timeout=30) as response:
-                return json.loads(response.read().decode("utf-8"))
+                body = response.read().decode("utf-8")
+                return json.loads(body) if body else {}
         except urllib.error.HTTPError as exc:
             if exc.code not in {429, 500, 502, 503, 504} or attempt == 4:
                 raise

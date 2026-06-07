@@ -2,6 +2,11 @@ name: Publicar nota especial en Blogger
 
 on:
   workflow_dispatch:
+    inputs:
+      recreate:
+        description: "Borrar la nota existente y publicarla de nuevo"
+        required: false
+        default: "false"
 
 jobs:
   publish-feature:
@@ -22,3 +27,4 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          RECREATE_FEATURE: ${{ inputs.recreate }}
