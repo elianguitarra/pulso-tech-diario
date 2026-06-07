@@ -260,7 +260,8 @@ def palette_for(category: str) -> tuple[str, str, str, str]:
 
 def svg_for_item(item: Item, index: int) -> str:
     bg, primary, secondary, paper = palette_for(item.category)
-    title_words = [word for word in re.findall(r"[A-Za-z0-9]+", item.title) if len(word) > 3][:3]
+    visible_title = spanishize_text(item.title)
+    title_words = [word for word in re.findall(r"[A-Za-z0-9]+", visible_title) if len(word) > 3][:3]
     label = " ".join(title_words).upper() or item.category.upper()
     seed = sum(ord(ch) for ch in item.title) + index * 31
 
@@ -443,6 +444,217 @@ def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
 
+ENGLISH_MARKERS = {
+    "the",
+    "and",
+    "with",
+    "for",
+    "from",
+    "after",
+    "before",
+    "launches",
+    "gets",
+    "says",
+    "new",
+    "how",
+    "why",
+    "what",
+    "is",
+    "are",
+    "will",
+    "can",
+    "ai",
+}
+
+PHRASE_REPLACEMENTS = [
+    ("artificial intelligence", "inteligencia artificial"),
+    ("agentic ai", "IA agentica"),
+    ("service disruption", "interrupcion del servicio"),
+    ("data breach", "filtracion de datos"),
+    ("held for ransom", "retenidos para exigir rescate"),
+    ("all the news and trailers", "todas las noticias y avances"),
+    ("release date", "fecha de lanzamiento"),
+    ("isn't coming", "no llegara"),
+    ("is still working", "sigue trabajando"),
+    ("set free", "liberada"),
+    ("superintelligence", "superinteligencia"),
+    ("latest news", "ultimas noticias"),
+    ("after recent delay", "tras un retraso reciente"),
+    ("for the first time", "por primera vez"),
+    ("explains how", "explica como"),
+    ("worst breaches", "peores filtraciones"),
+    ("so far", "hasta ahora"),
+    ("restores access", "restablece el acceso"),
+    ("after service disruption", "tras una interrupcion del servicio"),
+    ("launches in", "se lanza en"),
+    ("gets a", "recibe una"),
+]
+
+WORD_REPLACEMENTS = {
+    "ai": "IA",
+    "chief": "jefe",
+    "company": "compania",
+    "companies": "companias",
+    "says": "dice",
+    "said": "dijo",
+    "new": "nuevo",
+    "news": "noticias",
+    "trailers": "avances",
+    "showcase": "presentacion",
+    "launch": "lanzamiento",
+    "launches": "se lanza",
+    "arrives": "llega",
+    "delay": "retraso",
+    "hacked": "hackeado",
+    "leaked": "filtrado",
+    "breaches": "filtraciones",
+    "security": "seguridad",
+    "access": "acceso",
+    "restores": "restablece",
+    "working": "trabajando",
+    "superintelligence": "superinteligencia",
+    "futurist": "futurista",
+    "explains": "explica",
+    "uses": "usa",
+    "real": "real",
+    "world": "mundo",
+    "problem": "problema",
+    "software": "software",
+    "coding": "programacion",
+    "solved": "resolvio",
+    "exposed": "expuso",
+    "every": "cada",
+    "other": "otro",
+    "gets": "recibe",
+    "date": "fecha",
+    "first": "primera",
+    "time": "vez",
+    "smart": "inteligente",
+    "lamp": "lampara",
+    "post": "poste",
+    "under": "por debajo de",
+    "coming": "llegando",
+    "ps5": "PS5",
+    "xbox": "Xbox",
+    "microsoft": "Microsoft",
+    "openai": "OpenAI",
+    "notion": "Notion",
+    "anthropic": "Anthropic",
+}
+
+
+def looks_english(value: str) -> bool:
+    words = re.findall(r"[A-Za-z']+", value.lower())
+    if not words:
+        return False
+    hits = sum(1 for word in words if word.strip("'") in ENGLISH_MARKERS)
+    return hits >= 1 or any(word in {"ai", "xbox", "ps5", "gets", "arrives", "launches"} for word in words)
+
+
+def spanishize_text(value: str) -> str:
+    text = clean_text(value)
+    if not text or not looks_english(text):
+        return text
+    text = text.replace("&#8220;", '"').replace("&#8221;", '"').replace("&#39;", "'")
+    for source, target in PHRASE_REPLACEMENTS:
+        text = re.sub(re.escape(source), target, text, flags=re.IGNORECASE)
+
+    def repl(match: re.Match[str]) -> str:
+        raw = match.group(0)
+        translated = WORD_REPLACEMENTS.get(raw.lower())
+        return translated if translated else raw
+
+    text = re.sub(r"\b[A-Za-z][A-Za-z']*\b", repl, text)
+    text = re.sub(r"\bthe\b", "el", text, flags=re.IGNORECASE)
+    text = re.sub(r"\band\b", "y", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bfrom\b", "de", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bto\b", "a", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bfor\b", "para", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bafter\b", "despues de", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bwith\b", "con", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bof\b", "de", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bin\b", "en", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bis\b", "es", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bare\b", "son", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s+", " ", text).strip(" -")
+    return text[:1].upper() + text[1:]
+
+
+def display_title(item: Item) -> str:
+    raw = clean_text(item.title)
+    if not looks_english(raw):
+        return raw
+    entities = extract_entities(raw)
+    subject = ", ".join(entities[:2])
+    if item.category == "inteligencia artificial":
+        return f"IA: {subject or item.source} marca una nueva senal para la industria"
+    if item.category == "ciberseguridad":
+        return f"Ciberseguridad: nuevas alertas elevan la presion sobre empresas y usuarios"
+    if item.category == "chips":
+        return f"Chips: {subject or item.source} apunta a otra pieza clave para la nueva ola tecnologica"
+    if item.category == "startups":
+        return f"Startups: {subject or item.source} muestra hacia donde se mueve el capital tecnologico"
+    if item.category == "consumo":
+        return f"Consumo: {subject or item.source} entra en el radar de productos y plataformas"
+    if item.category == "web y plataformas":
+        return f"Plataformas: {subject or item.source} anticipa cambios en la web y los servicios digitales"
+    if item.category == "ciencia":
+        return f"Ciencia y tecnologia: {subject or item.source} abre una senal para seguir de cerca"
+    return f"Tecnologia: {subject or item.source} deja una senal importante para la semana"
+
+
+def display_summary(item: Item) -> str:
+    raw = clean_text(item.summary)
+    if raw and not looks_english(raw):
+        return raw
+    source = item.source
+    angle = reading_angle(item)
+    if item.category == "inteligencia artificial":
+        return f"{source} reporta un movimiento relevante en inteligencia artificial. La clave esta en entender si cambia productividad, software o la relacion entre usuarios y herramientas digitales. {angle}"
+    if item.category == "ciberseguridad":
+        return f"{source} apunta a un riesgo que conviene mirar con calma: datos, accesos y confianza digital vuelven al centro de la conversacion. {angle}"
+    if item.category == "chips":
+        return f"{source} senala otro paso en la carrera por computo, hardware y capacidad para ejecutar nuevas cargas de inteligencia artificial. {angle}"
+    if item.category == "consumo":
+        return f"{source} destaca una novedad que puede afectar productos, apps o servicios usados a diario. {angle}"
+    if item.category == "web y plataformas":
+        return f"{source} muestra una senal sobre plataformas, busqueda, creadores o servicios cloud. {angle}"
+    if item.category == "startups":
+        return f"{source} recoge una pista sobre inversion, adquisiciones o productos emergentes en tecnologia. {angle}"
+    return f"{source} reporta una senal tecnologica relevante. {angle}"
+
+
+def extract_entities(value: str) -> list[str]:
+    ignore = {
+        "The",
+        "This",
+        "That",
+        "How",
+        "What",
+        "Why",
+        "After",
+        "Before",
+        "For",
+        "With",
+        "From",
+        "All",
+        "Show",
+        "Hacked",
+        "Leaked",
+        "AI",
+        "Agentic",
+        "Games",
+        "Campaign",
+        "February",
+        "Dungeons",
+    }
+    entities = []
+    for match in re.findall(r"\b(?:[A-Z][A-Za-z0-9]+|[A-Z]{2,}|[A-Za-z]+(?:\d+))\b", value):
+        if match not in ignore and match not in entities:
+            entities.append(match)
+    return entities
+
+
 def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     now = datetime.now(timezone.utc)
     lead = items[0] if items else None
@@ -453,12 +665,12 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
             f"""
         <article class="story" data-category="{esc(item.category)}">
           <a class="story-image" href="{esc(item.link)}" target="_blank" rel="noopener">
-            <img src="{esc(image_path)}" alt="Imagen generada para {esc(item.title)}" loading="lazy" width="1200" height="630">
+            <img src="{esc(image_path)}" alt="{esc(display_title(item))}" loading="lazy" width="1200" height="630">
           </a>
           <div class="story-body">
             <div class="story-meta"><span>#{rank}</span><span>{esc(item.category)}</span><span>{esc(item.source)}</span></div>
-            <h2><a href="{esc(item.link)}" target="_blank" rel="noopener">{esc(item.title)}</a></h2>
-            <p>{esc(item.summary or reading_angle(item))}</p>
+            <h2><a href="{esc(item.link)}" target="_blank" rel="noopener">{esc(display_title(item))}</a></h2>
+            <p>{esc(display_summary(item))}</p>
             <p class="angle">{esc(reading_angle(item))}</p>
           </div>
         </article>"""
@@ -466,7 +678,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         if rank == 4:
             cards.append(ad_unit("in-grid", ADSENSE_IN_ARTICLE_SLOT, "anuncio en el resumen"))
     lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
-    lead_title = lead.title if lead else "Tecnologia diaria"
+    lead_title = display_title(lead) if lead else "Tecnologia diaria"
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -825,11 +1037,11 @@ def render_feed(items: list[Item]) -> str:
     for item in items:
         entries.append(
             f"""  <item>
-    <title>{esc(item.title)}</title>
+    <title>{esc(display_title(item))}</title>
     <link>{esc(item.link)}</link>
     <guid>{esc(item.link)}</guid>
     <pubDate>{email.utils.format_datetime(item.published)}</pubDate>
-    <description>{esc(item.summary or reading_angle(item))}</description>
+    <description>{esc(display_summary(item))}</description>
   </item>"""
         )
     return f"""<?xml version="1.0" encoding="UTF-8"?>

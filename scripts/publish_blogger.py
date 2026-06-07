@@ -223,6 +223,8 @@ def post_html(items: list[build.Item]) -> str:
     ]
     for index, item in enumerate(items, start=1):
         svg = compact_svg(build.svg_for_item(item, index))
+        title = build.display_title(item)
+        summary = build.display_summary(item)
         if index == 1:
             blocks.append(
                 f"""
@@ -230,8 +232,8 @@ def post_html(items: list[build.Item]) -> str:
       <tr>
         <td width="58%" valign="middle" style="width:58%;padding:48px 42px 36px;">
         <p style="margin:0 0 18px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#5b1d16;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
-        <h2 style="margin:0 0 14px;font-size:40px;line-height:1.02;font-style:italic;font-weight:900;color:#201512;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#201512;text-decoration:none;">{html.escape(item.title)}</a></h2>
-        <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:#3c201b;">{html.escape(item.summary or build.reading_angle(item))}</p>
+        <h2 style="margin:0 0 14px;font-size:40px;line-height:1.02;font-style:italic;font-weight:900;color:#201512;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#201512;text-decoration:none;">{html.escape(title)}</a></h2>
+        <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:#3c201b;">{html.escape(summary)}</p>
         <div style="display:flex;justify-content:space-between;gap:16px;color:#5b1d16;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">
           <span>Compartir</span>
           <a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#5b1d16;text-decoration:none;">Leer fuente</a>
@@ -250,8 +252,8 @@ def post_html(items: list[build.Item]) -> str:
       <tr>
         <td valign="middle" style="padding:0 28px 34px 0;">
         <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">#{index} &middot; {html.escape(item.category)} &middot; {html.escape(item.source)}</p>
-        <h2 style="margin:0 0 12px;font-size:32px;line-height:1.05;font-style:italic;font-weight:900;color:#ff7058;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#ff7058;text-decoration:none;">{html.escape(item.title)}</a></h2>
-        <p style="margin:0 0 16px;color:#f1e7dd;font-size:15px;line-height:1.75;">{html.escape(item.summary or build.reading_angle(item))}</p>
+        <h2 style="margin:0 0 12px;font-size:32px;line-height:1.05;font-style:italic;font-weight:900;color:#ff7058;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#ff7058;text-decoration:none;">{html.escape(title)}</a></h2>
+        <p style="margin:0 0 16px;color:#f1e7dd;font-size:15px;line-height:1.75;">{html.escape(summary)}</p>
         <p style="margin:0;color:#c8b8aa;font-size:13px;line-height:1.6;"><strong style="color:#f7f1e8;">Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
         </td>
         <td width="240" valign="middle" style="width:240px;padding:0 0 34px 0;line-height:0;background:#0f172a;border:1px solid #2f2f2f;">{svg}</td>
