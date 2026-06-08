@@ -792,6 +792,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     </a>
     <nav aria-label="Acciones">
       <a href="feed.xml">RSS</a>
+      <a href="share-pack.html">Compartir</a>
       <a href="acerca.html">Acerca</a>
       <a href="privacidad.html">Privacidad</a>
       <a href="https://twitter.com/intent/tweet?text={urllib.parse.quote(SITE_NAME)}&url={urllib.parse.quote(SITE_URL + '/')}" target="_blank" rel="noopener">Compartir</a>
@@ -825,7 +826,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
   <footer>
     <p>Creado para publicarse gratis con GitHub Pages. Las imagenes son SVG originales generadas por el build diario.</p>
     <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
-    <p><a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+    <p><a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
 </body>
 </html>"""
@@ -867,7 +868,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     </div>
   </main>
   <footer>
-    <p><a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+    <p><a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
 </body>
 </html>"""
