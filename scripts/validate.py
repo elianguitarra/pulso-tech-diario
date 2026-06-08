@@ -60,6 +60,12 @@ def validate() -> None:
         "politica-editorial.html",
         "privacidad.html",
         "contacto.html",
+        "temas.html",
+        "inteligencia-artificial.html",
+        "ciberseguridad.html",
+        "chips-hardware.html",
+        "ia-en-el-trabajo.html",
+        "comprar-laptop-para-ia.html",
         f"{INDEXNOW_KEY}.txt",
     ]:
         require(PUBLIC / relative)
@@ -78,7 +84,18 @@ def validate() -> None:
     ET.parse(PUBLIC / "feed.xml")
     sitemap_root = ET.parse(PUBLIC / "sitemap.xml").getroot()
     sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
-    for page in ["acerca.html", "politica-editorial.html", "privacidad.html", "contacto.html"]:
+    for page in [
+        "acerca.html",
+        "politica-editorial.html",
+        "privacidad.html",
+        "contacto.html",
+        "temas.html",
+        "inteligencia-artificial.html",
+        "ciberseguridad.html",
+        "chips-hardware.html",
+        "ia-en-el-trabajo.html",
+        "comprar-laptop-para-ia.html",
+    ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
 

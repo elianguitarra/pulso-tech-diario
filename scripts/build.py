@@ -114,6 +114,73 @@ STATIC_PAGES = {
 <p><a href="./">Volver al resumen diario</a></p>
 """,
     },
+    "temas.html": {
+        "title": "Temas de tecnologia",
+        "description": "Mapa de temas de Pulso Tech Diario para leer sobre inteligencia artificial, ciberseguridad, chips y guias practicas.",
+        "body": f"""
+<p>Usa este mapa para entrar por tema y encontrar lecturas recurrentes de Pulso Tech Diario.</p>
+<h2>Inteligencia artificial</h2>
+<p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
+<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> · <a href="{BLOG_URL}/search/label/inteligencia%20artificial">Entradas en Blogger</a></p>
+<h2>Ciberseguridad</h2>
+<p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
+<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> · <a href="{BLOG_URL}/search/label/ciberseguridad">Entradas en Blogger</a></p>
+<h2>Chips y hardware</h2>
+<p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
+<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> · <a href="{BLOG_URL}/search/label/chips">Entradas en Blogger</a></p>
+""",
+    },
+    "inteligencia-artificial.html": {
+        "title": "Inteligencia artificial: guias y noticias",
+        "description": "Hub de Pulso Tech Diario para leer sobre IA, productividad, privacidad, herramientas y noticias diarias.",
+        "body": f"""
+<p>La inteligencia artificial cambia software, trabajo, privacidad y hardware. Este hub agrupa rutas para leer sin perderse en el ruido.</p>
+<h2>Guias recomendadas</h2>
+<ul>
+  <li><a href="{BLOG_URL}/search/label/inteligencia%20artificial">Entradas de IA en Blogger</a></li>
+  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
+  <li><a href="{BLOG_URL}/search/label/privacidad">Privacidad e IA</a></li>
+</ul>
+<h2>Que mirar</h2>
+<p>Busca senales de impacto real: tareas que se vuelven mas rapidas, productos que cambian comportamiento, riesgos de datos y costos de computo.</p>
+<p><a href="{BLOGGER_RSS_URL}">Seguir por RSS</a> · <a href="share-pack.html">Compartir Pulso Tech Diario</a></p>
+""",
+    },
+    "ciberseguridad.html": {
+        "title": "Ciberseguridad: phishing, privacidad y cuentas",
+        "description": "Hub de Pulso Tech Diario para leer sobre phishing, privacidad, filtraciones y seguridad digital practica.",
+        "body": f"""
+<p>La ciberseguridad afecta cuentas, datos personales, empresas y servicios cotidianos. Este hub prioriza acciones simples y senales faciles de vigilar.</p>
+<h2>Lecturas recomendadas</h2>
+<ul>
+  <li><a href="{BLOG_URL}/search/label/ciberseguridad">Entradas de ciberseguridad en Blogger</a></li>
+  <li><a href="{BLOG_URL}/search/label/phishing">Guias sobre phishing</a></li>
+  <li><a href="{BLOG_URL}/search/label/privacidad">Privacidad y datos</a></li>
+  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+</ul>
+<h2>Que mirar</h2>
+<p>Prioriza cambios de contrasenas, verificacion en dos pasos, sesiones activas, enlaces sospechosos y datos que no deberian compartirse con herramientas externas.</p>
+<p><a href="{BLOGGER_RSS_URL}">Seguir por RSS</a> · <a href="share-pack.html">Compartir Pulso Tech Diario</a></p>
+""",
+    },
+    "chips-hardware.html": {
+        "title": "Chips y hardware para IA",
+        "description": "Hub de Pulso Tech Diario sobre GPU, NPU, laptops, IA local, chips y computo para inteligencia artificial.",
+        "body": f"""
+<p>Los chips determinan que tan rapido crecen la IA, la nube, las laptops y los dispositivos personales. Este hub junta guias y rutas de lectura.</p>
+<h2>Lecturas recomendadas</h2>
+<ul>
+  <li><a href="{BLOG_URL}/search/label/chips">Entradas de chips en Blogger</a></li>
+  <li><a href="{BLOG_URL}/search/label/ia%20local">IA local</a></li>
+  <li><a href="comprar-laptop-para-ia.html">Que revisar antes de comprar una laptop para IA</a></li>
+  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+</ul>
+<h2>Que mirar</h2>
+<p>No basta con una sigla. Revisa memoria, eficiencia, software compatible, disponibilidad, bateria y si la aplicacion que usas aprovecha realmente el hardware.</p>
+<p><a href="{BLOGGER_RSS_URL}">Seguir por RSS</a> · <a href="share-pack.html">Compartir Pulso Tech Diario</a></p>
+""",
+    },
 }
 
 SOURCES = [
@@ -795,6 +862,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     </a>
     <nav aria-label="Acciones">
       <a href="feed.xml">RSS</a>
+      <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
       <a href="acerca.html">Acerca</a>
       <a href="privacidad.html">Privacidad</a>
@@ -828,6 +896,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <div class="cta-actions">
         <a href="{BLOG_URL}/" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="{BLOGGER_START_URL}" target="_blank" rel="noopener">Empieza aqui</a>
+        <a href="temas.html">Temas</a>
         <a href="{BLOGGER_RSS_URL}" target="_blank" rel="noopener">RSS Blogger</a>
         <a href="share-pack.html">Compartir</a>
       </div>
@@ -843,7 +912,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
   <footer>
     <p>Creado para publicarse gratis con GitHub Pages. Las imagenes son SVG originales generadas por el build diario.</p>
     <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
-    <p><a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+    <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
 </body>
 </html>"""
@@ -904,6 +973,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     </a>
     <nav aria-label="Secciones">
       <a href="./">Inicio</a>
+      <a href="temas.html">Temas</a>
       <a href="feed.xml">RSS</a>
       <a href="contacto.html">Contacto</a>
     </nav>
@@ -916,7 +986,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     </div>
   </main>
   <footer>
-    <p><a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+    <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
 </body>
 </html>"""
