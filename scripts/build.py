@@ -767,14 +767,14 @@ def palette_for(category: str) -> tuple[str, str, str, str]:
 
 
 IMAGE_LABELS = {
-    "inteligencia artificial": ["IA EN ACCION", "NUEVA SENAL IA", "FUTURO DEL SOFTWARE"],
-    "chips": ["PODER DE COMPUTO", "NUEVA OLA CHIP", "HARDWARE CLAVE"],
+    "inteligencia artificial": ["IA EN ACCION", "NUEVA SENAL IA", "SOFTWARE EN CAMBIO"],
+    "chips": ["PODER DE COMPUTO", "NUEVA OLA CHIP", "PIEZA CLAVE"],
     "ciberseguridad": ["ALERTA DIGITAL", "DATOS EN RIESGO", "DEFENSA ACTIVA"],
     "startups": ["CAPITAL TEC", "NUEVA APUESTA", "MERCADO EMERGENTE"],
-    "consumo": ["PRODUCTOS Y APPS", "CAMBIO DE USO", "TECNOLOGIA DIARIA"],
+    "consumo": ["PRODUCTOS DIGITALES", "CAMBIO DE USO", "TECNOLOGIA DIARIA"],
     "web y plataformas": ["MAPA DIGITAL", "PLATAFORMAS", "WEB EN CAMBIO"],
     "ciencia": ["CIENCIA APLICADA", "NUEVA FRONTERA", "SENAL CIENTIFICA"],
-    "tecnologia": ["PULSO TEC", "SENAL CLAVE", "INDUSTRIA TECH"],
+    "tecnologia": ["PULSO TEC", "SENAL CLAVE", "INDUSTRIA DIGITAL"],
 }
 
 
@@ -1104,6 +1104,65 @@ def spanishize_text(value: str) -> str:
     return text[:1].upper() + text[1:]
 
 
+EDITORIAL_TITLES = {
+    "inteligencia artificial": [
+        "IA: nuevas herramientas vuelven a mover el software",
+        "IA: agentes y asistentes toman protagonismo esta semana",
+        "IA: otra senal fuerte para productividad y plataformas",
+        "IA: el mercado ajusta sus apuestas alrededor de los modelos",
+        "IA: nuevas capacidades cambian la conversacion del dia",
+        "IA: empresas y usuarios miran con mas atencion los agentes",
+        "IA: productividad, datos y software vuelven al centro",
+        "IA: la competencia por mejores asistentes se acelera",
+        "IA: una nueva pista muestra hacia donde va el software",
+        "IA: modelos y plataformas vuelven a marcar la agenda",
+        "IA: el uso diario gana peso frente al anuncio llamativo",
+        "IA: otra decision de la industria merece seguimiento",
+    ],
+    "ciberseguridad": [
+        "Ciberseguridad: nuevas alertas elevan la presion sobre usuarios",
+        "Ciberseguridad: datos, accesos y confianza vuelven al centro",
+        "Ciberseguridad: una senal para revisar cuentas y defensas",
+    ],
+    "chips": [
+        "Chips: otra pieza clave empuja la carrera por computo",
+        "Chips: hardware y memoria vuelven a marcar la agenda de IA",
+        "Chips: la infraestructura vuelve al centro de la tecnologia",
+    ],
+    "startups": [
+        "Startups: el capital tecnologico apunta a nuevos productos",
+        "Startups: una apuesta muestra hacia donde se mueve el mercado",
+        "Startups: nuevas senales revelan oportunidades emergentes",
+    ],
+    "consumo": [
+        "Consumo digital: productos y servicios vuelven a moverse",
+        "Consumo digital: cambios de plataforma llegan al usuario final",
+        "Consumo digital: nuevas funciones entran en el radar diario",
+    ],
+    "web y plataformas": [
+        "Plataformas: la web prepara cambios para usuarios y creadores",
+        "Plataformas: busqueda, servicios y creadores entran en movimiento",
+        "Plataformas: una nueva senal anticipa cambios digitales",
+    ],
+    "ciencia": [
+        "Ciencia y tecnologia: una nueva senal merece seguimiento",
+        "Ciencia aplicada: avances que podrian cambiar infraestructura",
+        "Ciencia y tecnologia: otra frontera entra en observacion",
+    ],
+    "tecnologia": [
+        "Tecnologia: una senal importante para seguir esta semana",
+        "Tecnologia: nuevos movimientos dibujan la agenda digital",
+        "Tecnologia: otra pista ayuda a leer hacia donde va la industria",
+    ],
+}
+
+
+def editorial_title(item: Item) -> str:
+    titles = EDITORIAL_TITLES.get(item.category, EDITORIAL_TITLES["tecnologia"])
+    seed = sum(ord(ch) for ch in f"{item.title}|{item.link}|{item.source}")
+    return titles[seed % len(titles)]
+
+
 def display_title(item: Item) -> str:
     raw = clean_text(item.title)
     # Las fuentes principales son angloparlantes; para el sitio publico preferimos
@@ -1111,23 +1170,7 @@ def display_title(item: Item) -> str:
     source_is_foreign = item.source in {source for source, _url in SOURCES}
     if not source_is_foreign and not looks_english(raw):
         return raw
-    entities = extract_entities(raw)
-    subject = ", ".join(entities[:2])
-    if item.category == "inteligencia artificial":
-        return f"IA: {subject or item.source} marca una nueva senal para la industria"
-    if item.category == "ciberseguridad":
-        return f"Ciberseguridad: nuevas alertas elevan la presion sobre empresas y usuarios"
-    if item.category == "chips":
-        return f"Chips: {subject or item.source} apunta a otra pieza clave para la nueva ola tecnologica"
-    if item.category == "startups":
-        return f"Startups: {subject or item.source} muestra hacia donde se mueve el capital tecnologico"
-    if item.category == "consumo":
-        return f"Consumo: {subject or item.source} entra en el radar de productos y plataformas"
-    if item.category == "web y plataformas":
-        return f"Plataformas: {subject or item.source} anticipa cambios en la web y los servicios digitales"
-    if item.category == "ciencia":
-        return f"Ciencia y tecnologia: {subject or item.source} abre una senal para seguir de cerca"
-    return f"Tecnologia: {subject or item.source} deja una senal importante para la semana"
+    return editorial_title(item)
 
 
 def display_summary(item: Item) -> str:
