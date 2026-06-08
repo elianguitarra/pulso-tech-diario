@@ -314,6 +314,43 @@ STATIC_PAGES = {
             ("Que es phishing en palabras simples?", "Es un engaño para que entregues datos, contrasenas, codigos o dinero haciendose pasar por una entidad confiable."),
         ],
     },
+    "chatgpt-gemini-claude.html": {
+        "title": "ChatGPT, Gemini o Claude: como elegir un chatbot de IA",
+        "description": "Comparacion practica en espanol para elegir entre ChatGPT, Gemini, Claude u otros chatbots de IA segun tarea, privacidad y flujo de trabajo.",
+        "body": f"""
+<p>ChatGPT, Gemini y Claude son chatbots de IA utiles, pero no conviene elegir solo por popularidad. La mejor opcion depende de la tarea, los datos que manejas y el ecosistema donde trabajas.</p>
+<h2>Resumen rapido</h2>
+<p>Si quieres escribir, resumir o explorar ideas, prueba el chatbot que te entregue respuestas claras y faciles de revisar. Si trabajas con documentos largos, mira manejo de contexto. Si dependes de correo, calendario, archivos o navegador, pesa mas la integracion con tus herramientas diarias.</p>
+<h2>Como comparar sin perder tiempo</h2>
+<ul>
+  <li><strong>Calidad:</strong> pide el mismo resumen, tabla o borrador en cada herramienta y compara cual requiere menos correccion.</li>
+  <li><strong>Privacidad:</strong> revisa si puedes controlar historial, entrenamiento con datos y permisos de archivos.</li>
+  <li><strong>Contexto:</strong> prueba documentos largos, enlaces o instrucciones complejas si eso es parte de tu flujo.</li>
+  <li><strong>Multimodal:</strong> mira si necesitas analizar imagenes, archivos, audio o capturas.</li>
+  <li><strong>Costo real:</strong> no mires solo el plan; mide cuanto trabajo te ahorra al mes.</li>
+</ul>
+<h2>Que elegir para cada uso</h2>
+<p><strong>Trabajo diario:</strong> prioriza integraciones, rapidez y facilidad para corregir.</p>
+<p><strong>Estudio:</strong> busca explicaciones paso a paso, ejemplos y capacidad para generar preguntas de repaso.</p>
+<p><strong>Programacion:</strong> prueba con tu propio codigo, pide tests y revisa si entiende el contexto del proyecto.</p>
+<p><strong>Documentos sensibles:</strong> usa versiones anonimizadas o una opcion local/empresarial con controles claros.</p>
+<h2>La prueba de 15 minutos</h2>
+<p>Elige tres tareas reales: resumir un texto, crear un borrador y revisar una decision. Ejecutalas en dos o tres chatbots con el mismo prompt. La herramienta ganadora es la que produce una salida util, verificable y con menos edicion.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
+  <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
+  <li><a href="glosario-ia-tecnologia.html">Glosario de IA y tecnologia</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Cual chatbot de IA es mejor?", "No hay uno mejor para todo. Conviene probarlos con tus tareas reales y elegir el que ahorre mas tiempo con menos correccion."),
+            ("Puedo subir documentos privados a un chatbot?", "Solo si tienes permiso y entiendes la politica de datos de la herramienta. Para dudas sensibles, usa versiones anonimizadas."),
+            ("Vale la pena pagar por un chatbot de IA?", "Vale la pena si reduce tiempo, errores o pasos repetidos de forma constante. Si solo lo usas ocasionalmente, primero mide el ahorro real."),
+        ],
+    },
     "temas.html": {
         "title": "Temas de tecnologia",
         "description": "Mapa de temas de Pulso Tech Diario para leer sobre inteligencia artificial, ciberseguridad, chips y guias practicas.",
@@ -322,7 +359,7 @@ STATIC_PAGES = {
 <p><a href="blogger-archivo.html">Ver archivo de entradas reales de Blogger</a></p>
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
-<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="chatgpt-gemini-claude.html">ChatGPT vs Gemini vs Claude</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
@@ -342,6 +379,7 @@ STATIC_PAGES = {
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
   <li><a href="glosario-ia-tecnologia.html">Glosario rapido de IA y tecnologia</a></li>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude: como elegir</a></li>
   <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
@@ -1064,6 +1102,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     evergreen_guides = [
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
+        ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
         ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),
