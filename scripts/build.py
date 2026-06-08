@@ -1547,6 +1547,31 @@ def render_sitemap() -> str:
 """
 
 
+def render_news_sitemap(items: list[Item]) -> str:
+    entries = []
+    for item in items:
+        published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        entries.append(
+            f"""  <url>
+    <loc>{esc(item.link)}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>{SITE_NAME}</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>{published}</news:publication_date>
+      <news:title>{esc(display_title(item))}</news:title>
+    </news:news>
+  </url>"""
+        )
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+{''.join(entries)}
+</urlset>
+"""
+
+
 def write_static(items: list[Item]) -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     image_paths = save_images(items)
@@ -1566,8 +1591,10 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
     (PUBLIC / "feed.xml").write_text(render_feed(items), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(), encoding="utf-8")
+    (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items), encoding="utf-8")
     (PUBLIC / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8"
+        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\n",
+        encoding="utf-8",
     )
     (PUBLIC / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY, encoding="utf-8")
     ads_txt = PUBLIC / "ads.txt"

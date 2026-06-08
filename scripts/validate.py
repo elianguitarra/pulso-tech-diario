@@ -55,6 +55,7 @@ def validate() -> None:
         "style.css",
         "feed.xml",
         "sitemap.xml",
+        "news-sitemap.xml",
         "robots.txt",
         "data.json",
         "blogger-archivo.html",
@@ -88,6 +89,16 @@ def validate() -> None:
         fail("expected story links")
 
     ET.parse(PUBLIC / "feed.xml")
+    news_root = ET.parse(PUBLIC / "news-sitemap.xml").getroot()
+    news_text = ET.tostring(news_root, encoding="unicode")
+    if "sitemap-news" not in news_text:
+        fail("news sitemap missing news namespace")
+    news_titles = news_root.findall(".//{http://www.google.com/schemas/sitemap-news/0.9}title")
+    if len(news_titles) < parser.story_count:
+        fail("news sitemap missing story titles")
+    robots_text = (PUBLIC / "robots.txt").read_text(encoding="utf-8")
+    if "news-sitemap.xml" not in robots_text:
+        fail("robots.txt missing news sitemap")
     sitemap_root = ET.parse(PUBLIC / "sitemap.xml").getroot()
     sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
     for page in [
