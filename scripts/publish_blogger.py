@@ -140,6 +140,34 @@ def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
 
 BASE_PAGES = {
     "Empieza aqui": start_here_content(),
+    "IA en el trabajo": f"""
+<p>La IA puede ahorrar tiempo, pero no en cualquier tarea. Funciona mejor cuando hay informacion clara, criterios de revision y un resultado que una persona puede comprobar.</p>
+<h2>Donde suele ayudar</h2>
+<p>Resumir reuniones, ordenar notas, crear primeros borradores, explicar codigo, comparar opciones, transformar formatos y preparar listas de preguntas son usos donde la IA puede reducir friccion.</p>
+<h2>Donde hay que tener cuidado</h2>
+<p>Decisiones legales, medicas, financieras, datos sensibles, calculos criticos o comunicados delicados requieren revision experta. La IA puede sugerir, pero no debe reemplazar responsabilidad.</p>
+<h2>Como medir si sirve</h2>
+<p>El beneficio no es que la herramienta "suene inteligente". Mide si reduce minutos, errores o pasos repetidos. Si tienes que corregir demasiado, tal vez el flujo no esta listo.</p>
+<h2>Prompts utiles</h2>
+<p>Da contexto, objetivo, formato esperado y criterios de calidad. En vez de pedir "hazlo mejor", pide "resume en 5 puntos para un gerente que necesita decidir hoy".</p>
+<h2>La regla de oro</h2>
+<p>Usa IA como copiloto para avanzar mas rapido, no como piloto automatico para tareas que no puedes revisar. El ahorro real aparece cuando el humano conserva criterio.</p>
+<p><strong>Sigue leyendo:</strong> <a href="{label_url("inteligencia artificial")}">inteligencia artificial</a>, <a href="{label_url("productividad")}">productividad</a> y <a href="{RSS_URL}">RSS diario</a>.</p>
+""",
+    "Comprar laptop para IA": f"""
+<p>Las computadoras nuevas prometen funciones de IA, pero no todas sirven para lo mismo. Antes de comprar una laptop conviene mirar mas que el anuncio de "AI PC".</p>
+<h2>Memoria RAM</h2>
+<p>La memoria importa mucho para trabajar con modelos, navegadores pesados, edicion y multitarea. Para uso moderno, 16 GB suele ser el punto de partida razonable; para trabajo pesado, mas memoria ayuda.</p>
+<h2>GPU, NPU y CPU</h2>
+<p>La GPU puede acelerar tareas de IA y graficos. La NPU busca eficiencia para funciones integradas. La CPU sigue importando para rendimiento general. No compres solo por una sigla.</p>
+<h2>Software compatible</h2>
+<p>Un chip potente no sirve de mucho si tus aplicaciones no lo aprovechan. Revisa si las herramientas que usas soportan funciones locales o aceleracion real.</p>
+<h2>Bateria y temperatura</h2>
+<p>La IA local puede consumir recursos. Mira resenas de autonomia, ruido y temperatura, no solo numeros de rendimiento.</p>
+<h2>Compra con una tarea en mente</h2>
+<p>Si solo quieres escribir, navegar y usar chatbots en la nube, no necesitas pagar de mas. Si vas a editar video, programar, generar imagenes o probar modelos locales, hardware y memoria pesan mucho mas.</p>
+<p><strong>Sigue leyendo:</strong> <a href="{label_url("chips")}">chips</a>, <a href="{label_url("ia local")}">IA local</a> y <a href="{RSS_URL}">RSS diario</a>.</p>
+""",
     "Acerca de": """
 <p><strong>Pulso Tech Diario</strong> es un blog automatizado que resume noticias tecnologicas relevantes cada dia.</p>
 <p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
@@ -340,6 +368,12 @@ EVERGREEN_POSTS = [
 """,
     },
 ]
+
+
+PAGE_ONLY_GUIDES = {
+    "IA en el trabajo: tareas donde si ahorra tiempo y donde no",
+    "Que revisar antes de comprar una laptop para IA",
+}
 
 
 def required_env(name: str) -> str:
@@ -597,6 +631,9 @@ def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, d
     update_existing = os.environ.get("BLOGGER_UPDATE_EXISTING_EVERGREEN", "").strip().lower() in {"1", "true", "yes"}
     for post in EVERGREEN_POSTS:
         title = post["title"]
+        if title in PAGE_ONLY_GUIDES:
+            print(f"Page-only guide skipped as post: {title}")
+            continue
         content = f"{post['content'].strip()}\n{internal_link_block(guide_posts)}"
         payload = post_payload(title, content, post["labels"])
         existing = existing_posts.get(title)
@@ -629,7 +666,7 @@ def publish() -> None:
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = f"Pulso Tech Diario: {today}"
-    managed_titles = {post["title"] for post in EVERGREEN_POSTS}
+    managed_titles = {post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES}
     managed_titles.add(title)
     cleanup_managed_duplicates(blog_id, token, managed_titles)
     existing_posts = posts_by_title(list_posts(blog_id, token))
