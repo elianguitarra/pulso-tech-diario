@@ -89,6 +89,7 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "seguir.html",
         "glosario-ia-tecnologia.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
@@ -122,6 +123,7 @@ def validate() -> None:
         "privacidad-chatbots-ia.html",
         "checklist-phishing.html",
         "noticias-tecnologia-espanol.html",
+        "seguir.html",
         "tendencias-tecnologia-hoy.html",
         "inteligencia-artificial-hoy.html",
         "ciberseguridad-hoy.html",
@@ -158,6 +160,7 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "seguir.html",
         "glosario-ia-tecnologia.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
@@ -187,7 +190,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "JSON Feed del sitio" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -201,6 +204,11 @@ def validate() -> None:
         fail("links.html missing profile link tracking")
     if "Ultima entrada en Blogger" not in links_text:
         fail("links.html missing latest entry link")
+
+    follow_text = (PUBLIC / "seguir.html").read_text(encoding="utf-8")
+    for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "Inteligencia artificial hoy"]:
+        if required not in follow_text:
+            fail(f"seguir.html missing {required}")
 
     trend_pages = {
         "tendencias-tecnologia-hoy.html": "Tendencias de tecnologia hoy",
@@ -269,6 +277,23 @@ def validate() -> None:
     images = list(image_dir.glob("*.svg"))
     if len(images) != parser.story_count:
         fail(f"expected {parser.story_count} generated svg images, found {len(images)}")
+    english_slug_markers = {
+        "when",
+        "what",
+        "how",
+        "gets",
+        "launches",
+        "arrives",
+        "changed",
+        "managing",
+        "production",
+        "trailer",
+        "trailers",
+    }
+    for image in images:
+        slug_words = set(image.stem.lower().split("-"))
+        if slug_words & english_slug_markers:
+            fail(f"generated image filename still looks English: {image.name}")
 
     key_text = (PUBLIC / f"{INDEXNOW_KEY}.txt").read_text(encoding="utf-8").strip()
     if key_text != INDEXNOW_KEY:

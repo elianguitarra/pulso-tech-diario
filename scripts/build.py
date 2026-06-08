@@ -196,6 +196,38 @@ STATIC_PAGES = {
             ("Donde esta el blog principal?", "El blog principal esta en Blogger, preparado para entradas, etiquetas y monetizacion con AdSense cuando Google lo apruebe."),
         ],
     },
+    "seguir.html": {
+        "title": "Seguir Pulso Tech Diario",
+        "description": "Formas gratuitas de seguir Pulso Tech Diario: Blogger, RSS, Atom, JSON Feed, link en bio y ultima entrada.",
+        "body": f"""
+<p>El sitio publica tecnologia en espanol todos los dias. Guarda esta pagina si quieres volver rapido o seguir el contenido desde un lector de feeds.</p>
+<h2>Lectura principal</h2>
+<ul>
+  <li><a href="{BLOG_HOME_TRACKED}">Abrir el blog principal en Blogger</a></li>
+  <li><a href="ultima-entrada.html">Ultima entrada diaria</a></li>
+  <li><a href="links.html">Link en bio</a></li>
+  <li><a href="tendencias-tecnologia-hoy.html">Tendencias de tecnologia hoy</a></li>
+</ul>
+<h2>Feeds para lectores y agregadores</h2>
+<ul>
+  <li><a href="feed.xml">RSS del sitio</a></li>
+  <li><a href="atom.xml">Atom del sitio</a></li>
+  <li><a href="feed.json">JSON Feed del sitio</a></li>
+  <li><a href="{BLOGGER_RSS_URL}">RSS de Blogger</a></li>
+</ul>
+<h2>Temas directos</h2>
+<ul>
+  <li><a href="inteligencia-artificial-hoy.html">Inteligencia artificial hoy</a></li>
+  <li><a href="ciberseguridad-hoy.html">Ciberseguridad hoy</a></li>
+  <li><a href="chips-ia-hoy.html">Chips para IA hoy</a></li>
+</ul>
+""",
+        "faq": [
+            ("Cual es la mejor forma de seguir Pulso Tech Diario?", "La forma principal es Blogger. Si usas lectores de feeds, RSS, Atom y JSON Feed permiten recibir las actualizaciones sin entrar manualmente."),
+            ("Los feeds se actualizan solos?", "Si. El build diario genera RSS, Atom y JSON Feed junto con las paginas dinamicas del sitio."),
+            ("Puedo compartir esta pagina?", "Si. Es una pagina publica pensada como punto de seguimiento para nuevos lectores."),
+        ],
+    },
     "ia-en-el-trabajo.html": {
         "title": "IA en el trabajo: donde si ahorra tiempo",
         "description": "Guia practica para saber en que tareas laborales la inteligencia artificial ayuda y donde requiere supervision humana.",
@@ -631,6 +663,10 @@ def slugify(value: str) -> str:
     return value.strip("-")[:70] or "noticia"
 
 
+def image_filename(item: Item, ordinal: int) -> str:
+    return f"{ordinal:02d}-{slugify(display_title(item))}.svg"
+
+
 def palette_for(category: str) -> tuple[str, str, str, str]:
     palettes = {
         "inteligencia artificial": ("#0b1220", "#2dd4bf", "#facc15", "#e0f2fe"),
@@ -819,7 +855,7 @@ def save_images(items: list[Item]) -> dict[str, str]:
         old_image.unlink()
     image_paths = {}
     for index, item in enumerate(items):
-        filename = f"{index + 1:02d}-{slugify(item.title)}.svg"
+        filename = image_filename(item, index + 1)
         path = ASSET_DIR / filename
         path.write_text(svg_for_item(item, index), encoding="utf-8")
         image_paths[item.link] = f"assets/images/{filename}"
@@ -1190,6 +1226,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
       <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
       <a href="links.html">Links</a>
+      <a href="seguir.html">Seguir</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
@@ -1231,6 +1268,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         <a href="chips-ia-hoy.html">Chips IA</a>
         <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
         <a href="links.html">Link en bio</a>
+        <a href="seguir.html">Seguir</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>
@@ -2066,6 +2104,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 
 - Blog principal: {BLOG_URL}/
 - Ultima entrada: {SITE_URL}/ultima-entrada.html
+- Seguir el sitio: {SITE_URL}/seguir.html
 - Link en bio: {SITE_URL}/links.html
 - Kit para compartir: {SITE_URL}/share-pack.html
 - Archivo de Blogger: {SITE_URL}/blogger-archivo.html
