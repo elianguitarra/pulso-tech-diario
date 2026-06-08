@@ -280,6 +280,8 @@ STATIC_PAGES = {
   <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
   <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
   <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
+  <li><a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></li>
   <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
   <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
   <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
@@ -295,6 +297,8 @@ STATIC_PAGES = {
   <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
   <li><a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada: que hacer</a></li>
   <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
+  <li><a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></li>
+  <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
 </ul>
 <h2>Chips, hardware y automatizacion</h2>
@@ -341,6 +345,114 @@ STATIC_PAGES = {
             ("Que es OPML?", "OPML es un archivo que permite importar una lista de feeds en lectores RSS compatibles."),
             ("Que feed conviene seguir?", "Para la lectura principal conviene el RSS de Blogger. Para noticias internas y guias, usa RSS, Atom o JSON Feed del sitio estatico."),
             ("Los feeds cuestan algo?", "No. Son URLs publicas y gratuitas que se actualizan automaticamente."),
+        ],
+    },
+    "ia-para-hacer-presentaciones.html": {
+        "title": "IA para hacer presentaciones: como usarla bien",
+        "description": "Guia en espanol para usar IA al crear presentaciones, diapositivas, guiones y visuales sin perder claridad ni criterio.",
+        "body": f"""
+<p>La IA puede acelerar una presentacion, pero no reemplaza la idea central. Sirve mejor cuando ya sabes que quieres explicar, a quien se lo vas a contar y que decision quieres provocar.</p>
+<h2>Empieza por el objetivo</h2>
+<p>Antes de pedir diapositivas, escribe una frase: esta presentacion debe convencer, informar, vender, capacitar o comparar. Si el objetivo es borroso, la IA suele producir texto bonito pero poco util.</p>
+<h2>Prompt practico</h2>
+<p>Crea una estructura de 8 diapositivas para explicar este tema a una audiencia no tecnica. Incluye titulo, idea principal, dato que necesito comprobar, visual sugerido y una frase para decir en voz alta.</p>
+<h2>Que revisar siempre</h2>
+<p>Verifica cifras, nombres, fechas, ejemplos y promesas. La IA puede inventar datos o exagerar conclusiones. Una buena presentacion no necesita muchas diapositivas: necesita una historia clara.</p>
+<h2>Imagenes y estilo</h2>
+<p>Usa imagenes que expliquen la idea, no decoracion generica. Para temas de tecnologia funcionan mejor diagramas simples, capturas propias, comparativas, lineas de tiempo y visuales limpios.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("La IA puede hacer una presentacion completa?", "Puede crear una estructura y borradores, pero conviene revisar datos, tono, orden y visuales antes de usarla."),
+            ("Que prompt sirve para crear diapositivas?", "Pide objetivo, audiencia, numero de diapositivas, idea principal por slide, visual sugerido y notas para presentar."),
+            ("Como evito una presentacion generica con IA?", "Dale contexto real, ejemplos propios, datos verificables y una decision clara que la audiencia debe tomar."),
+        ],
+    },
+    "extensiones-chrome-productividad-ia.html": {
+        "title": "Extensiones de Chrome con IA: como elegir sin riesgo",
+        "description": "Guia en espanol para elegir extensiones de Chrome con IA, revisar permisos, privacidad, utilidad real y senales de riesgo.",
+        "body": f"""
+<p>Las extensiones de Chrome con IA pueden resumir paginas, redactar correos, capturar notas o automatizar tareas. Tambien pueden pedir permisos delicados, asi que conviene elegir con cuidado.</p>
+<h2>Revisa permisos antes de instalar</h2>
+<p>Una extension que puede leer todos los sitios que visitas tiene mucho poder. Si solo necesitas resumir una pagina, desconfia de permisos para leer contrasenas, modificar datos o acceder a todos los dominios sin razon clara.</p>
+<h2>Senales de confianza</h2>
+<p>Busca sitio oficial claro, politica de privacidad, actualizaciones recientes, resenas consistentes, soporte visible y explicacion concreta de que datos procesa. Muchas descargas no sustituyen una revision basica.</p>
+<h2>Prueba de utilidad</h2>
+<p>Instala solo una extension a la vez y usala con una tarea concreta durante unos dias. Si no ahorra pasos reales, desinstalala. Menos extensiones significa menos superficie de riesgo.</p>
+<h2>Datos que no conviene exponer</h2>
+<p>Evita usar extensiones desconocidas con banca, correo sensible, documentos de clientes, paneles internos, claves, facturas o informacion privada.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Son seguras las extensiones de Chrome con IA?", "Depende de permisos, reputacion, politica de privacidad y uso. Revisa antes de instalar y evita datos sensibles."),
+            ("Que permiso debe preocuparme?", "El acceso para leer y modificar todos los sitios web es poderoso. Debe tener una razon clara y confiable."),
+            ("Como reduzco riesgo al probar extensiones?", "Instala pocas, revisa permisos, usa perfiles separados y desinstala las que no aporten valor real."),
+        ],
+    },
+    "mejor-antivirus-gratis-windows.html": {
+        "title": "Mejor antivirus gratis para Windows: que revisar",
+        "description": "Guia en espanol para elegir antivirus gratis para Windows, entender proteccion basica, evitar falsos limpiadores y mejorar seguridad.",
+        "body": f"""
+<p>Buscar el mejor antivirus gratis para Windows no deberia terminar en descargas raras. La proteccion basica importa, pero tambien importan actualizaciones, habitos y evitar programas que prometen milagros.</p>
+<h2>Empieza por lo esencial</h2>
+<p>Windows ya incluye proteccion integrada, actualizaciones y controles de seguridad. Antes de instalar algo adicional, revisa que el sistema este actualizado, que el firewall este activo y que no tengas software desconocido arrancando con el equipo.</p>
+<h2>Que debe tener un antivirus gratis</h2>
+<p>Proteccion en tiempo real, actualizaciones frecuentes, analisis bajo demanda, reputacion clara, poca publicidad agresiva y una forma sencilla de desinstalarlo. Si te empuja a comprar con alertas exageradas, mala senal.</p>
+<h2>Cuidado con falsos limpiadores</h2>
+<p>Muchos sitios ofrecen optimizadores, limpiadores o supuestos antivirus que muestran cientos de problemas para asustarte. Descarga solo desde fuentes oficiales y evita instaladores llenos de extras.</p>
+<h2>La seguridad no es solo antivirus</h2>
+<p>Usa contrasenas unicas, activa verificacion en dos pasos, actualiza navegador, no abras adjuntos sospechosos y evita software pirata. La mayoria de problemas empieza con una decision apresurada.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Ciberseguridad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Cual es el mejor antivirus gratis para Windows?", "El mejor depende del uso, pero debe tener proteccion en tiempo real, actualizaciones frecuentes y reputacion clara sin publicidad agresiva."),
+            ("Windows necesita antivirus adicional?", "Para muchos usuarios, la proteccion integrada y buenos habitos pueden ser suficientes. Si instalas otro, usa fuentes oficiales."),
+            ("Como evito antivirus falsos?", "No descargues desde anuncios raros, evita limpiadores milagro y confirma que estas en el sitio oficial del proveedor."),
+        ],
+    },
+    "como-detectar-correo-falso.html": {
+        "title": "Como detectar un correo falso antes de hacer clic",
+        "description": "Guia en espanol para detectar correos falsos, phishing, remitentes sospechosos, enlaces peligrosos y adjuntos no solicitados.",
+        "body": f"""
+<p>Un correo falso intenta que actues rapido: abrir un enlace, descargar un archivo, pagar, confirmar datos o compartir un codigo. Revisar unos detalles antes de hacer clic puede evitar muchos problemas.</p>
+<h2>Mira el remitente real</h2>
+<p>No te quedes con el nombre visible. Abre los detalles y revisa el dominio del correo. Un mensaje puede decir que viene de tu banco aunque el remitente use un dominio extrano.</p>
+<h2>Desconfia de urgencias</h2>
+<p>Frases como tu cuenta sera cerrada, pago rechazado, paquete retenido o premio disponible buscan presionarte. Entra manualmente al sitio oficial en vez de tocar el enlace del mensaje.</p>
+<h2>Revisa enlaces y adjuntos</h2>
+<p>Pasa el cursor sobre el enlace para ver el destino. No abras archivos inesperados, especialmente si piden habilitar macros, iniciar sesion o instalar algo.</p>
+<h2>Que hacer si dudaste</h2>
+<p>No respondas al correo. Contacta a la empresa desde su sitio oficial, busca avisos en la app real y reporta el mensaje como phishing si corresponde.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a></li>
+  <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Como detecto un correo falso?", "Revisa remitente real, dominio, enlaces, urgencia, adjuntos inesperados y solicitudes de contrasenas o codigos."),
+            ("Que hago si abri un enlace de phishing?", "No ingreses datos. Cierra la pagina, cambia contrasenas si escribiste alguna y revisa sesiones activas."),
+            ("Un correo falso puede venir con mi nombre?", "Si. Los atacantes pueden usar datos filtrados o publicos para hacer que el mensaje parezca personal."),
         ],
     },
     "ia-en-el-trabajo.html": {
@@ -887,10 +999,12 @@ STATIC_PAGES = {
 <p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="chatgpt-gemini-claude.html">ChatGPT vs Gemini vs Claude</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <p><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a> &middot; <a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a> &middot; <a href="ia-para-estudiantes.html">IA para estudiantes</a></p>
 <p><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a> &middot; <a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a> &middot; <a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></p>
+<p><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a> &middot; <a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
 <p><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a> &middot; <a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada</a> &middot; <a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp</a></p>
+<p><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a> &middot; <a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
 <p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="laptop-con-npu-vale-la-pena.html">Laptop con NPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
@@ -914,6 +1028,8 @@ STATIC_PAGES = {
   <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
   <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
   <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
+  <li><a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></li>
   <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
@@ -937,6 +1053,8 @@ STATIC_PAGES = {
   <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
   <li><a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada: que hacer</a></li>
   <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
+  <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
+  <li><a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
@@ -1703,9 +1821,13 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("IA para resumir PDF", "mejor-ia-para-resumir-pdf.html", "Como elegir herramientas para PDFs sin exponer datos."),
         ("Alternativas a ChatGPT", "alternativas-chatgpt-gratis.html", "Comparar chatbots gratis por tarea y privacidad."),
         ("Prompts ChatGPT", "prompts-chatgpt-espanol.html", "Ejemplos en espanol para estudiar, resumir y decidir."),
+        ("IA para presentaciones", "ia-para-hacer-presentaciones.html", "Como usar IA para armar diapositivas utiles sin perder criterio."),
+        ("Extensiones de Chrome", "extensiones-chrome-productividad-ia.html", "Que revisar antes de instalar extensiones con IA."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
         ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
+        ("Antivirus gratis Windows", "mejor-antivirus-gratis-windows.html", "Criterios para elegir proteccion gratuita sin caer en descargas raras."),
+        ("Detectar correo falso", "como-detectar-correo-falso.html", "Senales simples para reconocer phishing por correo."),
         ("Correo hackeado", "que-hacer-si-hackearon-mi-correo.html", "Pasos urgentes para recuperar y proteger tu email."),
         ("Enlace seguro", "como-saber-si-un-enlace-es-seguro.html", "Como revisar URLs antes de abrirlas."),
         ("Contrasena filtrada", "contrasena-filtrada-que-hacer.html", "Pasos para cambiar claves y cerrar sesiones."),
@@ -1885,8 +2007,12 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
                         ("Mejor IA para resumir PDF", "mejor-ia-para-resumir-pdf.html"),
                         ("Alternativas gratis a ChatGPT", "alternativas-chatgpt-gratis.html"),
                         ("Prompts para ChatGPT en espanol", "prompts-chatgpt-espanol.html"),
+                        ("IA para hacer presentaciones", "ia-para-hacer-presentaciones.html"),
+                        ("Extensiones de Chrome con IA", "extensiones-chrome-productividad-ia.html"),
                         ("Prompts de IA para productividad", "prompts-ia-productividad.html"),
                         ("IA para estudiantes", "ia-para-estudiantes.html"),
+                        ("Mejor antivirus gratis para Windows", "mejor-antivirus-gratis-windows.html"),
+                        ("Como detectar un correo falso", "como-detectar-correo-falso.html"),
                         ("Que hacer si hackearon mi correo", "que-hacer-si-hackearon-mi-correo.html"),
                         ("Como saber si un enlace es seguro", "como-saber-si-un-enlace-es-seguro.html"),
                         ("Contrasena filtrada: que hacer", "contrasena-filtrada-que-hacer.html"),
@@ -3119,13 +3245,17 @@ def render_llms_txt() -> str:
             "mejor-ia-para-resumir-pdf.html",
             "alternativas-chatgpt-gratis.html",
             "prompts-chatgpt-espanol.html",
+            "ia-para-hacer-presentaciones.html",
+            "extensiones-chrome-productividad-ia.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
             "prompts-ia-productividad.html",
             "que-hacer-si-hackearon-mi-correo.html",
             "como-saber-si-un-enlace-es-seguro.html",
+            "como-detectar-correo-falso.html",
             "contrasena-filtrada-que-hacer.html",
             "estafa-whatsapp-que-hacer.html",
+            "mejor-antivirus-gratis-windows.html",
             "laptop-con-npu-vale-la-pena.html",
             "automatizar-blogger-gratis.html",
             "chatgpt-gemini-claude.html",

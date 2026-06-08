@@ -148,13 +148,17 @@ def validate() -> None:
         "mejor-ia-para-resumir-pdf.html",
         "alternativas-chatgpt-gratis.html",
         "prompts-chatgpt-espanol.html",
+        "ia-para-hacer-presentaciones.html",
+        "extensiones-chrome-productividad-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
+        "como-detectar-correo-falso.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
+        "mejor-antivirus-gratis-windows.html",
         "laptop-con-npu-vale-la-pena.html",
         "automatizar-blogger-gratis.html",
         "chatgpt-gemini-claude.html",
@@ -203,13 +207,17 @@ def validate() -> None:
         "mejor-ia-para-resumir-pdf.html",
         "alternativas-chatgpt-gratis.html",
         "prompts-chatgpt-espanol.html",
+        "ia-para-hacer-presentaciones.html",
+        "extensiones-chrome-productividad-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
+        "como-detectar-correo-falso.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
+        "mejor-antivirus-gratis-windows.html",
         "laptop-con-npu-vale-la-pena.html",
         "automatizar-blogger-gratis.html",
     ]:
@@ -284,13 +292,17 @@ def validate() -> None:
         "mejor-ia-para-resumir-pdf.html",
         "alternativas-chatgpt-gratis.html",
         "prompts-chatgpt-espanol.html",
+        "ia-para-hacer-presentaciones.html",
+        "extensiones-chrome-productividad-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
+        "como-detectar-correo-falso.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
+        "mejor-antivirus-gratis-windows.html",
         "laptop-con-npu-vale-la-pena.html",
         "automatizar-blogger-gratis.html",
         "chatgpt-gemini-claude.html",
@@ -323,7 +335,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -344,6 +356,8 @@ def validate() -> None:
         or "SEARCH_INDEX" not in search_text
         or "mejor-ia-para-resumir-pdf.html" not in search_text
         or "alternativas-chatgpt-gratis.html" not in search_text
+        or "ia-para-hacer-presentaciones.html" not in search_text
+        or "mejor-antivirus-gratis-windows.html" not in search_text
     ):
         fail("buscar.html missing internal search index or schema")
     if "\"@type\": \"WebSite\"" not in index_text or "SearchAction" not in index_text or "buscar.html?q={search_term_string}" not in index_text:
@@ -380,13 +394,17 @@ def validate() -> None:
         "mejor-ia-para-resumir-pdf.html": "Mejor IA para resumir PDF",
         "alternativas-chatgpt-gratis.html": "Alternativas gratis a ChatGPT",
         "prompts-chatgpt-espanol.html": "Prompts para ChatGPT en espanol",
+        "ia-para-hacer-presentaciones.html": "IA para hacer presentaciones",
+        "extensiones-chrome-productividad-ia.html": "Extensiones de Chrome con IA",
         "ia-para-estudiantes.html": "IA para estudiantes",
         "proteger-cuenta-google.html": "Como proteger tu cuenta Google",
         "prompts-ia-productividad.html": "Prompts de IA para productividad",
         "que-hacer-si-hackearon-mi-correo.html": "Que hacer si hackearon mi correo",
         "como-saber-si-un-enlace-es-seguro.html": "Como saber si un enlace es seguro",
+        "como-detectar-correo-falso.html": "Como detectar un correo falso",
         "contrasena-filtrada-que-hacer.html": "Contrasena filtrada",
         "estafa-whatsapp-que-hacer.html": "Estafa por WhatsApp",
+        "mejor-antivirus-gratis-windows.html": "Mejor antivirus gratis para Windows",
         "laptop-con-npu-vale-la-pena.html": "Laptop con NPU",
         "automatizar-blogger-gratis.html": "Como automatizar un blog en Blogger gratis",
     }.items():
