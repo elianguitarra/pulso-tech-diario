@@ -284,7 +284,7 @@ def validate() -> None:
         fail("feed.json missing JSON Feed payload")
     if not all(item.get("url", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/noticias/") for item in json_feed.get("items", [])):
         fail("feed.json items should point to internal story URLs")
-    if not all(item.get("image", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/assets/images/") and "content_html" in item for item in json_feed.get("items", [])):
+    if not all(item.get("image", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/assets/images/") and item.get("image", "").endswith(".png") and "content_html" in item for item in json_feed.get("items", [])):
         fail("feed.json items missing images or rich HTML content")
     if "atom.xml" not in index_text or "feed.json" not in index_text or "feed-ia.xml" not in index_text or "feed-ciberseguridad.xml" not in index_text or "feed-chips.xml" not in index_text or "feeds.html" not in index_text:
         fail("index missing alternate feed links")
@@ -328,6 +328,8 @@ def validate() -> None:
         fail("image-sitemap.xml missing image namespace or image entries")
     if "/assets/images/" not in image_text or "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in image_text:
         fail("image-sitemap.xml missing story image URLs")
+    if ".png" not in image_text:
+        fail("image-sitemap.xml should expose PNG story images")
     sitemap_root = ET.parse(PUBLIC / "sitemap.xml").getroot()
     sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
     for page in [
@@ -556,6 +558,11 @@ def validate() -> None:
     images = list(image_dir.glob("*.svg"))
     if len(images) != parser.story_count:
         fail(f"expected {parser.story_count} generated svg images, found {len(images)}")
+    png_images = list(image_dir.glob("*.png"))
+    if len(png_images) != parser.story_count:
+        fail(f"expected {parser.story_count} generated png images, found {len(png_images)}")
+    if not all(image.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") for image in png_images):
+        fail("generated story PNG image is invalid")
     english_slug_markers = {
         "when",
         "what",

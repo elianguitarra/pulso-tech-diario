@@ -123,7 +123,7 @@ def internal_link_block(guide_posts: list[tuple[str, str]] | None = None) -> str
 
 
 def public_image_url(item: build.Item, index: int) -> str:
-    filename = build.image_filename(item, index)
+    filename = build.image_filename(item, index).replace(".svg", ".png")
     return f"{PAGES_URL}/assets/images/{filename}"
 
 

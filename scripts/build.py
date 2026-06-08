@@ -20,6 +20,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from generate_share_pack import ascii_upper, wrap_text, write_png
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "public"
@@ -1495,6 +1497,136 @@ def image_label_for(category: str, index: int) -> str:
     return labels[index % len(labels)]
 
 
+def hex_rgb(value: str) -> tuple[int, int, int]:
+    value = value.lstrip("#")
+    return int(value[0:2], 16), int(value[2:4], 16), int(value[4:6], 16)
+
+
+def png_path_for(image_path: str) -> str:
+    return image_path.removesuffix(".svg") + ".png"
+
+
+def render_item_png(item: Item, index: int, path: Path) -> None:
+    width, height = 1200, 630
+    bg, primary, secondary, paper = (hex_rgb(color) for color in palette_for(item.category))
+    label = image_label_for(item.category, index)
+    title_lines = wrap_text(display_title(item), 20, 3)
+    pixels = bytearray(width * height * 3)
+
+    def put(x: int, y: int, color: tuple[int, int, int]) -> None:
+        if 0 <= x < width and 0 <= y < height:
+            offset = (y * width + x) * 3
+            pixels[offset : offset + 3] = bytes(color)
+
+    def fill_rect(x: int, y: int, w: int, h: int, color: tuple[int, int, int]) -> None:
+        x0, y0 = max(0, x), max(0, y)
+        x1, y1 = min(width, x + w), min(height, y + h)
+        for py in range(y0, y1):
+            row = (py * width + x0) * 3
+            pixels[row : row + (x1 - x0) * 3] = bytes(color) * (x1 - x0)
+
+    def circle(cx: int, cy: int, radius: int, color: tuple[int, int, int]) -> None:
+        r2 = radius * radius
+        for py in range(cy - radius, cy + radius + 1):
+            for px in range(cx - radius, cx + radius + 1):
+                if (px - cx) * (px - cx) + (py - cy) * (py - cy) <= r2:
+                    put(px, py, color)
+
+    def line(x0: int, y0: int, x1: int, y1: int, thickness: int, color: tuple[int, int, int]) -> None:
+        steps = max(abs(x1 - x0), abs(y1 - y0), 1)
+        radius = max(1, thickness // 2)
+        for step in range(steps + 1):
+            x = x0 + (x1 - x0) * step // steps
+            y = y0 + (y1 - y0) * step // steps
+            fill_rect(x - radius, y - radius, thickness, thickness, color)
+
+    def text(value: str, x: int, y: int, scale: int, color: tuple[int, int, int]) -> None:
+        cursor = x
+        for char in ascii_upper(value):
+            if char == " ":
+                cursor += scale * 4
+                continue
+            glyph = {
+                "A": ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+                "B": ["11110", "10001", "10001", "11110", "10001", "10001", "11110"],
+                "C": ["01111", "10000", "10000", "10000", "10000", "10000", "01111"],
+                "D": ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+                "E": ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
+                "F": ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+                "G": ["01111", "10000", "10000", "10111", "10001", "10001", "01111"],
+                "H": ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+                "I": ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+                "J": ["00111", "00010", "00010", "00010", "10010", "10010", "01100"],
+                "K": ["10001", "10010", "10100", "11000", "10100", "10010", "10001"],
+                "L": ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+                "M": ["10001", "11011", "10101", "10101", "10001", "10001", "10001"],
+                "N": ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
+                "O": ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+                "P": ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+                "Q": ["01110", "10001", "10001", "10001", "10101", "10010", "01101"],
+                "R": ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+                "S": ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
+                "T": ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
+                "U": ["10001", "10001", "10001", "10001", "10001", "10001", "01110"],
+                "V": ["10001", "10001", "10001", "10001", "10001", "01010", "00100"],
+                "W": ["10001", "10001", "10001", "10101", "10101", "10101", "01010"],
+                "X": ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+                "Y": ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
+                "Z": ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
+                "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"],
+                "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+                "2": ["01110", "10001", "00001", "00010", "00100", "01000", "11111"],
+                "3": ["11110", "00001", "00001", "01110", "00001", "00001", "11110"],
+                "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"],
+                "5": ["11111", "10000", "10000", "11110", "00001", "00001", "11110"],
+                "6": ["01110", "10000", "10000", "11110", "10001", "10001", "01110"],
+                "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+                "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
+                "9": ["01110", "10001", "10001", "01111", "00001", "00001", "01110"],
+                ":": ["00000", "01100", "01100", "00000", "01100", "01100", "00000"],
+                ",": ["00000", "00000", "00000", "00000", "00000", "00100", "01000"],
+                "|": ["00100", "00100", "00100", "00100", "00100", "00100", "00100"],
+            }.get(char)
+            if not glyph:
+                cursor += scale * 3
+                continue
+            for gy, row in enumerate(glyph):
+                for gx, bit in enumerate(row):
+                    if bit == "1":
+                        fill_rect(cursor + gx * scale, y + gy * scale, scale, scale, color)
+            cursor += scale * 6
+
+    for y in range(height):
+        for x in range(width):
+            t = (x + y) / (width + height)
+            put(
+                x,
+                y,
+                (
+                    int(bg[0] * (1 - t) + 12 * t),
+                    int(bg[1] * (1 - t) + 18 * t),
+                    int(bg[2] * (1 - t) + 24 * t),
+                ),
+            )
+    fill_rect(0, 500, 1200, 130, primary)
+    circle(860, 280, 190, secondary)
+    circle(860, 280, 92, bg)
+    line(630, 450, 1060, 230, 24, paper)
+    line(690, 395, 1020, 390, 18, paper)
+    line(760, 340, 990, 470, 14, paper)
+    fill_rect(58, 54, 1084, 4, paper)
+    fill_rect(58, 572, 1084, 4, paper)
+    fill_rect(58, 54, 4, 522, paper)
+    fill_rect(1138, 54, 4, 522, paper)
+    text("PULSO TECH DIARIO", 84, 86, 5, secondary)
+    text(label, 84, 192, 8, paper)
+    for line_index, line_text in enumerate(title_lines):
+        text(line_text, 84, 308 + line_index * 46, 4, paper)
+    text(item.category, 84, 532, 4, paper)
+    text("PT", 948, 516, 9, bg)
+    write_png(path, width, height, pixels)
+
+
 def svg_for_item(item: Item, index: int) -> str:
     bg, primary, secondary, paper = palette_for(item.category)
     label = image_label_for(item.category, index)
@@ -1650,11 +1782,14 @@ def save_images(items: list[Item]) -> dict[str, str]:
     ASSET_DIR.mkdir(parents=True, exist_ok=True)
     for old_image in ASSET_DIR.glob("*.svg"):
         old_image.unlink()
+    for old_image in ASSET_DIR.glob("*.png"):
+        old_image.unlink()
     image_paths = {}
     for index, item in enumerate(items):
         filename = image_filename(item, index + 1)
         path = ASSET_DIR / filename
         path.write_text(svg_for_item(item, index), encoding="utf-8")
+        render_item_png(item, index, ASSET_DIR / filename.replace(".svg", ".png"))
         image_paths[item.link] = f"assets/images/{filename}"
     return image_paths
 
@@ -2010,7 +2145,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         )
         if rank == 4:
             cards.append(ad_unit("in-grid", ADSENSE_IN_ARTICLE_SLOT, "anuncio en el resumen"))
-    lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
+    lead_image = png_path_for(image_paths[lead.link]) if lead else "assets/social-card.png"
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
     evergreen_guides = [
         ("Que es Pulso Tech Diario", "pulso-tech-diario.html", "Pagina oficial, rutas y feeds del blog de tecnologia."),
@@ -2502,7 +2637,8 @@ def render_story_page(item: Item, ordinal: int, image_path: str, filename: str) 
     title = display_title(item)
     summary = display_summary(item)
     canonical = f"{SITE_URL}/{filename}"
-    image_url = f"{SITE_URL}/{image_path}"
+    social_image_path = png_path_for(image_path)
+    image_url = f"{SITE_URL}/{social_image_path}"
     published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     schema = {
         "@context": "https://schema.org",
@@ -2613,7 +2749,7 @@ def render_trends_page(
     if len(filtered_items) < 4 and category_filter:
         filtered_items = filtered_items + [item for item in items if item not in filtered_items]
     lead = filtered_items[0] if filtered_items else None
-    lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
+    lead_image = png_path_for(image_paths[lead.link]) if lead else "assets/social-card.png"
     lead_title = display_title(lead) if lead else title
     rows = []
     for rank, item in enumerate(filtered_items[:10], start=1):
@@ -3242,7 +3378,7 @@ def render_feed(
     entries = []
     for item in items:
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
-        image_url = f"{SITE_URL}/{image_paths[item.link]}"
+        image_url = f"{SITE_URL}/{png_path_for(image_paths[item.link])}"
         content_html = feed_content_html(item, story_url, image_url)
         entries.append(
             f"""  <item>
@@ -3251,8 +3387,8 @@ def render_feed(
     <guid>{esc(story_url)}</guid>
     <pubDate>{email.utils.format_datetime(item.published)}</pubDate>
     <description>{esc(display_summary(item))}</description>
-    <enclosure url="{esc(image_url)}" type="image/svg+xml" length="0"/>
-    <media:content url="{esc(image_url)}" medium="image" type="image/svg+xml"/>
+    <enclosure url="{esc(image_url)}" type="image/png" length="0"/>
+    <media:content url="{esc(image_url)}" medium="image" type="image/png"/>
     <content:encoded><![CDATA[{content_html}]]></content:encoded>
   </item>"""
         )
@@ -3282,7 +3418,7 @@ def render_atom_feed(items: list[Item], story_paths: dict[str, str], image_paths
     for item in items:
         published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
-        image_url = f"{SITE_URL}/{image_paths[item.link]}"
+        image_url = f"{SITE_URL}/{png_path_for(image_paths[item.link])}"
         entries.append(
             f"""  <entry>
     <title>{esc(display_title(item))}</title>
@@ -3326,9 +3462,9 @@ def render_json_feed(items: list[Item], story_paths: dict[str, str], image_paths
                 "content_html": feed_content_html(
                     item,
                     f"{SITE_URL}/{story_paths[item.link]}",
-                    f"{SITE_URL}/{image_paths[item.link]}",
+                    f"{SITE_URL}/{png_path_for(image_paths[item.link])}",
                 ),
-                "image": f"{SITE_URL}/{image_paths[item.link]}",
+                "image": f"{SITE_URL}/{png_path_for(image_paths[item.link])}",
                 "date_published": item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
                 "tags": [item.category, item.source],
             }
@@ -3443,7 +3579,7 @@ def render_image_sitemap(items: list[Item], story_paths: dict[str, str], image_p
     entries = []
     for item in items:
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
-        image_url = f"{SITE_URL}/{image_paths[item.link]}"
+        image_url = f"{SITE_URL}/{png_path_for(image_paths[item.link])}"
         title = display_title(item)
         entries.append(
             f"""  <url>
