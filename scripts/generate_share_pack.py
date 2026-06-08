@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import html
+import json
 import re
 import urllib.error
 import urllib.parse
@@ -19,10 +20,12 @@ TXT_OUT = PUBLIC / "share-pack.txt"
 HTML_OUT = PUBLIC / "share-pack.html"
 ARCHIVE_OUT = PUBLIC / "blogger-archivo.html"
 LATEST_OUT = PUBLIC / "ultima-entrada.html"
+LATEST_JSON_OUT = PUBLIC / "latest.json"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+SOCIAL_IMAGE = f"{PAGES_URL}/assets/brand/pulso-tech-avatar.png"
 
 
 def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
@@ -273,6 +276,11 @@ def render_latest_redirect(title: str, url: str) -> str:
   <meta property="og:title" content="{html.escape(title)}">
   <meta property="og:description" content="Entrada mas reciente de Pulso Tech Diario.">
   <meta property="og:url" content="{PAGES_URL}/ultima-entrada.html">
+  <meta property="og:image" content="{SOCIAL_IMAGE}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{html.escape(title)}">
+  <meta name="twitter:description" content="Entrada mas reciente de Pulso Tech Diario.">
+  <meta name="twitter:image" content="{SOCIAL_IMAGE}">
   <style>
     body {{ margin: 0; font-family: Arial, Helvetica, sans-serif; background: #151515; color: #f7f1e8; }}
     main {{ width: min(100% - 32px, 820px); margin: 0 auto; padding: 56px 0 72px; }}
@@ -294,6 +302,21 @@ def render_latest_redirect(title: str, url: str) -> str:
 </body>
 </html>
 """
+
+
+def latest_payload(title: str, url: str, items: list[dict[str, str]]) -> str:
+    payload = {
+        "title": title,
+        "url": url,
+        "tracked_url": tracked_url(url, "github_pages", "redirect", "latest_entry", "json"),
+        "permalink": f"{PAGES_URL}/ultima-entrada.html",
+        "share_pack": f"{PAGES_URL}/share-pack.html",
+        "blogger_archive": f"{PAGES_URL}/blogger-archivo.html",
+        "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "source": RSS_URL,
+        "recent": items[:8],
+    }
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
 
 def append_to_sitemap() -> None:
@@ -327,8 +350,9 @@ def main() -> None:
     HTML_OUT.write_text(render_html(title, url, guides), encoding="utf-8")
     ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")
     LATEST_OUT.write_text(render_latest_redirect(title, url), encoding="utf-8")
+    LATEST_JSON_OUT.write_text(latest_payload(title, url, items), encoding="utf-8")
     append_to_sitemap()
-    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, and {LATEST_OUT}")
+    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, {LATEST_OUT}, and {LATEST_JSON_OUT}")
 
 
 if __name__ == "__main__":

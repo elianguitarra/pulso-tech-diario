@@ -58,6 +58,7 @@ def validate() -> None:
         "news-sitemap.xml",
         "robots.txt",
         "data.json",
+        "latest.json",
         "blogger-archivo.html",
         "ultima-entrada.html",
         "acerca.html",
@@ -128,6 +129,13 @@ def validate() -> None:
         fail("ultima-entrada.html missing latest_entry tracking")
     if "http-equiv=\"refresh\"" not in latest_text:
         fail("ultima-entrada.html missing refresh redirect")
+    if "og:image" not in latest_text or "twitter:card" not in latest_text:
+        fail("ultima-entrada.html missing social preview metadata")
+    latest_data = json.loads((PUBLIC / "latest.json").read_text(encoding="utf-8"))
+    if not latest_data.get("url", "").startswith("https://pulsotechdiario.blogspot.com/"):
+        fail("latest.json missing Blogger URL")
+    if "utm_campaign=latest_entry" not in latest_data.get("tracked_url", ""):
+        fail("latest.json missing tracked latest URL")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:
