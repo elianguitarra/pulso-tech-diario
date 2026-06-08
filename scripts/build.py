@@ -101,6 +101,41 @@ BLOGGER_LABEL_LOCAL_AI_TRACKED = tracked_url(
     "ia_local",
 )
 
+TREND_PAGES = [
+    {
+        "filename": "tendencias-tecnologia-hoy.html",
+        "title": "Tendencias de tecnologia hoy",
+        "description": "Tendencias de tecnologia hoy en espanol: IA, ciberseguridad, chips, plataformas y herramientas digitales resumidas rapido.",
+        "intro": "Resumen en espanol de las senales que se estan moviendo ahora en IA, chips, ciberseguridad, plataformas y herramientas digitales.",
+        "blogger_url": BLOG_HOME_TRACKED,
+        "categories": None,
+    },
+    {
+        "filename": "inteligencia-artificial-hoy.html",
+        "title": "Inteligencia artificial hoy",
+        "description": "Noticias y tendencias de inteligencia artificial hoy en espanol: modelos, agentes, productividad, privacidad y herramientas.",
+        "intro": "Senales recientes sobre inteligencia artificial, modelos, agentes, productividad, privacidad y herramientas que conviene vigilar hoy.",
+        "blogger_url": BLOGGER_LABEL_IA_TRACKED,
+        "categories": {"inteligencia artificial"},
+    },
+    {
+        "filename": "ciberseguridad-hoy.html",
+        "title": "Ciberseguridad hoy",
+        "description": "Noticias y tendencias de ciberseguridad hoy en espanol: phishing, privacidad, filtraciones, malware y proteccion de cuentas.",
+        "intro": "Riesgos, filtraciones, phishing y cambios de seguridad digital explicados rapido para actuar con mas criterio.",
+        "blogger_url": BLOGGER_LABEL_CYBER_TRACKED,
+        "categories": {"ciberseguridad"},
+    },
+    {
+        "filename": "chips-ia-hoy.html",
+        "title": "Chips para IA hoy",
+        "description": "Noticias y tendencias de chips para IA hoy en espanol: GPU, NPU, semiconductores, hardware y computo.",
+        "intro": "Senales sobre chips, GPU, NPU, semiconductores y hardware que empujan la carrera de inteligencia artificial.",
+        "blogger_url": BLOGGER_LABEL_CHIPS_TRACKED,
+        "categories": {"chips"},
+    },
+]
+
 STATIC_PAGES = {
     "acerca.html": {
         "title": "Acerca de",
@@ -1102,6 +1137,9 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     evergreen_guides = [
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
         ("Tendencias tech hoy", "tendencias-tecnologia-hoy.html", "Lo mas relevante del dia en IA, chips y seguridad."),
+        ("IA hoy", "inteligencia-artificial-hoy.html", "Modelos, agentes y herramientas que se mueven ahora."),
+        ("Ciberseguridad hoy", "ciberseguridad-hoy.html", "Riesgos, phishing y privacidad explicados rapido."),
+        ("Chips IA hoy", "chips-ia-hoy.html", "GPU, NPU y hardware para la carrera de IA."),
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
@@ -1186,6 +1224,9 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="ultima-entrada.html">Ultima entrada</a>
         <a href="tendencias-tecnologia-hoy.html">Tendencias hoy</a>
+        <a href="inteligencia-artificial-hoy.html">IA hoy</a>
+        <a href="ciberseguridad-hoy.html">Seguridad hoy</a>
+        <a href="chips-ia-hoy.html">Chips IA</a>
         <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
         <a href="links.html">Link en bio</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
@@ -1333,14 +1374,26 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
 </html>"""
 
 
-def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
+def render_trends_page(
+    items: list[Item],
+    image_paths: dict[str, str],
+    filename: str = "tendencias-tecnologia-hoy.html",
+    title: str = "Tendencias de tecnologia hoy",
+    description: str = "Tendencias de tecnologia hoy en espanol: IA, ciberseguridad, chips, plataformas y herramientas digitales resumidas rapido.",
+    intro: str = "Resumen en espanol de las senales que se estan moviendo ahora en IA, chips, ciberseguridad, plataformas y herramientas digitales.",
+    blogger_label_url: str = BLOG_HOME_TRACKED,
+    category_filter: set[str] | None = None,
+) -> str:
     now = datetime.now(timezone.utc)
-    canonical = f"{SITE_URL}/tendencias-tecnologia-hoy.html"
-    lead = items[0] if items else None
+    canonical = f"{SITE_URL}/{filename}"
+    filtered_items = [item for item in items if not category_filter or item.category in category_filter]
+    if len(filtered_items) < 4 and category_filter:
+        filtered_items = filtered_items + [item for item in items if item not in filtered_items]
+    lead = filtered_items[0] if filtered_items else None
     lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
-    lead_title = display_title(lead) if lead else "Tendencias de tecnologia hoy"
+    lead_title = display_title(lead) if lead else title
     rows = []
-    for rank, item in enumerate(items[:10], start=1):
+    for rank, item in enumerate(filtered_items[:10], start=1):
         rows.append(
             f"""
       <article class="trend-item">
@@ -1361,10 +1414,10 @@ def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "Que tendencias de tecnologia se resumen aqui?",
+                "name": f"Que se resume en {title.lower()}?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "La pagina resume senales recientes sobre inteligencia artificial, ciberseguridad, chips, plataformas, consumo digital y ciencia aplicada.",
+                    "text": "La pagina resume senales recientes seleccionadas automaticamente y enlaza a fuentes originales y rutas de lectura en Blogger.",
                 },
             },
             {
@@ -1382,17 +1435,17 @@ def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tendencias de tecnologia hoy | {SITE_NAME}</title>
-  <meta name="description" content="Tendencias de tecnologia hoy en espanol: IA, ciberseguridad, chips, plataformas y herramientas digitales resumidas rapido.">
+  <title>{esc(title)} | {SITE_NAME}</title>
+  <meta name="description" content="{esc(description)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Tendencias de tecnologia hoy">
+  <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(lead_title)}">
   <meta property="og:image" content="{SITE_URL}/{esc(lead_image)}">
   <meta property="og:url" content="{canonical}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tendencias de tecnologia hoy">
+  <meta name="twitter:title" content="{esc(title)}">
   <meta name="twitter:description" content="{esc(lead_title)}">
   <meta name="twitter:image" content="{SITE_URL}/{esc(lead_image)}">
   {adsense_head()}
@@ -1417,8 +1470,8 @@ def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
     <section class="hero trends-hero">
       <div class="hero-copy">
         <p class="kicker">Actualizado automaticamente: {now.strftime("%Y-%m-%d %H:%M UTC")}</p>
-        <h1>Tendencias de tecnologia hoy</h1>
-        <p>Resumen en espanol de las senales que se estan moviendo ahora en IA, chips, ciberseguridad, plataformas y herramientas digitales.</p>
+        <h1>{esc(title)}</h1>
+        <p>{esc(intro)}</p>
       </div>
       <div class="hero-panel">
         <span>Senal principal</span>
@@ -1433,7 +1486,7 @@ def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
       </div>
       <div class="cta-actions">
         <a href="ultima-entrada.html">Abrir ultima entrada</a>
-        <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
+        <a href="{blogger_label_url}" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="share-pack.html">Compartir</a>
       </div>
     </section>
@@ -1876,7 +1929,7 @@ def render_sitemap() -> str:
   </url>"""
         for filename, changefreq, priority in [
             ("feed.xml", "daily", "0.7"),
-            ("tendencias-tecnologia-hoy.html", "daily", "0.9"),
+            *[(page["filename"], "daily", "0.9") for page in TREND_PAGES],
             ("llms.txt", "weekly", "0.6"),
             ("humans.txt", "monthly", "0.4"),
         ]
@@ -1930,6 +1983,10 @@ def render_news_sitemap(items: list[Item]) -> str:
 
 
 def render_llms_txt() -> str:
+    trend_lines = "\n".join(
+        f"- {page['title']}: {SITE_URL}/{page['filename']}"
+        for page in TREND_PAGES
+    )
     guide_lines = "\n".join(
         f"- [{page['title']}]({SITE_URL}/{filename}): {page['description']}"
         for filename, page in STATIC_PAGES.items()
@@ -1954,7 +2011,6 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 
 - Blog principal: {BLOG_URL}/
 - Ultima entrada: {SITE_URL}/ultima-entrada.html
-- Tendencias de tecnologia hoy: {SITE_URL}/tendencias-tecnologia-hoy.html
 - Link en bio: {SITE_URL}/links.html
 - Kit para compartir: {SITE_URL}/share-pack.html
 - Archivo de Blogger: {SITE_URL}/blogger-archivo.html
@@ -1962,6 +2018,10 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Feed RSS de Blogger: {BLOGGER_RSS_URL}
 - Payload social diario: {SITE_URL}/social-payload.json
 - Datos publicos del resumen: {SITE_URL}/data.json
+
+## Tendencias diarias por tema
+
+{trend_lines}
 
 ## Guias utiles
 
@@ -2005,7 +2065,20 @@ def write_static(items: list[Item]) -> None:
             if asset.is_file():
                 shutil.copy2(asset, BRAND_ASSET_DEST / asset.name)
     (PUBLIC / "index.html").write_text(render_index(items, image_paths), encoding="utf-8")
-    (PUBLIC / "tendencias-tecnologia-hoy.html").write_text(render_trends_page(items, image_paths), encoding="utf-8")
+    for page in TREND_PAGES:
+        (PUBLIC / page["filename"]).write_text(
+            render_trends_page(
+                items,
+                image_paths,
+                filename=page["filename"],
+                title=page["title"],
+                description=page["description"],
+                intro=page["intro"],
+                blogger_label_url=page["blogger_url"],
+                category_filter=page["categories"],
+            ),
+            encoding="utf-8",
+        )
     for filename, page in STATIC_PAGES.items():
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")

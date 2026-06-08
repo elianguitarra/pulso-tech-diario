@@ -68,6 +68,9 @@ def validate() -> None:
         "llms.txt",
         "humans.txt",
         "tendencias-tecnologia-hoy.html",
+        "inteligencia-artificial-hoy.html",
+        "ciberseguridad-hoy.html",
+        "chips-ia-hoy.html",
         "sitemap.xml",
         "news-sitemap.xml",
         "robots.txt",
@@ -117,6 +120,10 @@ def validate() -> None:
         "privacidad-chatbots-ia.html",
         "checklist-phishing.html",
         "noticias-tecnologia-espanol.html",
+        "tendencias-tecnologia-hoy.html",
+        "inteligencia-artificial-hoy.html",
+        "ciberseguridad-hoy.html",
+        "chips-ia-hoy.html",
         "glosario-ia-tecnologia.html",
     ]:
         if guide_page not in index_text:
@@ -158,6 +165,9 @@ def validate() -> None:
         "links.html",
         "social-payload.json",
         "tendencias-tecnologia-hoy.html",
+        "inteligencia-artificial-hoy.html",
+        "ciberseguridad-hoy.html",
+        "chips-ia-hoy.html",
         "llms.txt",
         "humans.txt",
     ]:
@@ -165,7 +175,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Payload social diario" not in llms_text or "tendencias-tecnologia-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Payload social diario" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -180,13 +190,20 @@ def validate() -> None:
     if "Ultima entrada en Blogger" not in links_text:
         fail("links.html missing latest entry link")
 
-    trends_text = (PUBLIC / "tendencias-tecnologia-hoy.html").read_text(encoding="utf-8")
-    if "Tendencias de tecnologia hoy" not in trends_text:
-        fail("trends page missing primary heading")
-    if trends_text.count('class="trend-item"') < 4:
-        fail("trends page missing daily trend items")
-    if "FAQPage" not in trends_text or "ultima-entrada.html" not in trends_text:
-        fail("trends page missing FAQ schema or Blogger route")
+    trend_pages = {
+        "tendencias-tecnologia-hoy.html": "Tendencias de tecnologia hoy",
+        "inteligencia-artificial-hoy.html": "Inteligencia artificial hoy",
+        "ciberseguridad-hoy.html": "Ciberseguridad hoy",
+        "chips-ia-hoy.html": "Chips para IA hoy",
+    }
+    for trend_page, heading in trend_pages.items():
+        trends_text = (PUBLIC / trend_page).read_text(encoding="utf-8")
+        if heading not in trends_text:
+            fail(f"{trend_page} missing primary heading")
+        if trends_text.count('class="trend-item"') < 4:
+            fail(f"{trend_page} missing daily trend items")
+        if "FAQPage" not in trends_text or "ultima-entrada.html" not in trends_text:
+            fail(f"{trend_page} missing FAQ schema or Blogger route")
 
     latest_text = (PUBLIC / "ultima-entrada.html").read_text(encoding="utf-8")
     if "utm_campaign=latest_entry" not in latest_text:
