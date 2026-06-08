@@ -28,3 +28,7 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
           ADSENSE_CLIENT: ${{ secrets.ADSENSE_CLIENT }}
+
+      - name: Avisar a WebSub de Blogger
+        continue-on-error: true
+        run: python scripts/notify_websub.py --feed "https://pulsotechdiario.blogspot.com/feeds/posts/default?alt=rss"

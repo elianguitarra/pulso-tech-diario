@@ -32,3 +32,6 @@ jobs:
 
       - name: Validar payload WebSub
         run: python scripts/notify_websub.py --dry-run
+
+      - name: Validar payload WebSub Blogger
+        run: python scripts/notify_websub.py --dry-run --feed "https://pulsotechdiario.blogspot.com/feeds/posts/default?alt=rss"

@@ -17,6 +17,20 @@ FEEDS = [
 ]
 
 
+def feed_urls_from(args_feeds: list[str]) -> list[str]:
+    env_feeds = [
+        feed.strip()
+        for feed in os.environ.get("WEBSUB_FEEDS", "").split(",")
+        if feed.strip()
+    ]
+    feeds = args_feeds or env_feeds or FEEDS
+    unique_feeds = []
+    for feed in feeds:
+        if feed not in unique_feeds:
+            unique_feeds.append(feed)
+    return unique_feeds
+
+
 def notify(feed_urls: list[str], dry_run: bool = False) -> None:
     fields: list[tuple[str, str]] = [("hub.mode", "publish")]
     fields.extend(("hub.url", url) for url in feed_urls)
@@ -43,8 +57,9 @@ def notify(feed_urls: list[str], dry_run: bool = False) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Notify WebSub hubs after feed updates.")
     parser.add_argument("--dry-run", action="store_true", help="Build the request without calling the hub.")
+    parser.add_argument("--feed", action="append", default=[], help="Feed URL to notify. Can be passed more than once.")
     args = parser.parse_args()
-    notify(FEEDS, dry_run=args.dry_run)
+    notify(feed_urls_from(args.feed), dry_run=args.dry_run)
 
 
 if __name__ == "__main__":
