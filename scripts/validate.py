@@ -283,7 +283,14 @@ def validate() -> None:
         if required not in follow_text:
             fail(f"seguir.html missing {required}")
     guides_text = (PUBLIC / "guias.html").read_text(encoding="utf-8")
-    if "Guias de tecnologia en espanol" not in guides_text or "BreadcrumbList" not in guides_text or "FAQPage" not in guides_text:
+    if (
+        "Guias de tecnologia en espanol" not in guides_text
+        or "CollectionPage" not in guides_text
+        or "BreadcrumbList" not in guides_text
+        or "FAQPage" not in guides_text
+        or "sameAs" not in guides_text
+        or "ItemList" not in guides_text
+    ):
         fail("guias.html missing guide hub schema")
     for long_tail_page, phrase in {
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
@@ -365,7 +372,7 @@ def validate() -> None:
     if len(story_pages) != parser.story_count:
         fail(f"expected {parser.story_count} story pages, found {len(story_pages)}")
     sample_story = story_pages[0].read_text(encoding="utf-8")
-    if "NewsArticle" not in sample_story or "Leer fuente original" not in sample_story:
+    if "NewsArticle" not in sample_story or "Leer fuente original" not in sample_story or "sameAs" not in sample_story:
         fail("story page missing article schema or source link")
 
     image_dir = PUBLIC / "assets" / "images"

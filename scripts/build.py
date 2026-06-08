@@ -43,6 +43,15 @@ INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "pulso-tech-diario-2026-indexnow-k
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 BLOGGER_START_URL = f"{BLOG_URL}/p/empieza-aqui.html"
 BLOGGER_RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+REPOSITORY_URL = "https://github.com/elianguitarra/pulso-tech-diario"
+ENTITY_SAME_AS = [
+    BLOG_URL + "/",
+    SITE_URL + "/",
+    REPOSITORY_URL,
+    f"{SITE_URL}/links.html",
+    f"{SITE_URL}/feed.xml",
+    BLOGGER_RSS_URL,
+]
 
 
 def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
@@ -232,6 +241,7 @@ STATIC_PAGES = {
     "guias.html": {
         "title": "Guias de tecnologia en espanol",
         "description": "Indice de guias practicas de Pulso Tech Diario sobre IA, ciberseguridad, chips, privacidad y automatizacion.",
+        "schema_type": "CollectionPage",
         "body": f"""
 <p>Estas guias estan pensadas para responder busquedas concretas y llevar al lector hacia las noticias diarias de Pulso Tech Diario.</p>
 <h2>Inteligencia artificial</h2>
@@ -1600,7 +1610,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     social_image = f"{SITE_URL}/assets/brand/pulso-tech-avatar.png"
     page_schema = {
         "@context": "https://schema.org",
-        "@type": "WebPage",
+        "@type": page.get("schema_type", "WebPage"),
         "name": title,
         "description": description,
         "url": canonical,
@@ -1608,14 +1618,39 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
             "@type": "WebSite",
             "name": SITE_NAME,
             "url": SITE_URL,
+            "sameAs": ENTITY_SAME_AS,
         },
         "publisher": {
             "@type": "Organization",
             "name": SITE_NAME,
             "url": SITE_URL,
             "logo": social_image,
+            "sameAs": ENTITY_SAME_AS,
         },
     }
+    if page_schema["@type"] == "CollectionPage":
+        page_schema["mainEntity"] = {
+            "@type": "ItemList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": index,
+                    "name": item_title,
+                    "url": f"{SITE_URL}/{item_url}",
+                }
+                for index, (item_title, item_url) in enumerate(
+                    [
+                        ("Herramientas de IA gratis", "herramientas-ia-gratis.html"),
+                        ("Prompts de IA para productividad", "prompts-ia-productividad.html"),
+                        ("IA para estudiantes", "ia-para-estudiantes.html"),
+                        ("Que hacer si hackearon mi correo", "que-hacer-si-hackearon-mi-correo.html"),
+                        ("Laptop con NPU", "laptop-con-npu-vale-la-pena.html"),
+                        ("Automatizar Blogger gratis", "automatizar-blogger-gratis.html"),
+                    ],
+                    start=1,
+                )
+            ],
+        }
     breadcrumb_schema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -1742,6 +1777,7 @@ def render_story_page(item: Item, ordinal: int, image_path: str, filename: str) 
             "name": SITE_NAME,
             "url": SITE_URL,
             "logo": f"{SITE_URL}/assets/brand/pulso-tech-avatar.png",
+            "sameAs": ENTITY_SAME_AS,
         },
     }
     return f"""<!doctype html>
@@ -1990,7 +2026,8 @@ def schema(items: list[Item], story_paths: dict[str, str]) -> dict:
         "name": SITE_NAME,
         "url": SITE_URL,
         "description": SITE_DESCRIPTION,
-        "publishingPrinciples": f"{SITE_URL}/README.md",
+        "sameAs": ENTITY_SAME_AS,
+        "publishingPrinciples": f"{REPOSITORY_URL}#readme",
         "mainEntityOfPage": {
             "@type": "ItemList",
             "itemListElement": [
