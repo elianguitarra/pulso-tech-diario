@@ -651,6 +651,83 @@ def daily_post_title(items: list[build.Item], today: str) -> str:
     return f"Noticias de tecnologia: {topic_text} | {today}"
 
 
+TOPIC_DIGESTS = [
+    {
+        "title": "Inteligencia artificial hoy",
+        "categories": {"inteligencia artificial"},
+        "labels": ["inteligencia artificial", "ia", "noticias tech", "pulso tech diario"],
+        "intro": "Resumen en espanol de las senales de IA que pueden afectar software, productividad, trabajo y plataformas digitales.",
+    },
+    {
+        "title": "Ciberseguridad hoy",
+        "categories": {"ciberseguridad"},
+        "labels": ["ciberseguridad", "privacidad", "noticias tech", "pulso tech diario"],
+        "intro": "Alertas y movimientos de seguridad digital explicados rapido para entender riesgos, datos y acciones preventivas.",
+    },
+    {
+        "title": "Chips y hardware para IA hoy",
+        "categories": {"chips"},
+        "labels": ["chips", "hardware", "ia local", "noticias tech", "pulso tech diario"],
+        "intro": "Senales sobre GPU, NPU, semiconductores y computo que pueden mover la siguiente ola de inteligencia artificial.",
+    },
+]
+
+
+def topic_post_title(topic: dict, today: str) -> str:
+    return f"{topic['title']}: resumen de tecnologia | {today}"
+
+
+def topic_digest_posts(
+    items: list[build.Item],
+    today: str,
+    daily_url: str,
+    guide_posts: list[tuple[str, str]] | None = None,
+) -> list[dict]:
+    indexed_items = list(enumerate(items, start=1))
+    posts = []
+    for topic in TOPIC_DIGESTS:
+        selected = [(index, item) for index, item in indexed_items if item.category in topic["categories"]]
+        if not selected:
+            continue
+        rows = []
+        for rank, (original_index, item) in enumerate(selected[:4], start=1):
+            title = build.display_title(item)
+            rows.append(
+                f"""
+<section style="margin:0 0 28px;padding:0 0 24px;border-bottom:1px solid #2b2b2b;">
+  <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">#{rank} &middot; {html.escape(item.source)}</p>
+  <img src="{html.escape(public_image_url(item, original_index))}" alt="{html.escape(title)}" width="1200" height="630" style="display:block;width:100%;height:auto;margin:0 0 16px;background:#0f172a;border:0;" loading="lazy">
+  <h2 style="margin:0 0 10px;font-size:30px;line-height:1.08;font-style:italic;color:#ff7058;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#ff7058;text-decoration:none;">{html.escape(title)}</a></h2>
+  <p style="margin:0 0 12px;color:#f1e7dd;font-size:15px;line-height:1.7;">{html.escape(build.display_summary(item))}</p>
+  <p style="margin:0;color:#c8b8aa;font-size:13px;line-height:1.6;"><strong style="color:#f7f1e8;">Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
+</section>
+"""
+            )
+        content = f"""
+<div style="background:#151515;color:#f7f1e8;padding:30px 28px 36px;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:900px;margin:0 auto;">
+    <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">Pulso Tech Diario &middot; {today}</p>
+    <h1 style="margin:0 0 14px;font-size:42px;line-height:1.02;font-style:italic;color:#ffffff;">{html.escape(topic["title"])}</h1>
+    <p style="margin:0 0 26px;color:#c8b8aa;font-size:17px;line-height:1.65;">{html.escape(topic["intro"])}</p>
+    {''.join(rows)}
+    <div style="margin:28px 0 0;padding:18px;background:#201512;border:1px solid #ff7058;">
+      <p style="margin:0 0 10px;color:#ffffff;font-weight:900;">Resumen completo del dia</p>
+      <p style="margin:0;color:#f1e7dd;line-height:1.6;">Esta entrada tematica complementa el resumen diario general. Para ver todas las senales de tecnologia de hoy, abre: <a href="{html.escape(daily_url)}" style="color:#ff7058;font-weight:900;">noticias de tecnologia del dia</a>.</p>
+    </div>
+    {internal_link_block(guide_posts)}
+  </div>
+</div>
+"""
+        posts.append(
+            {
+                "title": topic_post_title(topic, today),
+                "labels": topic["labels"],
+                "content": content,
+            }
+        )
+    return posts
+
+
 def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str]) -> None:
     grouped: dict[str, list[dict]] = {}
     for post in list_posts(blog_id, token):
@@ -702,6 +779,37 @@ def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, d
                 raise
 
 
+def ensure_topic_digest_posts(
+    blog_id: str,
+    token: str,
+    existing_posts: dict[str, dict],
+    items: list[build.Item],
+    today: str,
+    daily_url: str,
+    guide_posts: list[tuple[str, str]] | None = None,
+) -> None:
+    for post in topic_digest_posts(items, today, daily_url, guide_posts):
+        title = post["title"]
+        payload = post_payload(title, post["content"], post["labels"])
+        existing = existing_posts.get(title)
+        try:
+            if existing and existing.get("id"):
+                update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+                result = request_json(update_url, method="PUT", token=token, payload=payload)
+                print(f"Updated topic post: {result.get('url', result.get('id'))}")
+            else:
+                insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
+                result = request_json(insert_url, method="POST", token=token, payload=payload)
+                print(f"Created topic post: {result.get('url', result.get('id'))}")
+            throttle_write()
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            print(f"Warning: skipped topic post after HTTP {exc.code}: {title}")
+            print(body[:600])
+            if exc.code not in {403, 429, 500, 502, 503, 504}:
+                raise
+
+
 def publish() -> None:
     blog_id = required_env("BLOGGER_BLOG_ID")
     token = get_access_token()
@@ -713,6 +821,8 @@ def publish() -> None:
     managed_titles = {post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES}
     managed_titles.add(title)
     managed_titles.add(old_title)
+    for topic in TOPIC_DIGESTS:
+        managed_titles.add(topic_post_title(topic, today))
     cleanup_managed_duplicates(blog_id, token, managed_titles)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     ensure_evergreen_posts(blog_id, token, existing_posts)
@@ -724,11 +834,16 @@ def publish() -> None:
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
         result = request_json(update_url, method="PUT", token=token, payload=payload)
-        print(f"Updated daily post: {result.get('url', result.get('id'))}")
-        return
-    url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
-    result = request_json(url, method="POST", token=token, payload=payload)
-    print(f"Published: {result.get('url', result.get('id'))}")
+        daily_url = result.get("url", result.get("id", BLOG_URL + "/"))
+        print(f"Updated daily post: {daily_url}")
+    else:
+        url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
+        result = request_json(url, method="POST", token=token, payload=payload)
+        daily_url = result.get("url", result.get("id", BLOG_URL + "/"))
+        print(f"Published: {daily_url}")
+    throttle_write()
+    existing_posts = posts_by_title(list_posts(blog_id, token))
+    ensure_topic_digest_posts(blog_id, token, existing_posts, items, today, daily_url, guide_posts)
 
 
 if __name__ == "__main__":

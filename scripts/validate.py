@@ -60,6 +60,17 @@ def validate() -> None:
         capture_output=True,
         text=True,
     )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; posts=p.topic_digest_posts(b.fallback_items(), '2026-01-02', 'https://pulsotechdiario.blogspot.com/example.html'); assert len(posts) >= 3, len(posts); blob=' '.join(post['title'] + post['content'] for post in posts); assert 'Inteligencia artificial hoy' in blob and 'Ciberseguridad hoy' in blob and 'Chips y hardware para IA hoy' in blob, blob; assert 'Resumen completo del dia' in blob and '<img src=' in blob and 'Leer fuente' not in blob",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
 
     for relative in [
         "index.html",
