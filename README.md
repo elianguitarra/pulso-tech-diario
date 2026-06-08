@@ -2,6 +2,12 @@
 
 Blog automatizado que publica un resumen diario de noticias tecnologicas relevantes en Blogger/Blogspot. No usa hosting de pago ni dominio propio.
 
+Leer el blog principal: https://pulsotechdiario.blogspot.com/
+
+Empieza aqui: https://pulsotechdiario.blogspot.com/p/empieza-aqui.html
+
+Kit para compartir: https://elianguitarra.github.io/pulso-tech-diario/share-pack.html
+
 ## Como funciona
 
 - `scripts/build.py` lee fuentes RSS publicas de tecnologia y tambien puede generar una preview estatica.

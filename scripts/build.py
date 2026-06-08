@@ -38,6 +38,9 @@ ADSENSE_CLIENT = os.environ.get("ADSENSE_CLIENT", "").strip()
 ADSENSE_TOP_SLOT = os.environ.get("ADSENSE_TOP_SLOT", "").strip()
 ADSENSE_IN_ARTICLE_SLOT = os.environ.get("ADSENSE_IN_ARTICLE_SLOT", "").strip()
 INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "pulso-tech-diario-2026-indexnow-key").strip()
+BLOG_URL = "https://pulsotechdiario.blogspot.com"
+BLOGGER_START_URL = f"{BLOG_URL}/p/empieza-aqui.html"
+BLOGGER_RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
 
 STATIC_PAGES = {
     "acerca.html": {
@@ -816,6 +819,20 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <span>IA</span><span>Chips</span><span>Ciberseguridad</span><span>Startups</span><span>Consumo</span><span>Ciencia</span>
     </section>
 
+    <section class="blogger-cta" aria-label="Leer el blog principal">
+      <div>
+        <p class="kicker">Blog principal</p>
+        <h2>Lee la version completa en Blogger</h2>
+        <p>Blogger es la casa principal de Pulso Tech Diario: ahi estan las entradas, etiquetas, guias y el flujo preparado para AdSense.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="{BLOG_URL}/" target="_blank" rel="noopener">Abrir Blogger</a>
+        <a href="{BLOGGER_START_URL}" target="_blank" rel="noopener">Empieza aqui</a>
+        <a href="{BLOGGER_RSS_URL}" target="_blank" rel="noopener">RSS Blogger</a>
+        <a href="share-pack.html">Compartir</a>
+      </div>
+    </section>
+
     {ad_unit("leaderboard", ADSENSE_TOP_SLOT, "anuncio principal")}
 
     <section class="grid" aria-label="Resumen diario">
@@ -1042,6 +1059,42 @@ h1 {
   color: #334155;
   font-weight: 800;
 }
+.blogger-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  margin: 0 0 30px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+}
+.blogger-cta h2 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  line-height: 1.05;
+}
+.blogger-cta p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.55;
+}
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  max-width: 360px;
+}
+.cta-actions a {
+  display: inline-block;
+  padding: 11px 13px;
+  background: var(--ink);
+  color: white;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 13px;
+}
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding: 12px 0 64px; }
 .story {
   background: white;
@@ -1099,6 +1152,8 @@ footer a { color: var(--ink); font-weight: 750; }
 }
 @media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
+  .blogger-cta { grid-template-columns: 1fr; }
+  .cta-actions { justify-content: flex-start; max-width: none; }
   .grid { grid-template-columns: 1fr 1fr; }
   .story:first-child { grid-column: span 2; }
 }
