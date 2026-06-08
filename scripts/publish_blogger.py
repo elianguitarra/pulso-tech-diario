@@ -71,7 +71,7 @@ def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
         return ""
     links = "".join(
         f'<li style="margin:0 0 8px;"><a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;text-decoration:none;">{html.escape(title)}</a></li>'
-        for title, url in guide_links[:19]
+        for title, url in guide_links[:24]
     )
     return f"""
   <div style="margin:18px 0 0;padding:16px;background:#181818;border:1px solid #2f2f2f;">
