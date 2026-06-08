@@ -59,6 +59,7 @@ def validate() -> None:
         "robots.txt",
         "data.json",
         "blogger-archivo.html",
+        "ultima-entrada.html",
         "acerca.html",
         "politica-editorial.html",
         "privacidad.html",
@@ -117,9 +118,16 @@ def validate() -> None:
         "privacidad-chatbots-ia.html",
         "checklist-phishing.html",
         "blogger-archivo.html",
+        "ultima-entrada.html",
     ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
+
+    latest_text = (PUBLIC / "ultima-entrada.html").read_text(encoding="utf-8")
+    if "utm_campaign=latest_entry" not in latest_text:
+        fail("ultima-entrada.html missing latest_entry tracking")
+    if "http-equiv=\"refresh\"" not in latest_text:
+        fail("ultima-entrada.html missing refresh redirect")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:

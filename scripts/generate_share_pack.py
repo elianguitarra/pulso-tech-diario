@@ -18,6 +18,7 @@ PUBLIC = ROOT / "public"
 TXT_OUT = PUBLIC / "share-pack.txt"
 HTML_OUT = PUBLIC / "share-pack.html"
 ARCHIVE_OUT = PUBLIC / "blogger-archivo.html"
+LATEST_OUT = PUBLIC / "ultima-entrada.html"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
@@ -255,13 +256,53 @@ def render_archive(items: list[dict[str, str]]) -> str:
 """
 
 
+def render_latest_redirect(title: str, url: str) -> str:
+    target = tracked_url(url, "github_pages", "redirect", "latest_entry", "canonical")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ultima entrada | Pulso Tech Diario</title>
+  <meta name="description" content="Acceso permanente a la entrada mas reciente de Pulso Tech Diario en Blogger.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{html.escape(url)}">
+  <meta http-equiv="refresh" content="2; url={html.escape(target)}">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{html.escape(title)}">
+  <meta property="og:description" content="Entrada mas reciente de Pulso Tech Diario.">
+  <meta property="og:url" content="{PAGES_URL}/ultima-entrada.html">
+  <style>
+    body {{ margin: 0; font-family: Arial, Helvetica, sans-serif; background: #151515; color: #f7f1e8; }}
+    main {{ width: min(100% - 32px, 820px); margin: 0 auto; padding: 56px 0 72px; }}
+    h1 {{ font-size: clamp(38px, 8vw, 72px); line-height: 0.95; margin: 0 0 18px; }}
+    a {{ color: #ff7058; font-weight: 900; }}
+    .panel {{ border-top: 3px solid #ff7058; margin-top: 28px; padding-top: 18px; }}
+  </style>
+</head>
+<body>
+  <main>
+    <p>Actualizado {now}</p>
+    <h1>Ultima entrada de Pulso Tech Diario</h1>
+    <p>Te estamos llevando a la publicacion mas reciente en Blogger.</p>
+    <div class="panel">
+      <p><strong>{html.escape(title)}</strong></p>
+      <p><a href="{html.escape(target)}">Abrir ahora</a></p>
+    </div>
+  </main>
+</body>
+</html>
+"""
+
+
 def append_to_sitemap() -> None:
     if not SITEMAP.exists():
         return
     text = SITEMAP.read_text(encoding="utf-8")
     today = datetime.now(timezone.utc).date().isoformat()
     entries = []
-    for loc in [f"{PAGES_URL}/share-pack.html", f"{PAGES_URL}/blogger-archivo.html"]:
+    for loc in [f"{PAGES_URL}/share-pack.html", f"{PAGES_URL}/blogger-archivo.html", f"{PAGES_URL}/ultima-entrada.html"]:
         if loc in text:
             continue
         entries.append(f"""  <url>
@@ -285,8 +326,9 @@ def main() -> None:
     TXT_OUT.write_text(render_text(title, url, guides), encoding="utf-8")
     HTML_OUT.write_text(render_html(title, url, guides), encoding="utf-8")
     ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")
+    LATEST_OUT.write_text(render_latest_redirect(title, url), encoding="utf-8")
     append_to_sitemap()
-    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, and {ARCHIVE_OUT}")
+    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, and {LATEST_OUT}")
 
 
 if __name__ == "__main__":

@@ -1065,6 +1065,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       </div>
       <div class="cta-actions">
         <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
+        <a href="ultima-entrada.html">Ultima entrada</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>
