@@ -761,6 +761,13 @@ def legacy_daily_title(today: str) -> str:
     return f"Pulso Tech Diario: {today}"
 
 
+def find_daily_post_for_date(existing_posts: dict[str, dict], today: str) -> dict | None:
+    for candidate_title, post in existing_posts.items():
+        if candidate_title.startswith("Noticias de tecnologia:") and candidate_title.endswith(f"| {today}"):
+            return post
+    return None
+
+
 def daily_post_title(items: list[build.Item], today: str) -> str:
     preferred = ["inteligencia artificial", "chips", "ciberseguridad", "web y plataformas", "startups"]
     labels = {
@@ -1023,7 +1030,7 @@ def publish() -> None:
     create_extra_pages = os.environ.get("BLOGGER_CREATE_EXTRA_GUIDE_PAGES", "").strip().lower() in {"1", "true", "yes"}
     if create_extra_pages:
         ensure_base_pages(blog_id, token, blogger_guide_pages(guide_posts))
-    existing = existing_posts.get(title) or existing_posts.get(old_title)
+    existing = existing_posts.get(title) or existing_posts.get(old_title) or find_daily_post_for_date(existing_posts, today)
     payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
