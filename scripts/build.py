@@ -258,11 +258,26 @@ def palette_for(category: str) -> tuple[str, str, str, str]:
     return palettes.get(category, palettes["tecnologia"])
 
 
+IMAGE_LABELS = {
+    "inteligencia artificial": ["IA EN ACCION", "NUEVA SENAL IA", "FUTURO DEL SOFTWARE"],
+    "chips": ["PODER DE COMPUTO", "NUEVA OLA CHIP", "HARDWARE CLAVE"],
+    "ciberseguridad": ["ALERTA DIGITAL", "DATOS EN RIESGO", "DEFENSA ACTIVA"],
+    "startups": ["CAPITAL TEC", "NUEVA APUESTA", "MERCADO EMERGENTE"],
+    "consumo": ["PRODUCTOS Y APPS", "CAMBIO DE USO", "TECNOLOGIA DIARIA"],
+    "web y plataformas": ["MAPA DIGITAL", "PLATAFORMAS", "WEB EN CAMBIO"],
+    "ciencia": ["CIENCIA APLICADA", "NUEVA FRONTERA", "SENAL CIENTIFICA"],
+    "tecnologia": ["PULSO TEC", "SENAL CLAVE", "INDUSTRIA TECH"],
+}
+
+
+def image_label_for(category: str, index: int) -> str:
+    labels = IMAGE_LABELS.get(category, IMAGE_LABELS["tecnologia"])
+    return labels[index % len(labels)]
+
+
 def svg_for_item(item: Item, index: int) -> str:
     bg, primary, secondary, paper = palette_for(item.category)
-    visible_title = spanishize_text(item.title)
-    title_words = [word for word in re.findall(r"[A-Za-z0-9]+", visible_title) if len(word) > 3][:3]
-    label = " ".join(title_words).upper() or item.category.upper()
+    label = image_label_for(item.category, index)
     seed = sum(ord(ch) for ch in item.title) + index * 31
 
     def micro_grid() -> str:
@@ -456,6 +471,7 @@ ENGLISH_MARKERS = {
     "gets",
     "says",
     "new",
+    "when",
     "how",
     "why",
     "what",
@@ -629,18 +645,48 @@ def extract_entities(value: str) -> list[str]:
         "The",
         "This",
         "That",
+        "When",
         "How",
         "What",
         "Why",
+        "Where",
+        "Which",
         "After",
         "Before",
         "For",
         "With",
         "From",
+        "Into",
+        "Over",
+        "Under",
         "All",
+        "Every",
+        "Other",
+        "More",
+        "Less",
+        "New",
+        "Latest",
+        "First",
+        "Last",
+        "Next",
         "Show",
         "Hacked",
         "Leaked",
+        "Changed",
+        "Managing",
+        "Production",
+        "Problem",
+        "Solved",
+        "Explains",
+        "Launches",
+        "Arrives",
+        "Gets",
+        "Says",
+        "Could",
+        "Would",
+        "Should",
+        "Will",
+        "Can",
         "AI",
         "Agentic",
         "Games",
@@ -836,7 +882,7 @@ def schema(items: list[Item]) -> dict:
         "mainEntityOfPage": {
             "@type": "ItemList",
             "itemListElement": [
-                {"@type": "ListItem", "position": index + 1, "url": item.link, "name": item.title}
+                {"@type": "ListItem", "position": index + 1, "url": item.link, "name": display_title(item)}
                 for index, item in enumerate(items)
             ],
         },
@@ -1111,10 +1157,13 @@ def write_static(items: list[Item]) -> None:
         )
     elif ads_txt.exists():
         ads_txt.unlink()
-    (PUBLIC / "data.json").write_text(
-        json.dumps([item.__dict__ | {"published": item.published.isoformat()} for item in items], indent=2),
-        encoding="utf-8",
-    )
+    public_items = []
+    for item in items:
+        payload = item.__dict__ | {"published": item.published.isoformat()}
+        payload["title"] = display_title(item)
+        payload["summary"] = display_summary(item)
+        public_items.append(payload)
+    (PUBLIC / "data.json").write_text(json.dumps(public_items, indent=2), encoding="utf-8")
 
 
 def fallback_items() -> list[Item]:

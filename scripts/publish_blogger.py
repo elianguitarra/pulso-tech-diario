@@ -238,7 +238,7 @@ def compact_svg(svg: str) -> str:
     return svg.replace("<svg ", '<svg style="display:block;width:100%;height:auto;" ', 1)
 
 
-def post_html(items: list[build.Item]) -> str:
+def _legacy_card_post_html(items: list[build.Item]) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     blocks = [
         f"""
@@ -252,13 +252,15 @@ def post_html(items: list[build.Item]) -> str:
     ]
     for index, item in enumerate(items, start=1):
         svg = compact_svg(build.svg_for_item(item, index))
+        title = build.display_title(item)
+        summary = build.display_summary(item)
         blocks.append(
             f"""
 <section style="border:1px solid #d9e2ec;border-radius:18px;padding:18px;margin:0 0 26px;background:#ffffff;box-shadow:0 10px 30px rgba(15,23,42,.08);">
   <div style="width:100%;max-width:980px;overflow:hidden;border-radius:14px;background:#0f172a;">{svg}</div>
   <p style="margin:18px 0 8px;color:#0f766e;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.06em;">#{index} · {html.escape(item.category)} · {html.escape(item.source)}</p>
-  <h2 style="margin:0 0 12px;font-size:30px;line-height:1.13;color:#172033;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#172033;text-decoration:none;">{html.escape(item.title)}</a></h2>
-  <p style="margin:0 0 12px;color:#334155;font-size:16px;line-height:1.65;">{html.escape(item.summary or build.reading_angle(item))}</p>
+  <h2 style="margin:0 0 12px;font-size:30px;line-height:1.13;color:#172033;"><a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#172033;text-decoration:none;">{html.escape(title)}</a></h2>
+  <p style="margin:0 0 12px;color:#334155;font-size:16px;line-height:1.65;">{html.escape(summary)}</p>
   <p style="margin:0;padding:14px 16px;border-left:5px solid #f59e0b;background:#fff7ed;color:#123f3c;font-weight:700;line-height:1.55;"><strong>Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
 </section>
 """
