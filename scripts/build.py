@@ -137,6 +137,30 @@ STATIC_PAGES = {
 <p>Repositorio del sistema: <a href="https://github.com/elianguitarra/pulso-tech-diario" target="_blank" rel="noopener">github.com/elianguitarra/pulso-tech-diario</a>.</p>
 """,
     },
+    "noticias-tecnologia-espanol.html": {
+        "title": "Noticias de tecnologia en espanol, explicadas rapido",
+        "description": "Resumen diario de noticias de tecnologia en espanol sobre inteligencia artificial, ciberseguridad, chips, plataformas y productividad.",
+        "body": f"""
+<p>Pulso Tech Diario resume cada dia senales relevantes de tecnologia para lectores que quieren entender que cambia sin leer decenas de fuentes.</p>
+<h2>Que cubre</h2>
+<p>El foco esta en inteligencia artificial, ciberseguridad, chips, plataformas, consumo digital, startups y herramientas que afectan trabajo y vida diaria.</p>
+<h2>Como leerlo</h2>
+<p>Empieza por la entrada diaria, salta a los temas que te interesan y guarda las guias evergreen para dudas recurrentes como IA local, NPU vs GPU, privacidad con chatbots o phishing.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="ultima-entrada.html">Ver la ultima entrada</a></li>
+  <li><a href="temas.html">Explorar temas</a></li>
+  <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="{BLOG_HOME_TRACKED}">Abrir el blog principal en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Pulso Tech Diario publica noticias todos los dias?", "Si. El sistema genera un resumen diario automatizado y mantiene paginas evergreen para busquedas frecuentes."),
+            ("Las notas estan en espanol?", "Si. Los titulares, resumenes y guias se publican en espanol aunque las fuentes originales puedan estar en ingles."),
+            ("Donde esta el blog principal?", "El blog principal esta en Blogger, preparado para entradas, etiquetas y monetizacion con AdSense cuando Google lo apruebe."),
+        ],
+    },
     "ia-en-el-trabajo.html": {
         "title": "IA en el trabajo: donde si ahorra tiempo",
         "description": "Guia practica para saber en que tareas laborales la inteligencia artificial ayuda y donde requiere supervision humana.",
@@ -1002,6 +1026,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
     evergreen_guides = [
+        ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
         ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),
@@ -1045,6 +1070,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <span>{SITE_NAME}</span>
     </a>
     <nav aria-label="Acciones">
+      <a href="noticias-tecnologia-espanol.html">Noticias</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
@@ -1080,6 +1106,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <div class="cta-actions">
         <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="ultima-entrada.html">Ultima entrada</a>
+        <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>
@@ -1204,6 +1231,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     </a>
     <nav aria-label="Secciones">
       <a href="./">Inicio</a>
+      <a href="noticias-tecnologia-espanol.html">Noticias</a>
       <a href="temas.html">Temas</a>
       <a href="feed.xml">RSS</a>
       <a href="contacto.html">Contacto</a>
@@ -1448,7 +1476,7 @@ h1 {
 }
 .guide-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 14px;
 }
 .guide-card {
