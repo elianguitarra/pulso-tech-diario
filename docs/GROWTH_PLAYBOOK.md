@@ -35,8 +35,13 @@ Publicar y mantener guias evergreen en espanol:
 - Como proteger tus cuentas despues de una filtracion de datos.
 - Chips de IA: que significan GPU, NPU y memoria unificada.
 - Como elegir herramientas de IA sin caer en humo.
+- Privacidad con IA: que datos no debes subir a un chatbot.
+- Como detectar phishing: senales simples antes de hacer clic.
+- IA en el trabajo: tareas donde si ahorra tiempo y donde no.
+- Que revisar antes de comprar una laptop para IA.
 
 Cada guia debe enlazar al resumen diario cuando sea relevante.
+Tambien debe enlazar a otras guias relacionadas para aumentar paginas por visita y ayudar al rastreo interno.
 
 ## 3. Distribucion diaria sin pagar anuncios
 

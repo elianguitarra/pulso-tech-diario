@@ -271,6 +271,74 @@ EVERGREEN_POSTS = [
 <p>Las mejores herramientas viven cerca del flujo: correo, documentos, hojas, codigo, CRM o navegador. Si todo depende de abrir otra pestana, el beneficio baja rapido.</p>
 """,
     },
+    {
+        "title": "Privacidad con IA: que datos no debes subir a un chatbot",
+        "labels": ["inteligencia artificial", "privacidad", "seguridad", "guia"],
+        "content": """
+<p>Los chatbots de IA son utiles para resumir, redactar y analizar informacion, pero no todo dato debe entrar en una conversacion con una herramienta externa. Esta guia explica como usar IA sin regalar informacion sensible.</p>
+<h2>Datos personales directos</h2>
+<p>Evita subir identificaciones, direcciones, telefonos, datos fiscales, documentos medicos, cuentas bancarias o cualquier informacion que pueda identificar a una persona.</p>
+<h2>Informacion de trabajo</h2>
+<p>No pegues contratos, estrategias internas, listas de clientes, codigo privado, credenciales, tickets con datos sensibles o documentos que pertenezcan a una empresa sin permiso claro.</p>
+<h2>Como reducir riesgo</h2>
+<p>Quita nombres, correos, montos, claves y referencias internas antes de pedir ayuda. Si necesitas analizar un documento, crea una version anonimizada con la estructura pero sin datos reales.</p>
+<h2>Que revisar en una herramienta</h2>
+<p>Busca controles de privacidad, opcion para no entrenar con tus datos, historial borrable, permisos por equipo y politicas claras. Si la herramienta no explica que hace con la informacion, conviene usarla solo con datos publicos.</p>
+<h2>Regla practica</h2>
+<p>Si no publicarias ese texto en internet ni lo mandarias a un desconocido, no lo pegues completo en un chatbot. La IA puede ayudar mucho, pero la privacidad empieza antes de escribir el prompt.</p>
+""",
+    },
+    {
+        "title": "Como detectar phishing: senales simples antes de hacer clic",
+        "labels": ["ciberseguridad", "phishing", "privacidad", "guia"],
+        "content": """
+<p>El phishing intenta que entregues contrasenas, codigos o datos personales fingiendo ser una empresa, banco, paqueteria o servicio conocido. La buena noticia es que muchas senales se pueden detectar antes de hacer clic.</p>
+<h2>Urgencia exagerada</h2>
+<p>Mensajes como "tu cuenta sera cerrada hoy" o "pago rechazado, actua ahora" buscan que respondas sin pensar. La urgencia es una de las herramientas favoritas del atacante.</p>
+<h2>Enlaces raros</h2>
+<p>Antes de abrir un enlace, revisa el dominio. Letras cambiadas, guiones extra, subdominios largos o direcciones que no coinciden con la marca son senales de alerta.</p>
+<h2>Archivos inesperados</h2>
+<p>No abras adjuntos que no esperabas, especialmente si piden habilitar macros, iniciar sesion o instalar algo. Si parece venir de alguien conocido, confirma por otro canal.</p>
+<h2>Codigos de verificacion</h2>
+<p>Ningun soporte legitimo necesita que le dictes un codigo de verificacion de dos pasos. Si alguien lo pide, probablemente intenta entrar a tu cuenta.</p>
+<h2>Mejor respuesta</h2>
+<p>No respondas desde el mensaje sospechoso. Entra manualmente al sitio oficial desde el navegador o la app, revisa notificaciones y cambia contrasenas solo desde canales conocidos.</p>
+""",
+    },
+    {
+        "title": "IA en el trabajo: tareas donde si ahorra tiempo y donde no",
+        "labels": ["inteligencia artificial", "trabajo", "productividad", "guia"],
+        "content": """
+<p>La IA puede ahorrar tiempo, pero no en cualquier tarea. Funciona mejor cuando hay informacion clara, criterios de revision y un resultado que una persona puede comprobar.</p>
+<h2>Donde suele ayudar</h2>
+<p>Resumir reuniones, ordenar notas, crear primeros borradores, explicar codigo, comparar opciones, transformar formatos y preparar listas de preguntas son usos donde la IA puede reducir friccion.</p>
+<h2>Donde hay que tener cuidado</h2>
+<p>Decisiones legales, medicas, financieras, datos sensibles, calculos criticos o comunicados delicados requieren revision experta. La IA puede sugerir, pero no debe reemplazar responsabilidad.</p>
+<h2>Como medir si sirve</h2>
+<p>El beneficio no es que la herramienta "suene inteligente". Mide si reduce minutos, errores o pasos repetidos. Si tienes que corregir demasiado, tal vez el flujo no esta listo.</p>
+<h2>Prompts utiles</h2>
+<p>Da contexto, objetivo, formato esperado y criterios de calidad. En vez de pedir "hazlo mejor", pide "resume en 5 puntos para un gerente que necesita decidir hoy".</p>
+<h2>La regla de oro</h2>
+<p>Usa IA como copiloto para avanzar mas rapido, no como piloto automatico para tareas que no puedes revisar. El ahorro real aparece cuando el humano conserva criterio.</p>
+""",
+    },
+    {
+        "title": "Que revisar antes de comprar una laptop para IA",
+        "labels": ["chips", "ia local", "laptop", "hardware", "guia"],
+        "content": """
+<p>Las computadoras nuevas prometen funciones de IA, pero no todas sirven para lo mismo. Antes de comprar una laptop conviene mirar mas que el anuncio de "AI PC".</p>
+<h2>Memoria RAM</h2>
+<p>La memoria importa mucho para trabajar con modelos, navegadores pesados, edicion y multitarea. Para uso moderno, 16 GB suele ser el punto de partida razonable; para trabajo pesado, mas memoria ayuda.</p>
+<h2>GPU, NPU y CPU</h2>
+<p>La GPU puede acelerar tareas de IA y graficos. La NPU busca eficiencia para funciones integradas. La CPU sigue importando para rendimiento general. No compres solo por una sigla.</p>
+<h2>Software compatible</h2>
+<p>Un chip potente no sirve de mucho si tus aplicaciones no lo aprovechan. Revisa si las herramientas que usas soportan funciones locales o aceleracion real.</p>
+<h2>Bateria y temperatura</h2>
+<p>La IA local puede consumir recursos. Mira reseñas de autonomia, ruido y temperatura, no solo numeros de rendimiento.</p>
+<h2>Compra con una tarea en mente</h2>
+<p>Si solo quieres escribir, navegar y usar chatbots en la nube, no necesitas pagar de mas. Si vas a editar video, programar, generar imagenes o probar modelos locales, hardware y memoria pesan mucho mas.</p>
+""",
+    },
 ]
 
 
