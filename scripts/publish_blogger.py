@@ -810,6 +810,82 @@ def ensure_topic_digest_posts(
                 raise
 
 
+def daily_growth_block(daily_url: str, items: list[build.Item]) -> str:
+    topics = []
+    for item in items:
+        if item.category not in topics:
+            topics.append(item.category)
+        if len(topics) == 4:
+            break
+    topic_text = ", ".join(topics) if topics else "inteligencia artificial, chips y ciberseguridad"
+    return f"""
+<div style="margin:28px 0;padding:18px;background:#151515;color:#f7f1e8;border:1px solid #ff7058;">
+  <p style="margin:0 0 8px;color:#ff7058;font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:12px;">Hoy en Pulso Tech Diario</p>
+  <p style="margin:0 0 12px;line-height:1.65;">El resumen actualizado de hoy sigue senales sobre {html.escape(topic_text)}. Esta guia se mantiene enlazada al flujo diario para que los lectores encuentren noticias recientes desde paginas ya indexadas.</p>
+  <p style="margin:0;"><a href="{html.escape(daily_url)}" style="color:#ff7058;font-weight:900;">Leer noticias de tecnologia de hoy</a></p>
+</div>
+"""
+
+
+def growth_refresh_titles(items: list[build.Item]) -> list[str]:
+    titles = [
+        "Como leer tecnologia sin ruido: metodo Pulso Tech",
+        "Senales que miramos cada dia en chips, seguridad y startups",
+    ]
+    categories = {item.category for item in items}
+    if "inteligencia artificial" in categories:
+        titles.extend(
+            [
+                "Glosario rapido de inteligencia artificial para lectores ocupados",
+                "Como elegir herramientas de IA sin caer en humo",
+            ]
+        )
+    if "ciberseguridad" in categories:
+        titles.extend(
+            [
+                "Como detectar phishing: senales simples antes de hacer clic",
+                "Como proteger tus cuentas despues de una filtracion de datos",
+            ]
+        )
+    if "chips" in categories:
+        titles.append("Chips de IA: que significan GPU, NPU y memoria unificada")
+    unique_titles = []
+    for title in titles:
+        if title not in unique_titles:
+            unique_titles.append(title)
+    return unique_titles[:5]
+
+
+def refresh_existing_growth_posts(
+    blog_id: str,
+    token: str,
+    existing_posts: dict[str, dict],
+    items: list[build.Item],
+    daily_url: str,
+    guide_posts: list[tuple[str, str]] | None = None,
+) -> None:
+    posts_by_static_title = {post["title"]: post for post in EVERGREEN_POSTS}
+    block = daily_growth_block(daily_url, items)
+    for title in growth_refresh_titles(items):
+        post = posts_by_static_title.get(title)
+        existing = existing_posts.get(title)
+        if not post or not existing or not existing.get("id"):
+            continue
+        content = f"{post['content'].strip()}\n{block}\n{internal_link_block(guide_posts)}"
+        payload = post_payload(title, content, post["labels"])
+        try:
+            update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+            result = request_json(update_url, method="PUT", token=token, payload=payload)
+            print(f"Refreshed growth post: {result.get('url', result.get('id'))}")
+            throttle_write()
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            print(f"Warning: skipped growth refresh after HTTP {exc.code}: {title}")
+            print(body[:600])
+            if exc.code not in {403, 429, 500, 502, 503, 504}:
+                raise
+
+
 def publish() -> None:
     blog_id = required_env("BLOGGER_BLOG_ID")
     token = get_access_token()
@@ -821,8 +897,6 @@ def publish() -> None:
     managed_titles = {post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES}
     managed_titles.add(title)
     managed_titles.add(old_title)
-    for topic in TOPIC_DIGESTS:
-        managed_titles.add(topic_post_title(topic, today))
     cleanup_managed_duplicates(blog_id, token, managed_titles)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     ensure_evergreen_posts(blog_id, token, existing_posts)
@@ -843,7 +917,7 @@ def publish() -> None:
         print(f"Published: {daily_url}")
     throttle_write()
     existing_posts = posts_by_title(list_posts(blog_id, token))
-    ensure_topic_digest_posts(blog_id, token, existing_posts, items, today, daily_url, guide_posts)
+    refresh_existing_growth_posts(blog_id, token, existing_posts, items, daily_url, guide_posts)
 
 
 if __name__ == "__main__":
