@@ -27,8 +27,48 @@ import build
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 BLOGGER_API = "https://www.googleapis.com/blogger/v3"
 BLOGGER_SCOPE = "https://www.googleapis.com/auth/blogger"
+BLOG_URL = "https://pulsotechdiario.blogspot.com"
+RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+
+
+def label_url(label: str) -> str:
+    return f"{BLOG_URL}/search/label/{urllib.parse.quote(label)}"
+
+
+def internal_link_block() -> str:
+    links = [
+        ("Inteligencia artificial", label_url("inteligencia artificial")),
+        ("Ciberseguridad", label_url("ciberseguridad")),
+        ("Chips", label_url("chips")),
+        ("Guias", label_url("guia")),
+        ("RSS", RSS_URL),
+    ]
+    items = "".join(
+        f'<a href="{html.escape(url)}" target="_blank" rel="noopener" style="display:inline-block;margin:0 8px 10px 0;padding:9px 12px;border:1px solid #ff7058;color:#ff7058;text-decoration:none;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.05em;">{html.escape(label)}</a>'
+        for label, url in links
+    )
+    return f"""
+<div style="margin:34px 0 0;padding:22px;border-top:3px solid #ff7058;background:#101010;color:#f7f1e8;">
+  <p style="margin:0 0 12px;color:#f7f1e8;font-size:18px;font-weight:900;">Sigue leyendo Pulso Tech Diario</p>
+  <p style="margin:0 0 16px;color:#c8b8aa;line-height:1.65;">Explora mas notas por tema, guarda el RSS o comparte el resumen para que mas lectores encuentren tecnologia explicada en espanol.</p>
+  <div>{items}</div>
+  <p style="margin:8px 0 0;color:#c8b8aa;font-size:13px;line-height:1.6;">Pagina principal: <a href="{BLOG_URL}/" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;">{BLOG_URL}</a></p>
+</div>
+"""
 
 BASE_PAGES = {
+    "Empieza aqui": f"""
+<p><strong>Pulso Tech Diario</strong> publica un resumen diario de tecnologia en espanol, pensado para leer rapido y seguir las senales importantes sin ruido.</p>
+<h2>Lee por tema</h2>
+<ul>
+  <li><a href="{label_url("inteligencia artificial")}">Inteligencia artificial</a></li>
+  <li><a href="{label_url("ciberseguridad")}">Ciberseguridad</a></li>
+  <li><a href="{label_url("chips")}">Chips y hardware</a></li>
+  <li><a href="{label_url("guia")}">Guias practicas</a></li>
+</ul>
+<h2>Recibe nuevas publicaciones</h2>
+<p>Guarda el <a href="{RSS_URL}">RSS del blog</a> o visita la pagina principal cada dia: <a href="{BLOG_URL}/">{BLOG_URL}</a>.</p>
+""",
     "Acerca de": """
 <p><strong>Pulso Tech Diario</strong> es un blog automatizado que resume noticias tecnologicas relevantes cada dia.</p>
 <p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
@@ -330,6 +370,7 @@ def post_html(items: list[build.Item]) -> str:
         blocks.append(
             '<p style="color:#c8b8aa;"><small>Monetizacion: este blog esta preparado para AdSense desde la configuracion de Blogger y ads.txt personalizado.</small></p>'
         )
+    blocks.append(internal_link_block())
     blocks.append("  </div>\n</div>")
     return "\n".join(blocks)
 
@@ -359,7 +400,10 @@ def ensure_base_pages(blog_id: str, token: str) -> None:
         payload = page_payload(title, content)
         existing = existing_pages.get(title)
         if existing and existing.get("id"):
-            print(f"Page already exists: {title}")
+            update_url = f"{BLOGGER_API}/blogs/{blog_id}/pages/{existing['id']}"
+            request_json(update_url, method="PUT", token=token, payload=payload)
+            print(f"Updated page: {title}")
+            throttle_write()
         else:
             insert_url = f"{BLOGGER_API}/blogs/{blog_id}/pages"
             request_json(insert_url, method="POST", token=token, payload=payload)
@@ -411,10 +455,14 @@ def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str
 def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, dict]) -> None:
     for post in EVERGREEN_POSTS:
         title = post["title"]
-        payload = post_payload(title, post["content"], post["labels"])
+        content = f"{post['content'].strip()}\n{internal_link_block()}"
+        payload = post_payload(title, content, post["labels"])
         existing = existing_posts.get(title)
         if existing and existing.get("id"):
-            print(f"Evergreen post already exists: {title}")
+            update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+            request_json(update_url, method="PUT", token=token, payload=payload)
+            print(f"Updated evergreen post: {title}")
+            throttle_write()
         else:
             insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
             request_json(insert_url, method="POST", token=token, payload=payload)

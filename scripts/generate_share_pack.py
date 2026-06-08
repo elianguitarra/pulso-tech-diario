@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -13,8 +12,7 @@ BLOG_URL = "https://pulsotechdiario.blogspot.com"
 
 
 def daily_url() -> str:
-    today = datetime.now(timezone.utc)
-    return f"{BLOG_URL}/{today:%Y/%m}/pulso-tech-diario-{today:%Y-%m-%d}.html"
+    return f"{BLOG_URL}/"
 
 
 def main() -> None:
