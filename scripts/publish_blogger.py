@@ -690,13 +690,16 @@ def page_payload(title: str, content: str) -> dict:
     }
 
 
-def post_payload(title: str, content: str, labels: list[str]) -> dict:
-    return {
+def post_payload(title: str, content: str, labels: list[str], published: str | None = None) -> dict:
+    payload = {
         "kind": "blogger#post",
         "title": title,
         "labels": labels,
         "content": content.strip(),
     }
+    if published:
+        payload["published"] = published
+    return payload
 
 
 def ensure_base_pages(blog_id: str, token: str, pages: dict[str, str] | None = None) -> None:
@@ -1031,7 +1034,13 @@ def publish() -> None:
     if create_extra_pages:
         ensure_base_pages(blog_id, token, blogger_guide_pages(guide_posts))
     existing = existing_posts.get(title) or existing_posts.get(old_title) or find_daily_post_for_date(existing_posts, today)
-    payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
+    daily_published = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    payload = post_payload(
+        title,
+        post_html(items, guide_posts),
+        ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"],
+        published=daily_published,
+    )
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
         result = request_json(update_url, method="PUT", token=token, payload=payload)
