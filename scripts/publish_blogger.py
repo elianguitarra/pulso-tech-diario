@@ -152,8 +152,40 @@ def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
 """
 
 
+def sitemap_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
+    guide_links = [*(guide_posts or []), *PAGES_EXTRA_GUIDES]
+    guide_items = "".join(
+        f'<li><a href="{html.escape(url)}">{html.escape(title)}</a></li>'
+        for title, url in guide_links[:16]
+    )
+    return f"""
+<p>Mapa rapido de Pulso Tech Diario para encontrar noticias, guias y rutas de seguimiento.</p>
+<h2>Entradas y temas en Blogger</h2>
+<ul>
+  <li><a href="{BLOG_URL}/">Pagina principal</a></li>
+  <li><a href="{label_url("inteligencia artificial")}">Inteligencia artificial</a></li>
+  <li><a href="{label_url("ciberseguridad")}">Ciberseguridad</a></li>
+  <li><a href="{label_url("chips")}">Chips y hardware</a></li>
+  <li><a href="{label_url("guia")}">Guias practicas</a></li>
+  <li><a href="{RSS_URL}">RSS de Blogger</a></li>
+</ul>
+<h2>Guias recomendadas</h2>
+<ul>
+{guide_items}
+</ul>
+<h2>Rutas de descubrimiento</h2>
+<ul>
+  <li><a href="{PAGES_URL}/noticias-tecnologia-espanol.html">Noticias de tecnologia en espanol</a></li>
+  <li><a href="{PAGES_URL}/tendencias-tecnologia-hoy.html">Tendencias de tecnologia hoy</a></li>
+  <li><a href="{PAGES_URL}/links.html">Link en bio</a></li>
+  <li><a href="{PAGES_URL}/share-pack.html">Kit para compartir</a></li>
+</ul>
+"""
+
+
 BASE_PAGES = {
     "Empieza aqui": start_here_content(),
+    "Mapa del sitio": sitemap_content(),
     "Acerca de": """
 <p><strong>Pulso Tech Diario</strong> es un blog automatizado que resume noticias tecnologicas relevantes cada dia.</p>
 <p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
@@ -839,7 +871,14 @@ def publish() -> None:
     ensure_evergreen_posts(blog_id, token, existing_posts)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     guide_posts = guide_posts_from(existing_posts)
-    ensure_base_pages(blog_id, token, {"Empieza aqui": start_here_content(guide_posts)})
+    ensure_base_pages(
+        blog_id,
+        token,
+        {
+            "Empieza aqui": start_here_content(guide_posts),
+            "Mapa del sitio": sitemap_content(guide_posts),
+        },
+    )
     existing = existing_posts.get(title) or existing_posts.get(old_title)
     payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):

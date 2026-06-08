@@ -82,6 +82,17 @@ def validate() -> None:
         capture_output=True,
         text=True,
     )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; content=p.sitemap_content([('Guia prueba','https://example.com/guia')]); assert 'Mapa rapido' in content and 'Prompts de IA' in content and 'RSS de Blogger' in content and 'Kit para compartir' in content, content",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
 
     for relative in [
         "index.html",
