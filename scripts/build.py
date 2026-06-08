@@ -1101,6 +1101,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
     evergreen_guides = [
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
+        ("Tendencias tech hoy", "tendencias-tecnologia-hoy.html", "Lo mas relevante del dia en IA, chips y seguridad."),
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
@@ -1147,6 +1148,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     </a>
     <nav aria-label="Acciones">
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
+      <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
       <a href="links.html">Links</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
@@ -1183,6 +1185,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <div class="cta-actions">
         <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="ultima-entrada.html">Ultima entrada</a>
+        <a href="tendencias-tecnologia-hoy.html">Tendencias hoy</a>
         <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
         <a href="links.html">Link en bio</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
@@ -1325,6 +1328,122 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
   </main>
   <footer>
     <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
+  </footer>
+</body>
+</html>"""
+
+
+def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
+    now = datetime.now(timezone.utc)
+    canonical = f"{SITE_URL}/tendencias-tecnologia-hoy.html"
+    lead = items[0] if items else None
+    lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
+    lead_title = display_title(lead) if lead else "Tendencias de tecnologia hoy"
+    rows = []
+    for rank, item in enumerate(items[:10], start=1):
+        rows.append(
+            f"""
+      <article class="trend-item">
+        <a class="trend-image" href="{esc(item.link)}" target="_blank" rel="noopener">
+          <img src="{esc(image_paths[item.link])}" alt="{esc(display_title(item))}" loading="lazy" width="1200" height="630">
+        </a>
+        <div>
+          <p class="story-meta"><span>#{rank}</span><span>{esc(item.category)}</span><span>{esc(item.source)}</span></p>
+          <h2><a href="{esc(item.link)}" target="_blank" rel="noopener">{esc(display_title(item))}</a></h2>
+          <p>{esc(display_summary(item))}</p>
+          <p class="angle">{esc(reading_angle(item))}</p>
+        </div>
+      </article>"""
+        )
+    faq_schema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Que tendencias de tecnologia se resumen aqui?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "La pagina resume senales recientes sobre inteligencia artificial, ciberseguridad, chips, plataformas, consumo digital y ciencia aplicada.",
+                },
+            },
+            {
+                "@type": "Question",
+                "name": "Cada cuanto se actualiza esta pagina?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Se actualiza automaticamente con el build diario de Pulso Tech Diario y enlaza a fuentes originales y al blog principal en Blogger.",
+                },
+            },
+        ],
+    }
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tendencias de tecnologia hoy | {SITE_NAME}</title>
+  <meta name="description" content="Tendencias de tecnologia hoy en espanol: IA, ciberseguridad, chips, plataformas y herramientas digitales resumidas rapido.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tendencias de tecnologia hoy">
+  <meta property="og:description" content="{esc(lead_title)}">
+  <meta property="og:image" content="{SITE_URL}/{esc(lead_image)}">
+  <meta property="og:url" content="{canonical}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tendencias de tecnologia hoy">
+  <meta name="twitter:description" content="{esc(lead_title)}">
+  <meta name="twitter:image" content="{SITE_URL}/{esc(lead_image)}">
+  {adsense_head()}
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">{json.dumps(faq_schema, ensure_ascii=False)}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="{SITE_NAME}">
+      <span class="brand-mark">PT</span>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav aria-label="Acciones">
+      <a href="./">Inicio</a>
+      <a href="ultima-entrada.html">Ultima entrada</a>
+      <a href="links.html">Links</a>
+      <a href="share-pack.html">Compartir</a>
+      <a href="temas.html">Temas</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero trends-hero">
+      <div class="hero-copy">
+        <p class="kicker">Actualizado automaticamente: {now.strftime("%Y-%m-%d %H:%M UTC")}</p>
+        <h1>Tendencias de tecnologia hoy</h1>
+        <p>Resumen en espanol de las senales que se estan moviendo ahora en IA, chips, ciberseguridad, plataformas y herramientas digitales.</p>
+      </div>
+      <div class="hero-panel">
+        <span>Senal principal</span>
+        <strong>{esc(lead_title)}</strong>
+      </div>
+    </section>
+    <section class="blogger-cta" aria-label="Leer en Blogger">
+      <div>
+        <p class="kicker">Ruta principal</p>
+        <h2>Lee la entrada completa en Blogger</h2>
+        <p>La version de Blogger concentra la entrada diaria, etiquetas y monetizacion con AdSense cuando este aprobada.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="ultima-entrada.html">Abrir ultima entrada</a>
+        <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
+        <a href="share-pack.html">Compartir</a>
+      </div>
+    </section>
+    <section class="trend-list" aria-label="Tendencias de tecnologia">
+      {''.join(rows)}
+    </section>
+  </main>
+  <footer>
+    <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
+    <p><a href="noticias-tecnologia-espanol.html">Noticias en espanol</a> Â· <a href="glosario-ia-tecnologia.html">Glosario</a> Â· <a href="privacidad.html">Privacidad</a></p>
   </footer>
 </body>
 </html>"""
@@ -1605,6 +1724,44 @@ h1 {
   border-top: 1px solid var(--line);
   padding-top: 12px;
 }
+.trend-list {
+  display: grid;
+  gap: 18px;
+  padding: 10px 0 64px;
+}
+.trend-item {
+  display: grid;
+  grid-template-columns: minmax(220px, 34%) 1fr;
+  gap: 18px;
+  align-items: stretch;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.trend-image {
+  min-height: 210px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+.trend-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.trend-item > div {
+  padding: 20px 20px 20px 0;
+  display: grid;
+  gap: 12px;
+}
+.trend-item h2 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.05;
+}
+.trend-item h2 a { color: var(--ink); text-decoration: none; }
+.trend-item p { margin: 0; color: #475569; line-height: 1.52; }
 footer {
   border-top: 1px solid var(--line);
   padding: 28px 5vw 44px;
@@ -1663,6 +1820,9 @@ footer a { color: var(--ink); font-weight: 750; }
   .guide-grid { grid-template-columns: repeat(2, 1fr); }
   .grid { grid-template-columns: 1fr 1fr; }
   .story:first-child { grid-column: span 2; }
+  .trend-item { grid-template-columns: 1fr; }
+  .trend-item > div { padding: 18px; }
+  .trend-image { min-height: auto; aspect-ratio: 1200 / 630; }
 }
 @media (max-width: 640px) {
   .topbar { align-items: flex-start; flex-direction: column; padding-block: 14px; }
@@ -1716,6 +1876,7 @@ def render_sitemap() -> str:
   </url>"""
         for filename, changefreq, priority in [
             ("feed.xml", "daily", "0.7"),
+            ("tendencias-tecnologia-hoy.html", "daily", "0.9"),
             ("llms.txt", "weekly", "0.6"),
             ("humans.txt", "monthly", "0.4"),
         ]
@@ -1793,6 +1954,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 
 - Blog principal: {BLOG_URL}/
 - Ultima entrada: {SITE_URL}/ultima-entrada.html
+- Tendencias de tecnologia hoy: {SITE_URL}/tendencias-tecnologia-hoy.html
 - Link en bio: {SITE_URL}/links.html
 - Kit para compartir: {SITE_URL}/share-pack.html
 - Archivo de Blogger: {SITE_URL}/blogger-archivo.html
@@ -1843,6 +2005,7 @@ def write_static(items: list[Item]) -> None:
             if asset.is_file():
                 shutil.copy2(asset, BRAND_ASSET_DEST / asset.name)
     (PUBLIC / "index.html").write_text(render_index(items, image_paths), encoding="utf-8")
+    (PUBLIC / "tendencias-tecnologia-hoy.html").write_text(render_trends_page(items, image_paths), encoding="utf-8")
     for filename, page in STATIC_PAGES.items():
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")

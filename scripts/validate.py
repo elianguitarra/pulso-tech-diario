@@ -67,6 +67,7 @@ def validate() -> None:
         "feed.xml",
         "llms.txt",
         "humans.txt",
+        "tendencias-tecnologia-hoy.html",
         "sitemap.xml",
         "news-sitemap.xml",
         "robots.txt",
@@ -83,6 +84,7 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "tendencias-tecnologia-hoy.html",
         "glosario-ia-tecnologia.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
@@ -156,6 +158,7 @@ def validate() -> None:
         "ultima-entrada.html",
         "links.html",
         "social-payload.json",
+        "tendencias-tecnologia-hoy.html",
         "llms.txt",
         "humans.txt",
     ]:
@@ -163,7 +166,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Payload social diario" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Payload social diario" not in llms_text or "tendencias-tecnologia-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -177,6 +180,14 @@ def validate() -> None:
         fail("links.html missing profile link tracking")
     if "Ultima entrada en Blogger" not in links_text:
         fail("links.html missing latest entry link")
+
+    trends_text = (PUBLIC / "tendencias-tecnologia-hoy.html").read_text(encoding="utf-8")
+    if "Tendencias de tecnologia hoy" not in trends_text:
+        fail("trends page missing primary heading")
+    if trends_text.count('class="trend-item"') < 4:
+        fail("trends page missing daily trend items")
+    if "FAQPage" not in trends_text or "ultima-entrada.html" not in trends_text:
+        fail("trends page missing FAQ schema or Blogger route")
 
     latest_text = (PUBLIC / "ultima-entrada.html").read_text(encoding="utf-8")
     if "utm_campaign=latest_entry" not in latest_text:
