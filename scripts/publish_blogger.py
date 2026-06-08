@@ -29,6 +29,7 @@ BLOGGER_API = "https://www.googleapis.com/blogger/v3"
 BLOGGER_SCOPE = "https://www.googleapis.com/auth/blogger"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 
 
 def label_url(label: str) -> str:
@@ -55,6 +56,19 @@ def internal_link_block() -> str:
   <p style="margin:8px 0 0;color:#c8b8aa;font-size:13px;line-height:1.6;">Pagina principal: <a href="{BLOG_URL}/" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;">{BLOG_URL}</a></p>
 </div>
 """
+
+
+def public_image_url(item: build.Item, index: int) -> str:
+    filename = f"{index:02d}-{build.slugify(item.title)}.svg"
+    return f"{PAGES_URL}/assets/images/{filename}"
+
+
+def story_image(item: build.Item, index: int, title: str) -> str:
+    url = public_image_url(item, index)
+    return (
+        f'<img src="{html.escape(url)}" alt="{html.escape(title)}" width="1200" height="630" '
+        'style="display:block;width:100%;height:auto;border:0;margin:0;padding:0;" loading="lazy">'
+    )
 
 BASE_PAGES = {
     "Empieza aqui": f"""
@@ -326,9 +340,9 @@ def post_html(items: list[build.Item]) -> str:
 """
     ]
     for index, item in enumerate(items, start=1):
-        svg = compact_svg(build.svg_for_item(item, index))
         title = build.display_title(item)
         summary = build.display_summary(item)
+        image = story_image(item, index, title)
         if index == 1:
             blocks.append(
                 f"""
@@ -343,7 +357,7 @@ def post_html(items: list[build.Item]) -> str:
           <a href="{html.escape(item.link)}" target="_blank" rel="noopener" style="color:#5b1d16;text-decoration:none;">Leer fuente</a>
         </div>
         </td>
-        <td width="42%" valign="middle" style="width:42%;background:#0f172a;padding:0;line-height:0;">{svg}</td>
+        <td width="42%" valign="middle" style="width:42%;background:#0f172a;padding:0;line-height:0;">{image}</td>
       </tr>
     </table>
     <p style="margin:0 0 24px;color:#f7f1e8;font-size:13px;font-weight:900;">Notas recientes</p>
@@ -360,7 +374,7 @@ def post_html(items: list[build.Item]) -> str:
         <p style="margin:0 0 16px;color:#f1e7dd;font-size:15px;line-height:1.75;">{html.escape(summary)}</p>
         <p style="margin:0;color:#c8b8aa;font-size:13px;line-height:1.6;"><strong style="color:#f7f1e8;">Por que importa:</strong> {html.escape(build.reading_angle(item))}</p>
         </td>
-        <td width="240" valign="middle" style="width:240px;padding:0 0 34px 0;line-height:0;background:#0f172a;border:1px solid #2f2f2f;">{svg}</td>
+        <td width="240" valign="middle" style="width:240px;padding:0 0 34px 0;line-height:0;background:#0f172a;border:1px solid #2f2f2f;">{image}</td>
       </tr>
     </table>
 """
