@@ -36,7 +36,32 @@ def label_url(label: str) -> str:
     return f"{BLOG_URL}/search/label/{urllib.parse.quote(label)}"
 
 
-def internal_link_block() -> str:
+def guide_posts_from(existing_posts: dict[str, dict]) -> list[tuple[str, str]]:
+    guides = []
+    for post in EVERGREEN_POSTS:
+        existing = existing_posts.get(post["title"], {})
+        url = existing.get("url", "")
+        if url:
+            guides.append((post["title"], url))
+    return guides[:5]
+
+
+def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
+    if not guide_posts:
+        return ""
+    links = "".join(
+        f'<li style="margin:0 0 8px;"><a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;text-decoration:none;">{html.escape(title)}</a></li>'
+        for title, url in guide_posts
+    )
+    return f"""
+  <div style="margin:18px 0 0;padding:16px;background:#181818;border:1px solid #2f2f2f;">
+    <p style="margin:0 0 10px;color:#f7f1e8;font-weight:900;">Guias para seguir leyendo</p>
+    <ul style="margin:0;padding-left:18px;color:#c8b8aa;line-height:1.55;">{links}</ul>
+  </div>
+"""
+
+
+def internal_link_block(guide_posts: list[tuple[str, str]] | None = None) -> str:
     links = [
         ("Inteligencia artificial", label_url("inteligencia artificial")),
         ("Ciberseguridad", label_url("ciberseguridad")),
@@ -63,6 +88,7 @@ def internal_link_block() -> str:
   <p style="margin:0 0 12px;color:#f7f1e8;font-size:18px;font-weight:900;">Sigue leyendo Pulso Tech Diario</p>
   <p style="margin:0 0 16px;color:#c8b8aa;line-height:1.65;">Explora mas notas por tema, guarda el RSS o comparte el resumen para que mas lectores encuentren tecnologia explicada en espanol.</p>
   <div>{items}</div>
+  {guide_links_html(guide_posts or [])}
   <div style="margin-top:8px;">{share_items}</div>
   <p style="margin:8px 0 0;color:#c8b8aa;font-size:13px;line-height:1.6;">Pagina principal: <a href="{BLOG_URL}/" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;">{BLOG_URL}</a></p>
 </div>
@@ -81,19 +107,39 @@ def story_image(item: build.Item, index: int, title: str) -> str:
         'style="display:block;width:100%;height:auto;border:0;margin:0;padding:0;" loading="lazy">'
     )
 
-BASE_PAGES = {
-    "Empieza aqui": f"""
-<p><strong>Pulso Tech Diario</strong> publica un resumen diario de tecnologia en espanol, pensado para leer rapido y seguir las senales importantes sin ruido.</p>
-<h2>Lee por tema</h2>
-<ul>
+
+def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
+    if guide_posts:
+        guide_items = "".join(
+            f'<li><a href="{html.escape(url)}">{html.escape(title)}</a></li>' for title, url in guide_posts
+        )
+    else:
+        guide_items = f"""
   <li><a href="{label_url("inteligencia artificial")}">Inteligencia artificial</a></li>
   <li><a href="{label_url("ciberseguridad")}">Ciberseguridad</a></li>
   <li><a href="{label_url("chips")}">Chips y hardware</a></li>
   <li><a href="{label_url("guia")}">Guias practicas</a></li>
+"""
+    return f"""
+<p><strong>Pulso Tech Diario</strong> publica un resumen diario de tecnologia en espanol, pensado para leer rapido y seguir las senales importantes sin ruido.</p>
+<h2>Lee primero estas guias</h2>
+<ul>
+{guide_items}
+</ul>
+<h2>Explora por tema</h2>
+<ul>
+  <li><a href="{label_url("inteligencia artificial")}">Inteligencia artificial</a></li>
+  <li><a href="{label_url("ciberseguridad")}">Ciberseguridad</a></li>
+  <li><a href="{label_url("chips")}">Chips y hardware</a></li>
+  <li><a href="{label_url("guia")}">Todas las guias</a></li>
 </ul>
 <h2>Recibe nuevas publicaciones</h2>
 <p>Guarda el <a href="{RSS_URL}">RSS del blog</a> o visita la pagina principal cada dia: <a href="{BLOG_URL}/">{BLOG_URL}</a>.</p>
-""",
+"""
+
+
+BASE_PAGES = {
+    "Empieza aqui": start_here_content(),
     "Acerca de": """
 <p><strong>Pulso Tech Diario</strong> es un blog automatizado que resume noticias tecnologicas relevantes cada dia.</p>
 <p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
@@ -338,7 +384,7 @@ def _legacy_card_post_html(items: list[build.Item]) -> str:
     return "\n".join(blocks)
 
 
-def post_html(items: list[build.Item]) -> str:
+def post_html(items: list[build.Item], guide_posts: list[tuple[str, str]] | None = None) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     blocks = [
         f"""
@@ -395,7 +441,7 @@ def post_html(items: list[build.Item]) -> str:
         blocks.append(
             '<p style="color:#c8b8aa;"><small>Monetizacion: este blog esta preparado para AdSense desde la configuracion de Blogger y ads.txt personalizado.</small></p>'
         )
-    blocks.append(internal_link_block())
+    blocks.append(internal_link_block(guide_posts))
     blocks.append("  </div>\n</div>")
     return "\n".join(blocks)
 
@@ -417,11 +463,12 @@ def post_payload(title: str, content: str, labels: list[str]) -> dict:
     }
 
 
-def ensure_base_pages(blog_id: str, token: str) -> None:
+def ensure_base_pages(blog_id: str, token: str, pages: dict[str, str] | None = None) -> None:
+    pages = pages or BASE_PAGES
     query = urllib.parse.urlencode({"fetchBodies": "false", "maxResults": "50"})
     url = f"{BLOGGER_API}/blogs/{blog_id}/pages?{query}"
     existing_pages = {page.get("title"): page for page in paginated_items(url, token=token)}
-    for title, content in BASE_PAGES.items():
+    for title, content in pages.items():
         payload = page_payload(title, content)
         existing = existing_pages.get(title)
         if existing and existing.get("id"):
@@ -478,9 +525,10 @@ def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str
 
 
 def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, dict]) -> None:
+    guide_posts = guide_posts_from(existing_posts)
     for post in EVERGREEN_POSTS:
         title = post["title"]
-        content = f"{post['content'].strip()}\n{internal_link_block()}"
+        content = f"{post['content'].strip()}\n{internal_link_block(guide_posts)}"
         payload = post_payload(title, content, post["labels"])
         existing = existing_posts.get(title)
         if existing and existing.get("id"):
@@ -508,8 +556,10 @@ def publish() -> None:
     existing_posts = posts_by_title(list_posts(blog_id, token))
     ensure_evergreen_posts(blog_id, token, existing_posts)
     existing_posts = posts_by_title(list_posts(blog_id, token))
+    guide_posts = guide_posts_from(existing_posts)
+    ensure_base_pages(blog_id, token, {"Empieza aqui": start_here_content(guide_posts)})
     existing = existing_posts.get(title)
-    payload = post_payload(title, post_html(items), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
+    payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
         result = request_json(update_url, method="PUT", token=token, payload=payload)
