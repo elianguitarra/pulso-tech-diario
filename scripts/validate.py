@@ -172,6 +172,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html",
         "mejor-ia-para-resumir-pdf.html",
         "alternativas-chatgpt-gratis.html",
+        "que-es-gemini-google.html",
+        "que-es-deepseek.html",
+        "chatgpt-como-buscador.html",
+        "chatgpt-no-funciona-alternativas.html",
         "prompts-chatgpt-espanol.html",
         "ia-para-hacer-presentaciones.html",
         "extensiones-chrome-productividad-ia.html",
@@ -399,7 +403,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "feed-ia.xml" not in llms_text or "feed-ciberseguridad.xml" not in llms_text or "feed-chips.xml" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "crear-imagenes-ia-gratis.html" not in llms_text or "prompts-para-estudiar-con-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "recuperar-whatsapp-hackeado.html" not in llms_text or "que-son-passkeys.html" not in llms_text or "como-borrar-datos-personales-google.html" not in llms_text or "vpn-gratis-es-segura.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "feed-ia.xml" not in llms_text or "feed-ciberseguridad.xml" not in llms_text or "feed-chips.xml" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "que-es-gemini-google.html" not in llms_text or "que-es-deepseek.html" not in llms_text or "chatgpt-como-buscador.html" not in llms_text or "chatgpt-no-funciona-alternativas.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "crear-imagenes-ia-gratis.html" not in llms_text or "prompts-para-estudiar-con-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "recuperar-whatsapp-hackeado.html" not in llms_text or "que-son-passkeys.html" not in llms_text or "como-borrar-datos-personales-google.html" not in llms_text or "vpn-gratis-es-segura.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -420,6 +424,10 @@ def validate() -> None:
         or "SEARCH_INDEX" not in search_text
         or "mejor-ia-para-resumir-pdf.html" not in search_text
         or "alternativas-chatgpt-gratis.html" not in search_text
+        or "que-es-gemini-google.html" not in search_text
+        or "que-es-deepseek.html" not in search_text
+        or "chatgpt-como-buscador.html" not in search_text
+        or "chatgpt-no-funciona-alternativas.html" not in search_text
         or "ia-para-hacer-presentaciones.html" not in search_text
         or "crear-imagenes-ia-gratis.html" not in search_text
         or "recuperar-whatsapp-hackeado.html" not in search_text
@@ -459,6 +467,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
         "mejor-ia-para-resumir-pdf.html": "Mejor IA para resumir PDF",
         "alternativas-chatgpt-gratis.html": "Alternativas gratis a ChatGPT",
+        "que-es-gemini-google.html": "Que es Gemini de Google",
+        "que-es-deepseek.html": "Que es DeepSeek",
+        "chatgpt-como-buscador.html": "ChatGPT como buscador",
+        "chatgpt-no-funciona-alternativas.html": "ChatGPT no funciona",
         "prompts-chatgpt-espanol.html": "Prompts para ChatGPT en espanol",
         "ia-para-hacer-presentaciones.html": "IA para hacer presentaciones",
         "extensiones-chrome-productividad-ia.html": "Extensiones de Chrome con IA",

@@ -309,6 +309,10 @@ STATIC_PAGES = {
   <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
   <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
   <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="que-es-gemini-google.html">Que es Gemini de Google</a></li>
+  <li><a href="que-es-deepseek.html">Que es DeepSeek</a></li>
+  <li><a href="chatgpt-como-buscador.html">ChatGPT como buscador</a></li>
+  <li><a href="chatgpt-no-funciona-alternativas.html">ChatGPT no funciona: alternativas</a></li>
   <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
   <li><a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></li>
   <li><a href="crear-imagenes-ia-gratis.html">Crear imagenes con IA gratis</a></li>
@@ -770,6 +774,114 @@ STATIC_PAGES = {
             ("Hay alternativas gratis a ChatGPT?", "Si. Lo importante es probarlas con tus tareas reales y revisar limites, privacidad y calidad de respuesta."),
             ("Una alternativa gratis sirve para trabajar?", "Puede servir para borradores, ideas y resumenes no sensibles. Para datos de empresa, revisa permisos y politicas antes de usarla."),
             ("Como comparo chatbots sin perder tiempo?", "Usa el mismo prompt en dos o tres herramientas y mide cual requiere menos correcciones."),
+        ],
+    },
+    "que-es-gemini-google.html": {
+        "title": "Que es Gemini de Google y para que sirve",
+        "description": "Guia en espanol sobre Gemini de Google: usos, diferencias frente a otros chatbots, privacidad, limites y tareas practicas.",
+        "body": f"""
+<p>Gemini es la familia de modelos y asistentes de inteligencia artificial de Google. Su atractivo para muchos usuarios es que puede conectarse con busqueda, Android, Workspace y servicios de Google segun la cuenta y la configuracion disponible.</p>
+<h2>Para que sirve Gemini</h2>
+<p>Puede ayudar a resumir textos, crear borradores, explicar temas, generar ideas, comparar opciones, responder preguntas y acelerar tareas de estudio o trabajo. Como cualquier chatbot, necesita revision humana.</p>
+<h2>En que se diferencia</h2>
+<p>Gemini suele destacar cuando el usuario ya vive dentro del ecosistema de Google. Aun asi, la mejor herramienta depende de la tarea: redactar, buscar, programar, analizar documentos o estudiar.</p>
+<h2>Que revisar antes de usarlo</h2>
+<p>Revisa privacidad, historial, permisos, integraciones y datos que compartes. No subas contrasenas, documentos privados, informacion de clientes ni datos sensibles sin una razon clara.</p>
+<h2>Como probarlo bien</h2>
+<p>Usa el mismo prompt que usarias en ChatGPT o Claude: pide un resumen, una tabla y una recomendacion. Compara si responde claro, reconoce limites y evita inventar datos.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude: como elegir</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Gemini es gratis?", "Google suele ofrecer acceso gratuito con limites y planes de pago con mas capacidades. Revisa siempre la disponibilidad actual en tu pais y cuenta."),
+            ("Gemini reemplaza a Google Search?", "No necesariamente. Puede ayudar a explorar informacion, pero conviene verificar datos importantes en fuentes originales."),
+            ("Puedo usar Gemini para estudiar?", "Si, especialmente para explicar temas y practicar preguntas, pero no conviene copiar respuestas sin revisar."),
+        ],
+    },
+    "que-es-deepseek.html": {
+        "title": "Que es DeepSeek y por que se habla de esta IA",
+        "description": "Guia en espanol sobre DeepSeek, modelos de IA, usos practicos, ventajas, riesgos de privacidad y comparacion con otros chatbots.",
+        "body": f"""
+<p>DeepSeek es una familia de modelos de inteligencia artificial que llamo la atencion por su rendimiento, costo y disponibilidad. Para lectores no tecnicos, lo importante es entender que es otra opcion dentro del mapa de chatbots y modelos de IA.</p>
+<h2>Para que puede servir</h2>
+<p>Puede usarse para escribir borradores, resumir, programar, explicar conceptos y comparar informacion. Su utilidad real depende de la herramienta concreta que lo integre y de los limites del servicio.</p>
+<h2>Por que importa</h2>
+<p>Cuando aparecen modelos competitivos, bajan costos, aumentan opciones y cambia la presion sobre empresas grandes de IA. Eso puede traducirse en mejores herramientas para usuarios comunes.</p>
+<h2>Riesgos y privacidad</h2>
+<p>No subas datos sensibles sin revisar terminos, pais de procesamiento, historial y politicas de uso. Para trabajo o escuela, usa ejemplos anonimizados y verifica siempre respuestas importantes.</p>
+<h2>Como compararlo</h2>
+<p>Prueba el mismo caso en varias herramientas: resumen, codigo, explicacion y tabla. La mejor opcion es la que responde bien con menos correcciones, no la que mas suena en redes.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("DeepSeek es un chatbot?", "DeepSeek es una familia de modelos y tambien puede aparecer dentro de productos tipo chatbot, segun la plataforma."),
+            ("DeepSeek es mejor que ChatGPT?", "Depende de la tarea, idioma, limites, privacidad y version disponible. Conviene comparar con el mismo prompt."),
+            ("Es seguro usar DeepSeek?", "La seguridad depende de la plataforma, politicas y datos que compartas. Evita informacion sensible si no tienes claridad."),
+        ],
+    },
+    "chatgpt-como-buscador.html": {
+        "title": "ChatGPT como buscador: cuando sirve y cuando no",
+        "description": "Guia en espanol para usar ChatGPT como buscador sin perder verificacion: fuentes, riesgos, limites y buenas practicas.",
+        "body": f"""
+<p>Muchas personas usan ChatGPT como si fuera buscador porque responde rapido y ordena informacion. Eso puede ser util, pero no reemplaza la verificacion cuando importan fechas, precios, leyes, salud, finanzas o noticias recientes.</p>
+<h2>Cuando sirve</h2>
+<p>Sirve para entender conceptos, preparar preguntas, resumir temas generales, comparar criterios y crear una ruta de investigacion antes de abrir fuentes originales.</p>
+<h2>Cuando no alcanza</h2>
+<p>No alcanza cuando necesitas datos actualizados, citas exactas, precios, regulaciones, disponibilidad, resultados deportivos o informacion que cambia rapido.</p>
+<h2>Prompt practico</h2>
+<p>Ayudame a investigar este tema. Dame palabras clave, fuentes que deberia revisar, riesgos de informacion falsa y una lista de preguntas para verificar antes de decidir.</p>
+<h2>Regla simple</h2>
+<p>Usa ChatGPT para ordenar la busqueda, no para cerrar una conclusion sin fuentes. Si una decision cuesta dinero, reputacion o seguridad, abre las fuentes originales.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("ChatGPT puede reemplazar a Google?", "Puede ayudar a ordenar informacion, pero para datos recientes o decisiones importantes conviene verificar fuentes originales."),
+            ("Como evito informacion falsa?", "Pide dudas, criterios de verificacion y fuentes a revisar. Luego confirma en sitios oficiales o medios confiables."),
+            ("Sirve para investigar noticias?", "Sirve como apoyo, pero las noticias cambian rapido. Revisa siempre fecha, fuente y contexto."),
+        ],
+    },
+    "chatgpt-no-funciona-alternativas.html": {
+        "title": "ChatGPT no funciona: alternativas y que revisar",
+        "description": "Guia en espanol para cuando ChatGPT no funciona: revisar conexion, estado del servicio, limites, privacidad y alternativas de IA.",
+        "body": f"""
+<p>Si ChatGPT no funciona, no siempre significa que el problema sea tu cuenta. Puede ser conexion, navegador, saturacion, limite del plan, mantenimiento o una falla temporal del servicio.</p>
+<h2>Revisa lo basico</h2>
+<p>Actualiza la pagina, prueba otro navegador, revisa internet, cierra sesion y vuelve a entrar. Si usas VPN, desactiva temporalmente para descartar bloqueo o latencia.</p>
+<h2>Revisa limites y estado</h2>
+<p>Algunas funciones dependen del plan, region, disponibilidad o carga del servicio. Si el problema es general, conviene esperar y no compartir datos en sitios falsos que prometen arreglarlo.</p>
+<h2>Alternativas temporales</h2>
+<p>Para tareas no sensibles puedes probar Gemini, Claude, Copilot, Perplexity u otras herramientas. Usa el mismo prompt y verifica datos importantes antes de confiar.</p>
+<h2>Cuidado con estafas</h2>
+<p>No instales extensiones raras ni abras enlaces que prometen ChatGPT premium gratis. Muchas estafas aprovechan caidas o errores populares para robar cuentas.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
+  <li><a href="que-es-gemini-google.html">Que es Gemini de Google</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que hago si ChatGPT no carga?", "Prueba recargar, cambiar navegador, revisar conexion, cerrar sesion y verificar si hay una falla general del servicio."),
+            ("Que alternativa uso si ChatGPT esta caido?", "Depende de la tarea. Puedes probar Gemini, Claude, Copilot u otra herramienta, verificando privacidad y calidad."),
+            ("Es seguro buscar ChatGPT gratis en Google?", "Ten cuidado. Evita enlaces patrocinados sospechosos, extensiones no oficiales y paginas que pidan contrasenas."),
         ],
     },
     "prompts-chatgpt-espanol.html": {
@@ -2160,6 +2272,10 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("Prompts IA productividad", "prompts-ia-productividad.html", "Plantillas para resumir, comparar y estudiar mejor."),
         ("IA para resumir PDF", "mejor-ia-para-resumir-pdf.html", "Como elegir herramientas para PDFs sin exponer datos."),
         ("Alternativas a ChatGPT", "alternativas-chatgpt-gratis.html", "Comparar chatbots gratis por tarea y privacidad."),
+        ("Que es Gemini", "que-es-gemini-google.html", "Usos, limites y privacidad del asistente de Google."),
+        ("Que es DeepSeek", "que-es-deepseek.html", "Por que importa y como compararlo con otros chatbots."),
+        ("ChatGPT como buscador", "chatgpt-como-buscador.html", "Cuando ayuda a investigar y cuando hay que verificar fuentes."),
+        ("ChatGPT no funciona", "chatgpt-no-funciona-alternativas.html", "Que revisar y que alternativas usar sin caer en estafas."),
         ("Prompts ChatGPT", "prompts-chatgpt-espanol.html", "Ejemplos en espanol para estudiar, resumir y decidir."),
         ("IA para presentaciones", "ia-para-hacer-presentaciones.html", "Como usar IA para armar diapositivas utiles sin perder criterio."),
         ("Extensiones de Chrome", "extensiones-chrome-productividad-ia.html", "Que revisar antes de instalar extensiones con IA."),
@@ -3642,6 +3758,10 @@ def render_llms_txt() -> str:
             "herramientas-ia-gratis.html",
             "mejor-ia-para-resumir-pdf.html",
             "alternativas-chatgpt-gratis.html",
+            "que-es-gemini-google.html",
+            "que-es-deepseek.html",
+            "chatgpt-como-buscador.html",
+            "chatgpt-no-funciona-alternativas.html",
             "prompts-chatgpt-espanol.html",
             "ia-para-hacer-presentaciones.html",
             "extensiones-chrome-productividad-ia.html",

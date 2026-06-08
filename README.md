@@ -26,6 +26,10 @@ Estas paginas estan pensadas como entradas de busqueda en espanol y enlazan haci
 - Herramientas de IA gratis: https://elianguitarra.github.io/pulso-tech-diario/herramientas-ia-gratis.html
 - Mejor IA para resumir PDF: https://elianguitarra.github.io/pulso-tech-diario/mejor-ia-para-resumir-pdf.html
 - Alternativas gratis a ChatGPT: https://elianguitarra.github.io/pulso-tech-diario/alternativas-chatgpt-gratis.html
+- Que es Gemini de Google: https://elianguitarra.github.io/pulso-tech-diario/que-es-gemini-google.html
+- Que es DeepSeek: https://elianguitarra.github.io/pulso-tech-diario/que-es-deepseek.html
+- ChatGPT como buscador: https://elianguitarra.github.io/pulso-tech-diario/chatgpt-como-buscador.html
+- ChatGPT no funciona: https://elianguitarra.github.io/pulso-tech-diario/chatgpt-no-funciona-alternativas.html
 - Prompts para ChatGPT en espanol: https://elianguitarra.github.io/pulso-tech-diario/prompts-chatgpt-espanol.html
 - Prompts de IA para productividad: https://elianguitarra.github.io/pulso-tech-diario/prompts-ia-productividad.html
 - IA para estudiantes: https://elianguitarra.github.io/pulso-tech-diario/ia-para-estudiantes.html
