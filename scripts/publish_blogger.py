@@ -480,6 +480,15 @@ PAGE_ONLY_GUIDES = {
     "Que revisar antes de comprar una laptop para IA",
 }
 
+BLOGGER_GUIDE_PAGE_TITLES = {
+    "WhatsApp hackeado: como recuperar tu cuenta",
+    "Que son las passkeys y por que protegen mejor",
+    "VPN gratis: es segura o conviene evitarla",
+    "Crear imagenes con IA gratis: como empezar",
+    "Prompts para estudiar con IA sin copiar",
+    "Como detectar un correo falso antes de hacer clic",
+}
+
 
 def required_env(name: str) -> str:
     value = os.environ.get(name, "").strip()
@@ -681,12 +690,12 @@ def ensure_base_pages(blog_id: str, token: str, pages: dict[str, str] | None = N
         try:
             if existing and existing.get("id"):
                 update_url = f"{BLOGGER_API}/blogs/{blog_id}/pages/{existing['id']}"
-                request_json(update_url, method="PUT", token=token, payload=payload)
-                print(f"Updated page: {title}")
+                result = request_json(update_url, method="PUT", token=token, payload=payload)
+                print(f"Updated page: {title} {result.get('url', '')}".rstrip())
             else:
                 insert_url = f"{BLOGGER_API}/blogs/{blog_id}/pages"
-                request_json(insert_url, method="POST", token=token, payload=payload)
-                print(f"Created page: {title}")
+                result = request_json(insert_url, method="POST", token=token, payload=payload)
+                print(f"Created page: {title} {result.get('url', '')}".rstrip())
             throttle_write()
         except urllib.error.HTTPError as exc:
             body = exc.read().decode("utf-8", errors="replace")
@@ -694,6 +703,15 @@ def ensure_base_pages(blog_id: str, token: str, pages: dict[str, str] | None = N
             print(body[:600])
             if exc.code not in {403, 429, 500, 502, 503, 504}:
                 raise
+
+
+def blogger_guide_pages(guide_posts: list[tuple[str, str]] | None = None) -> dict[str, str]:
+    pages: dict[str, str] = {}
+    link_block = internal_link_block(guide_posts or [])
+    for post in EVERGREEN_POSTS:
+        if post["title"] in BLOGGER_GUIDE_PAGE_TITLES:
+            pages[post["title"]] = f"{post['content'].strip()}\n{link_block}"
+    return pages
 
 
 def list_posts(blog_id: str, token: str) -> list[dict]:
@@ -963,6 +981,7 @@ def publish() -> None:
         token,
         {"Empieza aqui": start_here_content(guide_posts)},
     )
+    ensure_base_pages(blog_id, token, blogger_guide_pages(guide_posts))
     existing = existing_posts.get(title) or existing_posts.get(old_title)
     payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):

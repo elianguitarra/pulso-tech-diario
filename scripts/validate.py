@@ -97,6 +97,17 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; pages=p.blogger_guide_pages([]); assert len(pages) == 6, pages.keys(); assert 'WhatsApp hackeado: como recuperar tu cuenta' in pages and 'Que son las passkeys y por que protegen mejor' in pages and 'VPN gratis: es segura o conviene evitarla' in pages, pages.keys()",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
             "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; content=p.start_here_content([('Guia prueba','https://example.com/guia')]); assert 'Mapa rapido' in content and 'Prompts de IA' in content and 'RSS del blog' in content and 'Pagina principal' in content, content",
         ],
         check=True,
