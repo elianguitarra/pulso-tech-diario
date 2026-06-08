@@ -345,6 +345,110 @@ STATIC_PAGES = {
             ("Como uso IA sin dejar de aprender?", "Pide pistas, explicaciones y preguntas de practica antes de pedir una respuesta final."),
         ],
     },
+    "prompts-ia-productividad.html": {
+        "title": "Prompts de IA para productividad: plantillas utiles",
+        "description": "Prompts en espanol para usar IA en resumenes, correos, estudio, codigo, investigacion y organizacion diaria.",
+        "body": f"""
+<p>Un buen prompt no es una frase magica. Es una instruccion clara con contexto, objetivo, formato y criterio de calidad. Estas plantillas ayudan a usar IA sin empezar desde cero.</p>
+<h2>Prompt para resumir</h2>
+<p>Resume este texto en 5 puntos. Separa hechos, dudas y acciones recomendadas. Usa lenguaje claro para alguien que debe decidir hoy.</p>
+<h2>Prompt para comparar opciones</h2>
+<p>Compara estas opciones en una tabla con ventajas, riesgos, costo, dificultad y recomendacion final. Si falta informacion, dilo antes de concluir.</p>
+<h2>Prompt para escribir mejor</h2>
+<p>Reescribe este borrador para que sea mas claro, breve y directo. Conserva el sentido, elimina relleno y marca cualquier afirmacion que necesite verificacion.</p>
+<h2>Prompt para estudiar</h2>
+<p>Explicame este tema paso a paso con ejemplos simples. Despues hazme 10 preguntas de practica y corrige mis respuestas.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que debe tener un buen prompt?", "Debe incluir contexto, objetivo, formato esperado, publico y criterios para saber si la respuesta sirve."),
+            ("Conviene pedirle a la IA que actue como experto?", "Puede ayudar, pero importa mas explicar la tarea, los datos disponibles y como quieres evaluar la salida."),
+            ("Puedo usar estos prompts en cualquier chatbot?", "Si. Ajusta el formato segun la herramienta y revisa siempre los resultados antes de usarlos."),
+        ],
+    },
+    "que-hacer-si-hackearon-mi-correo.html": {
+        "title": "Que hacer si hackearon mi correo: pasos urgentes",
+        "description": "Checklist en espanol para recuperar y proteger una cuenta de correo comprometida con acciones prioritarias.",
+        "body": f"""
+<p>Si sospechas que alguien entro a tu correo, actua con calma pero rapido. El correo suele ser la llave para recuperar redes sociales, bancos, tiendas y servicios de trabajo.</p>
+<h2>1. Cambia la contrasena desde el sitio oficial</h2>
+<p>Entra escribiendo la direccion manualmente en el navegador. Usa una contrasena nueva, larga y unica. No reutilices claves antiguas.</p>
+<h2>2. Cierra sesiones desconocidas</h2>
+<p>Revisa dispositivos conectados, actividad reciente y accesos de terceros. Cierra todo lo que no reconozcas.</p>
+<h2>3. Activa verificacion en dos pasos</h2>
+<p>Prefiere app autenticadora, passkey o llave de seguridad. Tambien revisa correo y telefono de recuperacion.</p>
+<h2>4. Busca reglas y reenvios raros</h2>
+<p>Algunos atacantes crean filtros para ocultar mensajes o reenviar correos. Revisa reglas, firmas, alias y aplicaciones conectadas.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Como se si hackearon mi correo?", "Senales comunes: inicios de sesion desconocidos, correos enviados que no escribiste, reglas raras o cambios de recuperacion."),
+            ("Debo avisar a mis contactos?", "Si viste correos fraudulentos enviados desde tu cuenta, conviene avisar que ignoren enlaces o archivos recientes."),
+            ("Que reviso despues de recuperar la cuenta?", "Revisa contrasenas de servicios importantes, recuperacion, sesiones activas, apps conectadas y reglas de reenvio."),
+        ],
+    },
+    "laptop-con-npu-vale-la-pena.html": {
+        "title": "Laptop con NPU: cuando vale la pena para IA",
+        "description": "Guia para saber si conviene comprar una laptop con NPU, que tareas acelera y que limites tiene frente a GPU y nube.",
+        "body": f"""
+<p>Las laptops nuevas presumen NPU para inteligencia artificial, pero no todos los usuarios necesitan pagar mas por esa sigla. La decision depende de tus tareas reales.</p>
+<h2>Cuando si puede convenir</h2>
+<p>Puede valer la pena si usas transcripcion, efectos de video, asistentes locales, herramientas creativas ligeras o funciones de IA integradas que deben correr con bajo consumo.</p>
+<h2>Cuando no cambia mucho</h2>
+<p>Si usas chatbots en la nube, escribes documentos, navegas y haces tareas basicas, una buena pantalla, memoria RAM y bateria pueden importar mas que la NPU.</p>
+<h2>Que revisar antes de comprar</h2>
+<p>Mira memoria, GPU, bateria, temperatura, soporte de software y resenas reales. Una NPU sin aplicaciones compatibles puede quedar como promesa.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="npu-vs-gpu.html">NPU vs GPU para IA</a></li>
+  <li><a href="comprar-laptop-para-ia.html">Que revisar antes de comprar una laptop para IA</a></li>
+  <li><a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas de chips en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Una NPU reemplaza a la GPU?", "No. La NPU busca eficiencia en tareas concretas; la GPU sigue siendo clave para cargas pesadas, graficos y generacion exigente."),
+            ("Necesito NPU para usar ChatGPT?", "No. Si usas chatbots en la nube, el procesamiento ocurre fuera de tu laptop."),
+            ("Que es mas importante, RAM o NPU?", "Para muchos usuarios, memoria RAM suficiente tiene mas impacto diario que una NPU poco aprovechada."),
+        ],
+    },
+    "automatizar-blogger-gratis.html": {
+        "title": "Como automatizar un blog en Blogger gratis",
+        "description": "Guia en espanol para entender como automatizar publicaciones en Blogger con fuentes, RSS, GitHub Actions y Blogger API.",
+        "body": f"""
+<p>Automatizar un blog en Blogger gratis es posible si separas tres partes: conseguir fuentes, generar contenido propio y publicar con una tarea programada.</p>
+<h2>Flujo basico</h2>
+<p>Un sistema puede leer RSS publicos, seleccionar temas, redactar resumenes propios, generar imagenes editoriales y publicar en Blogger con la API.</p>
+<h2>Que necesitas</h2>
+<p>Necesitas un blog de Blogger, un proyecto de Google Auth para permisos, un repositorio con scripts y un programador gratuito como GitHub Actions.</p>
+<h2>Cuidados importantes</h2>
+<p>No copies articulos completos. Resume con criterio propio, enlaza fuentes originales, cuida derechos de autor y evita publicar informacion falsa o sin revisar.</p>
+<h2>Como atraer visitas</h2>
+<p>Combina entrada diaria con guias permanentes, sitemap, feeds, enlaces internos, imagenes llamativas y textos compartibles para redes.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="noticias-tecnologia-espanol.html">Noticias de tecnologia en espanol</a></li>
+  <li><a href="seguir.html">Formas de seguir Pulso Tech Diario</a></li>
+  <li><a href="share-pack.html">Kit para compartir</a></li>
+  <li><a href="{BLOG_HOME_TRACKED}">Ver Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Se puede automatizar Blogger sin pagar hosting?", "Si. Blogger aloja el blog gratis y GitHub Actions puede ejecutar tareas programadas en un repositorio."),
+            ("Necesito dominio propio para AdSense?", "No siempre, pero AdSense revisa calidad, politicas, contenido suficiente y cumplimiento del sitio."),
+            ("Puedo copiar noticias de otros medios?", "No conviene. Usa resumen editorial propio, fragmentos breves si son necesarios y enlaces a las fuentes originales."),
+        ],
+    },
     "que-es-ia-local.html": {
         "title": "Que es la IA local y cuando conviene usarla",
         "description": "Explicacion clara sobre IA local, modelos en el dispositivo, ventajas, limites y casos donde conviene frente a la nube.",
@@ -508,12 +612,16 @@ STATIC_PAGES = {
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
 <p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="chatgpt-gemini-claude.html">ChatGPT vs Gemini vs Claude</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a> &middot; <a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a> &middot; <a href="ia-para-estudiantes.html">IA para estudiantes</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
-<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
-<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="laptop-con-npu-vale-la-pena.html">Laptop con NPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
+<h2>Crear y automatizar</h2>
+<p>Guias para entender como se arma un blog automatizado, se publica gratis y se prepara para crecer.</p>
+<p><a href="automatizar-blogger-gratis.html">Automatizar Blogger gratis</a> &middot; <a href="share-pack.html">Kit para compartir</a> &middot; <a href="seguir.html">Seguir el sitio</a></p>
 """,
     },
     "inteligencia-artificial.html": {
@@ -1308,13 +1416,17 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("Chips IA hoy", "chips-ia-hoy.html", "GPU, NPU y hardware para la carrera de IA."),
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
         ("Herramientas IA gratis", "herramientas-ia-gratis.html", "Como elegir herramientas gratuitas sin perder tiempo."),
+        ("Prompts IA productividad", "prompts-ia-productividad.html", "Plantillas para resumir, comparar y estudiar mejor."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
         ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
+        ("Correo hackeado", "que-hacer-si-hackearon-mi-correo.html", "Pasos urgentes para recuperar y proteger tu email."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
+        ("Laptop con NPU", "laptop-con-npu-vale-la-pena.html", "Cuando vale la pena pagar por IA local en laptop."),
         ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),
         ("Checklist anti phishing", "checklist-phishing.html", "Una revision rapida antes de hacer clic."),
+        ("Automatizar Blogger", "automatizar-blogger-gratis.html", "Como publicar gratis con flujos automaticos."),
     ]
     guide_cards = "\n".join(
         f"""        <a class="guide-card" href="{esc(url)}">
@@ -2360,6 +2472,10 @@ def render_llms_txt() -> str:
             "herramientas-ia-gratis.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
+            "prompts-ia-productividad.html",
+            "que-hacer-si-hackearon-mi-correo.html",
+            "laptop-con-npu-vale-la-pena.html",
+            "automatizar-blogger-gratis.html",
             "chatgpt-gemini-claude.html",
             "que-es-ia-local.html",
             "npu-vs-gpu.html",

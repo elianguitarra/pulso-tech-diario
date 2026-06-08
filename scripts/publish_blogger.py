@@ -32,6 +32,12 @@ RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 PAGES_WORK_AI_URL = f"{PAGES_URL}/ia-en-el-trabajo.html"
 PAGES_LAPTOP_AI_URL = f"{PAGES_URL}/comprar-laptop-para-ia.html"
+PAGES_EXTRA_GUIDES = [
+    ("Prompts de IA", f"{PAGES_URL}/prompts-ia-productividad.html"),
+    ("Correo hackeado", f"{PAGES_URL}/que-hacer-si-hackearon-mi-correo.html"),
+    ("Laptop con NPU", f"{PAGES_URL}/laptop-con-npu-vale-la-pena.html"),
+    ("Automatizar Blogger", f"{PAGES_URL}/automatizar-blogger-gratis.html"),
+]
 
 
 def label_url(label: str) -> str:
@@ -49,11 +55,12 @@ def guide_posts_from(existing_posts: dict[str, dict]) -> list[tuple[str, str]]:
 
 
 def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
-    if not guide_posts:
+    guide_links = [*guide_posts, *PAGES_EXTRA_GUIDES]
+    if not guide_links:
         return ""
     links = "".join(
         f'<li style="margin:0 0 8px;"><a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;text-decoration:none;">{html.escape(title)}</a></li>'
-        for title, url in guide_posts
+        for title, url in guide_links[:13]
     )
     return f"""
   <div style="margin:18px 0 0;padding:16px;background:#181818;border:1px solid #2f2f2f;">

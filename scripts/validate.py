@@ -116,6 +116,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
+        "prompts-ia-productividad.html",
+        "que-hacer-si-hackearon-mi-correo.html",
+        "laptop-con-npu-vale-la-pena.html",
+        "automatizar-blogger-gratis.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
         "inteligencia-artificial.html",
@@ -159,6 +163,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
+        "prompts-ia-productividad.html",
+        "que-hacer-si-hackearon-mi-correo.html",
+        "laptop-con-npu-vale-la-pena.html",
+        "automatizar-blogger-gratis.html",
     ]:
         if guide_page not in index_text:
             fail(f"index missing evergreen guide link {guide_page}")
@@ -209,6 +217,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
+        "prompts-ia-productividad.html",
+        "que-hacer-si-hackearon-mi-correo.html",
+        "laptop-con-npu-vale-la-pena.html",
+        "automatizar-blogger-gratis.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
         "inteligencia-artificial.html",
@@ -260,6 +272,10 @@ def validate() -> None:
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
         "ia-para-estudiantes.html": "IA para estudiantes",
         "proteger-cuenta-google.html": "Como proteger tu cuenta Google",
+        "prompts-ia-productividad.html": "Prompts de IA para productividad",
+        "que-hacer-si-hackearon-mi-correo.html": "Que hacer si hackearon mi correo",
+        "laptop-con-npu-vale-la-pena.html": "Laptop con NPU",
+        "automatizar-blogger-gratis.html": "Como automatizar un blog en Blogger gratis",
     }.items():
         page_text = (PUBLIC / long_tail_page).read_text(encoding="utf-8")
         if phrase not in page_text or "FAQPage" not in page_text or "Blogger" not in page_text:
