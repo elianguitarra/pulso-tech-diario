@@ -10,6 +10,8 @@ Kit para compartir: https://elianguitarra.github.io/pulso-tech-diario/share-pack
 
 Ultima entrada permanente: https://elianguitarra.github.io/pulso-tech-diario/ultima-entrada.html
 
+Link en bio: https://elianguitarra.github.io/pulso-tech-diario/links.html
+
 Medicion de trafico: [`docs/TRAFFIC_MEASUREMENT.md`](docs/TRAFFIC_MEASUREMENT.md)
 
 ## Como funciona

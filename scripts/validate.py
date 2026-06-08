@@ -59,6 +59,7 @@ def validate() -> None:
         "robots.txt",
         "data.json",
         "latest.json",
+        "links.html",
         "blogger-archivo.html",
         "ultima-entrada.html",
         "acerca.html",
@@ -132,9 +133,16 @@ def validate() -> None:
         "checklist-phishing.html",
         "blogger-archivo.html",
         "ultima-entrada.html",
+        "links.html",
     ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
+
+    links_text = (PUBLIC / "links.html").read_text(encoding="utf-8")
+    if "utm_campaign=profile_links" not in links_text:
+        fail("links.html missing profile link tracking")
+    if "Ultima entrada en Blogger" not in links_text:
+        fail("links.html missing latest entry link")
 
     latest_text = (PUBLIC / "ultima-entrada.html").read_text(encoding="utf-8")
     if "utm_campaign=latest_entry" not in latest_text:

@@ -1071,6 +1071,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     </a>
     <nav aria-label="Acciones">
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
+      <a href="links.html">Links</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
@@ -1107,6 +1108,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="ultima-entrada.html">Ultima entrada</a>
         <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
+        <a href="links.html">Link en bio</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>

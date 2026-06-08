@@ -21,6 +21,7 @@ HTML_OUT = PUBLIC / "share-pack.html"
 ARCHIVE_OUT = PUBLIC / "blogger-archivo.html"
 LATEST_OUT = PUBLIC / "ultima-entrada.html"
 LATEST_JSON_OUT = PUBLIC / "latest.json"
+LINKS_OUT = PUBLIC / "links.html"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
@@ -304,6 +305,73 @@ def render_latest_redirect(title: str, url: str) -> str:
 """
 
 
+def render_links_page(title: str, url: str, guides: list[tuple[str, str]]) -> str:
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    latest = tracked_url(url, "link_bio", "referral", "profile_links", "latest")
+    blogger = tracked_url(BLOG_URL + "/", "link_bio", "referral", "profile_links", "blogger")
+    archive = tracked_url(f"{PAGES_URL}/blogger-archivo.html", "link_bio", "referral", "profile_links", "archive")
+    share = tracked_url(f"{PAGES_URL}/share-pack.html", "link_bio", "referral", "profile_links", "share_pack")
+    guide_cards = "\n".join(
+        f"""<a class="link secondary" href="{html.escape(tracked_if_blogger(link, "link_bio", "referral", "profile_guides", f"guide_{index}"))}">
+      <span>{html.escape(guide_title)}</span>
+      <small>Guia recomendada</small>
+    </a>"""
+        for index, (guide_title, link) in enumerate(guides[:5], start=1)
+    )
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulso Tech Diario | Links</title>
+  <meta name="description" content="Enlaces principales de Pulso Tech Diario: ultima entrada, Blogger, guias y kit para compartir.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{PAGES_URL}/links.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pulso Tech Diario">
+  <meta property="og:description" content="Resumen diario de tecnologia en espanol.">
+  <meta property="og:url" content="{PAGES_URL}/links.html">
+  <meta property="og:image" content="{SOCIAL_IMAGE}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pulso Tech Diario">
+  <meta name="twitter:description" content="Resumen diario de tecnologia en espanol.">
+  <meta name="twitter:image" content="{SOCIAL_IMAGE}">
+  <style>
+    body {{ margin: 0; font-family: Arial, Helvetica, sans-serif; background: #151515; color: #f7f1e8; }}
+    main {{ width: min(100% - 30px, 680px); margin: 0 auto; padding: 42px 0 64px; }}
+    .brand {{ display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }}
+    .mark {{ width: 48px; height: 48px; display: grid; place-items: center; background: #ff7058; color: #201512; font-weight: 950; }}
+    h1 {{ font-size: clamp(38px, 9vw, 68px); line-height: .95; margin: 0 0 12px; }}
+    p {{ color: #d6c8bc; line-height: 1.55; }}
+    .updated {{ color: #ff7058; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }}
+    .stack {{ display: grid; gap: 12px; margin-top: 26px; }}
+    .link {{ display: block; padding: 18px; border: 1px solid #3a3a3a; color: #f7f1e8; text-decoration: none; background: #202020; }}
+    .link.primary {{ background: #ff7058; color: #201512; border-color: #ff7058; }}
+    .link span {{ display: block; font-size: 20px; font-weight: 950; line-height: 1.1; }}
+    .link small {{ display: block; margin-top: 8px; color: inherit; opacity: .72; font-weight: 800; }}
+    .secondary:hover {{ border-color: #ff7058; }}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand"><span class="mark">PT</span><strong>Pulso Tech Diario</strong></div>
+    <p class="updated">Actualizado {now}</p>
+    <h1>Tecnologia en espanol, directo al punto.</h1>
+    <p>Usa esta pagina como link de perfil: siempre apunta a la entrada mas reciente, el blog principal y las guias con mas potencial de busqueda.</p>
+    <div class="stack">
+      <a class="link primary" href="{html.escape(latest)}"><span>{html.escape(title)}</span><small>Ultima entrada en Blogger</small></a>
+      <a class="link" href="{html.escape(blogger)}"><span>Abrir Blogger</span><small>Blog principal preparado para AdSense</small></a>
+      <a class="link" href="{html.escape(f"{PAGES_URL}/noticias-tecnologia-espanol.html")}"><span>Noticias de tecnologia en espanol</span><small>Pagina de entrada para nuevos lectores</small></a>
+      <a class="link" href="{html.escape(archive)}"><span>Archivo de entradas</span><small>Historial enlazado desde GitHub Pages</small></a>
+      <a class="link" href="{html.escape(share)}"><span>Kit para compartir</span><small>Textos y botones sociales listos</small></a>
+      {guide_cards}
+    </div>
+  </main>
+</body>
+</html>
+"""
+
+
 def latest_payload(title: str, url: str, items: list[dict[str, str]]) -> str:
     payload = {
         "title": title,
@@ -325,7 +393,12 @@ def append_to_sitemap() -> None:
     text = SITEMAP.read_text(encoding="utf-8")
     today = datetime.now(timezone.utc).date().isoformat()
     entries = []
-    for loc in [f"{PAGES_URL}/share-pack.html", f"{PAGES_URL}/blogger-archivo.html", f"{PAGES_URL}/ultima-entrada.html"]:
+    for loc in [
+        f"{PAGES_URL}/share-pack.html",
+        f"{PAGES_URL}/blogger-archivo.html",
+        f"{PAGES_URL}/ultima-entrada.html",
+        f"{PAGES_URL}/links.html",
+    ]:
         if loc in text:
             continue
         entries.append(f"""  <url>
@@ -351,8 +424,9 @@ def main() -> None:
     ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")
     LATEST_OUT.write_text(render_latest_redirect(title, url), encoding="utf-8")
     LATEST_JSON_OUT.write_text(latest_payload(title, url, items), encoding="utf-8")
+    LINKS_OUT.write_text(render_links_page(title, url, guides), encoding="utf-8")
     append_to_sitemap()
-    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, {LATEST_OUT}, and {LATEST_JSON_OUT}")
+    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, {LATEST_OUT}, {LATEST_JSON_OUT}, and {LINKS_OUT}")
 
 
 if __name__ == "__main__":
