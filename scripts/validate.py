@@ -65,6 +65,8 @@ def validate() -> None:
         "index.html",
         "style.css",
         "feed.xml",
+        "atom.xml",
+        "feed.json",
         "llms.txt",
         "humans.txt",
         "tendencias-tecnologia-hoy.html",
@@ -130,6 +132,14 @@ def validate() -> None:
             fail(f"index missing evergreen guide link {guide_page}")
 
     ET.parse(PUBLIC / "feed.xml")
+    atom_root = ET.parse(PUBLIC / "atom.xml").getroot()
+    if "Atom" not in ET.tostring(atom_root, encoding="unicode") and not atom_root.tag.endswith("feed"):
+        fail("atom.xml is not an Atom feed")
+    json_feed = json.loads((PUBLIC / "feed.json").read_text(encoding="utf-8"))
+    if json_feed.get("version") != "https://jsonfeed.org/version/1.1" or len(json_feed.get("items", [])) < parser.story_count:
+        fail("feed.json missing JSON Feed payload")
+    if "atom.xml" not in index_text or "feed.json" not in index_text:
+        fail("index missing alternate feed links")
     news_root = ET.parse(PUBLIC / "news-sitemap.xml").getroot()
     news_text = ET.tostring(news_root, encoding="unicode")
     if "sitemap-news" not in news_text:
@@ -164,6 +174,8 @@ def validate() -> None:
         "ultima-entrada.html",
         "links.html",
         "social-payload.json",
+        "atom.xml",
+        "feed.json",
         "tendencias-tecnologia-hoy.html",
         "inteligencia-artificial-hoy.html",
         "ciberseguridad-hoy.html",
@@ -175,7 +187,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Payload social diario" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "JSON Feed del sitio" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")

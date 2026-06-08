@@ -1165,6 +1165,8 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="{SITE_URL}/">
   <link rel="alternate" type="application/rss+xml" title="{SITE_NAME}" href="{SITE_URL}/feed.xml">
+  <link rel="alternate" type="application/atom+xml" title="{SITE_NAME}" href="{SITE_URL}/atom.xml">
+  <link rel="alternate" type="application/feed+json" title="{SITE_NAME}" href="{SITE_URL}/feed.json">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{SITE_NAME}">
   <meta property="og:description" content="{esc(lead_title)}">
@@ -1918,6 +1920,57 @@ def render_feed(items: list[Item]) -> str:
 """
 
 
+def render_atom_feed(items: list[Item]) -> str:
+    updated = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    entries = []
+    for item in items:
+        published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        entries.append(
+            f"""  <entry>
+    <title>{esc(display_title(item))}</title>
+    <link href="{esc(item.link)}"/>
+    <id>{esc(item.link)}</id>
+    <updated>{published}</updated>
+    <summary>{esc(display_summary(item))}</summary>
+    <category term="{esc(item.category)}"/>
+  </entry>"""
+        )
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{SITE_NAME}</title>
+  <subtitle>{esc(SITE_DESCRIPTION)}</subtitle>
+  <link href="{SITE_URL}/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="{SITE_URL}/"/>
+  <updated>{updated}</updated>
+  <id>{SITE_URL}/</id>
+{chr(10).join(entries)}
+</feed>
+"""
+
+
+def render_json_feed(items: list[Item]) -> str:
+    payload = {
+        "version": "https://jsonfeed.org/version/1.1",
+        "title": SITE_NAME,
+        "home_page_url": f"{SITE_URL}/",
+        "feed_url": f"{SITE_URL}/feed.json",
+        "description": SITE_DESCRIPTION,
+        "language": "es",
+        "items": [
+            {
+                "id": item.link,
+                "url": item.link,
+                "title": display_title(item),
+                "summary": display_summary(item),
+                "date_published": item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+                "tags": [item.category, item.source],
+            }
+            for item in items
+        ],
+    }
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+
+
 def render_sitemap() -> str:
     today = datetime.now(timezone.utc).date().isoformat()
     utility_urls = "\n".join(
@@ -1929,6 +1982,8 @@ def render_sitemap() -> str:
   </url>"""
         for filename, changefreq, priority in [
             ("feed.xml", "daily", "0.7"),
+            ("atom.xml", "daily", "0.7"),
+            ("feed.json", "daily", "0.7"),
             *[(page["filename"], "daily", "0.9") for page in TREND_PAGES],
             ("llms.txt", "weekly", "0.6"),
             ("humans.txt", "monthly", "0.4"),
@@ -2015,6 +2070,8 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Kit para compartir: {SITE_URL}/share-pack.html
 - Archivo de Blogger: {SITE_URL}/blogger-archivo.html
 - Feed RSS del sitio: {SITE_URL}/feed.xml
+- Feed Atom del sitio: {SITE_URL}/atom.xml
+- JSON Feed del sitio: {SITE_URL}/feed.json
 - Feed RSS de Blogger: {BLOGGER_RSS_URL}
 - Payload social diario: {SITE_URL}/social-payload.json
 - Datos publicos del resumen: {SITE_URL}/data.json
@@ -2047,7 +2104,7 @@ Last update: {today}
 Language: Spanish
 Topics: inteligencia artificial, ciberseguridad, chips, hardware, productividad, plataformas digitales
 Stack: Python, Blogger API, GitHub Actions, GitHub Pages
-Feeds: {SITE_URL}/feed.xml, {BLOGGER_RSS_URL}
+Feeds: {SITE_URL}/feed.xml, {SITE_URL}/atom.xml, {SITE_URL}/feed.json, {BLOGGER_RSS_URL}
 """
 
 
@@ -2083,6 +2140,8 @@ def write_static(items: list[Item]) -> None:
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
     (PUBLIC / "feed.xml").write_text(render_feed(items), encoding="utf-8")
+    (PUBLIC / "atom.xml").write_text(render_atom_feed(items), encoding="utf-8")
+    (PUBLIC / "feed.json").write_text(render_json_feed(items), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(), encoding="utf-8")
     (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items), encoding="utf-8")
     (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
