@@ -15,6 +15,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import re
 import sys
 import time
 import urllib.parse
@@ -881,6 +882,24 @@ def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str
             throttle_write()
 
 
+def cleanup_legacy_daily_posts(blog_id: str, token: str, current_title: str) -> None:
+    legacy_daily = re.compile(r"^Pulso Tech Diario:\s*\d{4}-\d{2}-\d{2}$")
+    for post in list_posts(blog_id, token):
+        title = (post.get("title") or "").strip()
+        post_id = post.get("id")
+        if not post_id:
+            continue
+        if title == current_title:
+            continue
+        should_delete = legacy_daily.match(title) is not None or title == ""
+        if not should_delete:
+            continue
+        delete_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{post_id}"
+        request_json(delete_url, method="DELETE", token=token)
+        print(f"Deleted legacy daily post: {title or '(sin titulo)'}")
+        throttle_write()
+
+
 def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, dict]) -> None:
     guide_posts = guide_posts_from(existing_posts)
     update_existing = os.environ.get("BLOGGER_UPDATE_EXISTING_EVERGREEN", "").strip().lower() in {"1", "true", "yes"}
@@ -990,6 +1009,7 @@ def publish() -> None:
     managed_titles = {post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES}
     managed_titles.add(title)
     managed_titles.add(old_title)
+    cleanup_legacy_daily_posts(blog_id, token, title)
     cleanup_managed_duplicates(blog_id, token, managed_titles)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     ensure_evergreen_posts(blog_id, token, existing_posts)
