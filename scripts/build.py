@@ -1673,6 +1673,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
       <a href="pulso-tech-diario.html">Pulso Tech Diario</a>
       <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
       <a href="links.html">Links</a>
+      <a href="buscar.html">Buscar</a>
       <a href="seguir.html">Seguir</a>
       <a href="guias.html">Guias</a>
       <a href="feeds.html">Feeds</a>
@@ -1717,6 +1718,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         <a href="chips-ia-hoy.html">Chips IA</a>
         <a href="noticias-tecnologia-espanol.html">Noticias en espanol</a>
         <a href="links.html">Link en bio</a>
+        <a href="buscar.html">Buscar guias</a>
         <a href="seguir.html">Seguir</a>
         <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
@@ -1891,6 +1893,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
       <a href="temas.html">Temas</a>
       <a href="guias.html">Guias</a>
+      <a href="buscar.html">Buscar</a>
       <a href="feed.xml">RSS</a>
       <a href="contacto.html">Contacto</a>
     </nav>
@@ -1906,6 +1909,154 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
   <footer>
     <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
+</body>
+</html>"""
+
+
+def render_search_page(items: list[Item], story_paths: dict[str, str]) -> str:
+    title = "Buscar en Pulso Tech Diario"
+    description = "Buscador interno de Pulso Tech Diario para encontrar guias, tendencias y noticias de tecnologia en espanol."
+    canonical = f"{SITE_URL}/buscar.html"
+    search_items: list[dict[str, str]] = [
+        {"title": page["title"], "url": filename, "description": page["description"], "type": "Guia"}
+        for filename, page in STATIC_PAGES.items()
+    ]
+    search_items.extend(
+        {"title": page["title"], "url": page["filename"], "description": page["description"], "type": "Tendencia"}
+        for page in TREND_PAGES
+    )
+    search_items.extend(
+        {
+            "title": display_title(item),
+            "url": story_paths[item.link],
+            "description": display_summary(item),
+            "type": item.category,
+        }
+        for item in items
+    )
+    schema_payload = [
+        {
+            "@context": "https://schema.org",
+            "@type": "SearchResultsPage",
+            "name": title,
+            "description": description,
+            "url": canonical,
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": SITE_NAME,
+                "url": SITE_URL,
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": f"{SITE_URL}/buscar.html?q={{search_term_string}}",
+                    "query-input": "required name=search_term_string",
+                },
+                "sameAs": ENTITY_SAME_AS,
+            },
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Indice de busqueda de Pulso Tech Diario",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": index,
+                    "name": result["title"],
+                    "url": f"{SITE_URL}/{result['url']}",
+                }
+                for index, result in enumerate(search_items[:40], start=1)
+            ],
+        },
+    ]
+    index_json = json.dumps(search_items, ensure_ascii=False)
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} | {SITE_NAME}</title>
+  <meta name="description" content="{description}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{SITE_NAME}">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{description}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{SITE_URL}/assets/brand/pulso-tech-avatar.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title}">
+  <meta name="twitter:description" content="{description}">
+  <meta name="twitter:image" content="{SITE_URL}/assets/brand/pulso-tech-avatar.png">
+  {adsense_head()}
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">{json.dumps(schema_payload, ensure_ascii=False)}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="{SITE_NAME}">
+      <span class="brand-mark">PT</span>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="./">Inicio</a>
+      <a href="guias.html">Guias</a>
+      <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
+      <a href="seguir.html">Seguir</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+  </header>
+  <main class="page search-page">
+    <p class="kicker">Buscador interno</p>
+    <h1>{title}</h1>
+    <p>Encuentra rapido guias, tendencias y noticias recientes sobre IA, ciberseguridad, chips, privacidad y herramientas digitales.</p>
+    <form class="search-box" role="search" action="buscar.html">
+      <label for="q">Buscar tema</label>
+      <input id="q" name="q" type="search" placeholder="Ejemplo: ChatGPT, phishing, PDF, NPU" autocomplete="off">
+      <button type="submit">Buscar</button>
+    </form>
+    <section class="search-results" aria-live="polite">
+      <p id="search-count" class="kicker">Guias destacadas</p>
+      <div id="results" class="search-result-grid"></div>
+    </section>
+  </main>
+  <footer>
+    <p><a href="guias.html">Guias</a> · <a href="ultima-entrada.html">Ultima entrada</a> · <a href="feeds.html">Feeds</a> · <a href="{BLOG_HOME_TRACKED}">Blogger</a></p>
+  </footer>
+  <script>
+const SEARCH_INDEX = {index_json};
+const params = new URLSearchParams(window.location.search);
+const input = document.getElementById('q');
+const count = document.getElementById('search-count');
+const results = document.getElementById('results');
+const initialQuery = params.get('q') || '';
+input.value = initialQuery;
+
+function normalize(value) {{
+  return value.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+}}
+
+function render(query) {{
+  const q = normalize(query.trim());
+  const tokens = q.split(/\\s+/).filter(Boolean);
+  const ranked = SEARCH_INDEX.map((item) => {{
+    const haystack = normalize(`${{item.title}} ${{item.description}} ${{item.type}}`);
+    const score = tokens.length ? tokens.reduce((total, token) => total + (haystack.includes(token) ? 1 : 0), 0) : 1;
+    return {{ item, score }};
+  }}).filter((entry) => entry.score > 0).sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title)).slice(0, 18);
+  count.textContent = query.trim() ? `${{ranked.length}} resultados para "${{query.trim()}}"` : 'Guias destacadas';
+  results.innerHTML = ranked.map((entry) => `
+    <a class="search-result-card" href="${{entry.item.url}}">
+      <span>${{entry.item.type}}</span>
+      <strong>${{entry.item.title}}</strong>
+      <em>${{entry.item.description}}</em>
+    </a>
+  `).join('');
+}}
+
+input.addEventListener('input', () => render(input.value));
+render(initialQuery);
+  </script>
 </body>
 </html>"""
 
@@ -2181,6 +2332,11 @@ def schema(items: list[Item], story_paths: dict[str, str]) -> dict:
         "url": SITE_URL,
         "description": SITE_DESCRIPTION,
         "sameAs": ENTITY_SAME_AS,
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": f"{SITE_URL}/buscar.html?q={{search_term_string}}",
+            "query-input": "required name=search_term_string",
+        },
         "publishingPrinciples": f"{REPOSITORY_URL}#readme",
         "mainEntityOfPage": {
             "@type": "ItemList",
@@ -2504,6 +2660,67 @@ footer a { color: var(--ink); font-weight: 750; }
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.search-page {
+  max-width: 980px;
+}
+.search-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin: 28px 0 34px;
+}
+.search-box label {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-weight: 850;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.search-box input {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  padding: 14px 16px;
+}
+.search-box button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  padding: 0 20px;
+}
+.search-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.search-result-card {
+  min-height: 150px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+.search-result-card span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.search-result-card strong { font-size: 19px; line-height: 1.2; }
+.search-result-card em {
+  color: #64748b;
+  font-style: normal;
+  line-height: 1.45;
+}
 .faq-block {
   margin-top: 36px;
   border-top: 1px solid var(--line);
@@ -2543,6 +2760,9 @@ footer a { color: var(--ink); font-weight: 750; }
   .section-heading { display: block; }
   .guide-grid { grid-template-columns: 1fr; }
   .guide-card { min-height: auto; }
+  .search-box { grid-template-columns: 1fr; }
+  .search-box button { min-height: 48px; }
+  .search-result-grid { grid-template-columns: 1fr; }
   .grid { grid-template-columns: 1fr; }
   .story:first-child { grid-column: span 1; }
   h1 { font-size: 46px; }
@@ -2656,6 +2876,7 @@ def render_sitemap(story_paths: dict[str, str] | None = None) -> str:
             ("atom.xml", "daily", "0.7"),
             ("feed.json", "daily", "0.7"),
             ("opml.xml", "weekly", "0.6"),
+            ("buscar.html", "weekly", "0.7"),
             *[(page["filename"], "daily", "0.9") for page in TREND_PAGES],
             ("llms.txt", "weekly", "0.6"),
             ("humans.txt", "monthly", "0.4"),
@@ -2776,6 +2997,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Blog principal: {BLOG_URL}/
 - Pagina oficial: {SITE_URL}/pulso-tech-diario.html
 - Ultima entrada: {SITE_URL}/ultima-entrada.html
+- Buscador interno: {SITE_URL}/buscar.html
 - Seguir el sitio: {SITE_URL}/seguir.html
 - Link en bio: {SITE_URL}/links.html
 - Kit para compartir: {SITE_URL}/share-pack.html
@@ -2853,6 +3075,7 @@ def write_static(items: list[Item]) -> None:
         )
     for filename, page in STATIC_PAGES.items():
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
+    (PUBLIC / "buscar.html").write_text(render_search_page(items, story_paths), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
     (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths), encoding="utf-8")

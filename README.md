@@ -12,6 +12,8 @@ Ultima entrada permanente: https://elianguitarra.github.io/pulso-tech-diario/ult
 
 Link en bio: https://elianguitarra.github.io/pulso-tech-diario/links.html
 
+Buscador interno: https://elianguitarra.github.io/pulso-tech-diario/buscar.html
+
 Medicion de trafico: [`docs/TRAFFIC_MEASUREMENT.md`](docs/TRAFFIC_MEASUREMENT.md)
 
 ## Rutas publicas para atraer lectores

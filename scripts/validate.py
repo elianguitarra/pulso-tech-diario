@@ -124,6 +124,7 @@ def validate() -> None:
         "data.json",
         "latest.json",
         "links.html",
+        "buscar.html",
         "social-payload.json",
         "assets/social-card.svg",
         "assets/social-card.png",
@@ -136,6 +137,7 @@ def validate() -> None:
         "contacto.html",
         "noticias-tecnologia-espanol.html",
         "pulso-tech-diario.html",
+        "buscar.html",
         "seguir.html",
         "feeds.html",
         "guias.html",
@@ -279,6 +281,7 @@ def validate() -> None:
         "checklist-phishing.html",
         "blogger-archivo.html",
         "ultima-entrada.html",
+        "buscar.html",
         "links.html",
         "social-payload.json",
         "opml.xml",
@@ -295,7 +298,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -309,6 +312,17 @@ def validate() -> None:
         fail("links.html missing profile link tracking")
     if "Ultima entrada en Blogger" not in links_text:
         fail("links.html missing latest entry link")
+    search_text = (PUBLIC / "buscar.html").read_text(encoding="utf-8")
+    if (
+        "SearchResultsPage" not in search_text
+        or "SearchAction" not in search_text
+        or "SEARCH_INDEX" not in search_text
+        or "mejor-ia-para-resumir-pdf.html" not in search_text
+        or "alternativas-chatgpt-gratis.html" not in search_text
+    ):
+        fail("buscar.html missing internal search index or schema")
+    if "SearchAction" not in index_text or "buscar.html?q={search_term_string}" not in index_text:
+        fail("index missing SearchAction schema")
 
     follow_text = (PUBLIC / "seguir.html").read_text(encoding="utf-8")
     for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "OPML", "Directorio de feeds", "Inteligencia artificial hoy"]:
