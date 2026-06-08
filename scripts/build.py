@@ -146,6 +146,30 @@ TREND_PAGES = [
     },
 ]
 
+TOPIC_FEEDS = [
+    {
+        "filename": "feed-ia.xml",
+        "title": "Pulso Tech Diario IA",
+        "description": "Feed RSS de inteligencia artificial en Pulso Tech Diario.",
+        "category": "inteligencia artificial",
+        "html": "inteligencia-artificial.html",
+    },
+    {
+        "filename": "feed-ciberseguridad.xml",
+        "title": "Pulso Tech Diario Ciberseguridad",
+        "description": "Feed RSS de ciberseguridad, phishing y privacidad en Pulso Tech Diario.",
+        "category": "ciberseguridad",
+        "html": "ciberseguridad.html",
+    },
+    {
+        "filename": "feed-chips.xml",
+        "title": "Pulso Tech Diario Chips",
+        "description": "Feed RSS de chips, hardware e IA local en Pulso Tech Diario.",
+        "category": "chips",
+        "html": "chips-hardware.html",
+    },
+]
+
 STATIC_PAGES = {
     "pulso-tech-diario.html": {
         "title": "Pulso Tech Diario: noticias de tecnologia en espanol",
@@ -252,6 +276,9 @@ STATIC_PAGES = {
   <li><a href="feed.xml">RSS del sitio</a></li>
   <li><a href="atom.xml">Atom del sitio</a></li>
   <li><a href="feed.json">JSON Feed del sitio</a></li>
+  <li><a href="feed-ia.xml">RSS de inteligencia artificial</a></li>
+  <li><a href="feed-ciberseguridad.xml">RSS de ciberseguridad</a></li>
+  <li><a href="feed-chips.xml">RSS de chips y hardware</a></li>
   <li><a href="{BLOGGER_RSS_URL}">RSS de Blogger</a></li>
   <li><a href="opml.xml">OPML para importar en lectores RSS</a></li>
   <li><a href="feeds.html">Directorio de feeds</a></li>
@@ -337,6 +364,9 @@ STATIC_PAGES = {
   <li><a href="feed.xml">RSS del sitio estatico</a></li>
   <li><a href="atom.xml">Atom del sitio estatico</a></li>
   <li><a href="feed.json">JSON Feed del sitio estatico</a></li>
+  <li><a href="feed-ia.xml">RSS de inteligencia artificial</a></li>
+  <li><a href="feed-ciberseguridad.xml">RSS de ciberseguridad</a></li>
+  <li><a href="feed-chips.xml">RSS de chips y hardware</a></li>
   <li><a href="{BLOGGER_RSS_URL}">RSS del blog en Blogger</a></li>
 </ul>
 <h2>Importar en un lector</h2>
@@ -2038,6 +2068,9 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="{SITE_URL}/">
   <link rel="alternate" type="application/rss+xml" title="{SITE_NAME}" href="{SITE_URL}/feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="{SITE_NAME} IA" href="{SITE_URL}/feed-ia.xml">
+  <link rel="alternate" type="application/rss+xml" title="{SITE_NAME} Ciberseguridad" href="{SITE_URL}/feed-ciberseguridad.xml">
+  <link rel="alternate" type="application/rss+xml" title="{SITE_NAME} Chips" href="{SITE_URL}/feed-chips.xml">
   <link rel="alternate" type="application/atom+xml" title="{SITE_NAME}" href="{SITE_URL}/atom.xml">
   <link rel="alternate" type="application/feed+json" title="{SITE_NAME}" href="{SITE_URL}/feed.json">
   <meta property="og:type" content="website">
@@ -3184,8 +3217,16 @@ footer a { color: var(--ink); font-weight: 750; }
 """
 
 
-def render_feed(items: list[Item], story_paths: dict[str, str]) -> str:
+def render_feed(
+    items: list[Item],
+    story_paths: dict[str, str],
+    title: str = SITE_NAME,
+    description: str = SITE_DESCRIPTION,
+    filename: str = "feed.xml",
+    home_path: str = "",
+) -> str:
     now = email.utils.format_datetime(datetime.now(timezone.utc))
+    home_url = f"{SITE_URL}/{home_path}".rstrip("/")
     entries = []
     for item in items:
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
@@ -3201,16 +3242,21 @@ def render_feed(items: list[Item], story_paths: dict[str, str]) -> str:
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>{SITE_NAME}</title>
-  <link>{SITE_URL}/</link>
-  <atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+  <title>{esc(title)}</title>
+  <link>{esc(home_url)}</link>
+  <atom:link href="{SITE_URL}/{filename}" rel="self" type="application/rss+xml"/>
   <atom:link href="{WEBSUB_HUB_URL}" rel="hub"/>
-  <description>{esc(SITE_DESCRIPTION)}</description>
+  <description>{esc(description)}</description>
   <lastBuildDate>{now}</lastBuildDate>
 {''.join(entries)}
 </channel>
 </rss>
 """
+
+
+def topic_items(items: list[Item], category: str) -> list[Item]:
+    filtered = [item for item in items if item.category == category]
+    return filtered or items[: min(6, len(items))]
 
 
 def render_atom_feed(items: list[Item], story_paths: dict[str, str]) -> str:
@@ -3287,6 +3333,7 @@ def render_sitemap(story_paths: dict[str, str] | None = None) -> str:
   </url>"""
         for filename, changefreq, priority in [
             ("feed.xml", "daily", "0.7"),
+            *[(feed["filename"], "daily", "0.7") for feed in TOPIC_FEEDS],
             ("atom.xml", "daily", "0.7"),
             ("feed.json", "daily", "0.7"),
             ("opml.xml", "weekly", "0.6"),
@@ -3404,6 +3451,9 @@ def render_opml() -> str:
   <body>
     <outline text="{SITE_NAME}" title="{SITE_NAME}">
       <outline text="RSS del sitio" title="RSS del sitio" type="rss" xmlUrl="{SITE_URL}/feed.xml" htmlUrl="{SITE_URL}/"/>
+      <outline text="RSS de inteligencia artificial" title="RSS de inteligencia artificial" type="rss" xmlUrl="{SITE_URL}/feed-ia.xml" htmlUrl="{SITE_URL}/inteligencia-artificial.html"/>
+      <outline text="RSS de ciberseguridad" title="RSS de ciberseguridad" type="rss" xmlUrl="{SITE_URL}/feed-ciberseguridad.xml" htmlUrl="{SITE_URL}/ciberseguridad.html"/>
+      <outline text="RSS de chips y hardware" title="RSS de chips y hardware" type="rss" xmlUrl="{SITE_URL}/feed-chips.xml" htmlUrl="{SITE_URL}/chips-hardware.html"/>
       <outline text="Atom del sitio" title="Atom del sitio" type="atom" xmlUrl="{SITE_URL}/atom.xml" htmlUrl="{SITE_URL}/"/>
       <outline text="JSON Feed del sitio" title="JSON Feed del sitio" type="json" xmlUrl="{SITE_URL}/feed.json" htmlUrl="{SITE_URL}/"/>
       <outline text="RSS de Blogger" title="RSS de Blogger" type="rss" xmlUrl="{BLOGGER_RSS_URL}" htmlUrl="{BLOG_URL}/"/>
@@ -3475,6 +3525,9 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Kit para compartir: {SITE_URL}/share-pack.html
 - Archivo de Blogger: {SITE_URL}/blogger-archivo.html
 - Feed RSS del sitio: {SITE_URL}/feed.xml
+- Feed RSS de inteligencia artificial: {SITE_URL}/feed-ia.xml
+- Feed RSS de ciberseguridad: {SITE_URL}/feed-ciberseguridad.xml
+- Feed RSS de chips y hardware: {SITE_URL}/feed-chips.xml
 - Feed Atom del sitio: {SITE_URL}/atom.xml
 - JSON Feed del sitio: {SITE_URL}/feed.json
 - Indice de sitemaps: {SITE_URL}/sitemap-index.xml
@@ -3552,6 +3605,18 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "buscar.html").write_text(render_search_page(items, story_paths), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
     (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths), encoding="utf-8")
+    for feed in TOPIC_FEEDS:
+        (PUBLIC / feed["filename"]).write_text(
+            render_feed(
+                topic_items(items, feed["category"]),
+                story_paths,
+                title=feed["title"],
+                description=feed["description"],
+                filename=feed["filename"],
+                home_path=feed["html"],
+            ),
+            encoding="utf-8",
+        )
     (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "opml.xml").write_text(render_opml(), encoding="utf-8")

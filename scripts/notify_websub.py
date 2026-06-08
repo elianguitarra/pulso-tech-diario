@@ -14,6 +14,9 @@ WEBSUB_HUB_URL = os.environ.get("WEBSUB_HUB_URL", "https://pubsubhubbub.appspot.
 FEEDS = [
     f"{SITE_URL}/feed.xml",
     f"{SITE_URL}/atom.xml",
+    f"{SITE_URL}/feed-ia.xml",
+    f"{SITE_URL}/feed-ciberseguridad.xml",
+    f"{SITE_URL}/feed-chips.xml",
 ]
 
 

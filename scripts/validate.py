@@ -109,6 +109,9 @@ def validate() -> None:
         "index.html",
         "style.css",
         "feed.xml",
+        "feed-ia.xml",
+        "feed-ciberseguridad.xml",
+        "feed-chips.xml",
         "atom.xml",
         "feed.json",
         "opml.xml",
@@ -255,11 +258,20 @@ def validate() -> None:
         fail("feed.json missing JSON Feed payload")
     if not all(item.get("url", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/noticias/") for item in json_feed.get("items", [])):
         fail("feed.json items should point to internal story URLs")
-    if "atom.xml" not in index_text or "feed.json" not in index_text or "feeds.html" not in index_text:
+    if "atom.xml" not in index_text or "feed.json" not in index_text or "feed-ia.xml" not in index_text or "feed-ciberseguridad.xml" not in index_text or "feed-chips.xml" not in index_text or "feeds.html" not in index_text:
         fail("index missing alternate feed links")
+    for topic_feed, phrase in {
+        "feed-ia.xml": "Pulso Tech Diario IA",
+        "feed-ciberseguridad.xml": "Pulso Tech Diario Ciberseguridad",
+        "feed-chips.xml": "Pulso Tech Diario Chips",
+    }.items():
+        topic_root = ET.parse(PUBLIC / topic_feed).getroot()
+        topic_text = ET.tostring(topic_root, encoding="unicode")
+        if phrase not in topic_text or "rel=\"hub\"" not in topic_text or "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in topic_text:
+            fail(f"{topic_feed} missing topic RSS content or WebSub hub")
     ET.parse(PUBLIC / "opml.xml")
     opml_text = (PUBLIC / "opml.xml").read_text(encoding="utf-8")
-    if "RSS de Blogger" not in opml_text or "feed.xml" not in opml_text or "atom.xml" not in opml_text:
+    if "RSS de Blogger" not in opml_text or "feed.xml" not in opml_text or "feed-ia.xml" not in opml_text or "feed-ciberseguridad.xml" not in opml_text or "feed-chips.xml" not in opml_text or "atom.xml" not in opml_text:
         fail("opml.xml missing feed bundle")
     news_root = ET.parse(PUBLIC / "news-sitemap.xml").getroot()
     news_text = ET.tostring(news_root, encoding="unicode")
@@ -298,6 +310,9 @@ def validate() -> None:
         "noticias-tecnologia-espanol.html",
         "seguir.html",
         "feeds.html",
+        "feed-ia.xml",
+        "feed-ciberseguridad.xml",
+        "feed-chips.xml",
         "glosario-ia-tecnologia.html",
         "guias.html",
         "herramientas-ia-gratis.html",
@@ -353,7 +368,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "crear-imagenes-ia-gratis.html" not in llms_text or "prompts-para-estudiar-con-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "recuperar-whatsapp-hackeado.html" not in llms_text or "que-son-passkeys.html" not in llms_text or "como-borrar-datos-personales-google.html" not in llms_text or "vpn-gratis-es-segura.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "feed-ia.xml" not in llms_text or "feed-ciberseguridad.xml" not in llms_text or "feed-chips.xml" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "crear-imagenes-ia-gratis.html" not in llms_text or "prompts-para-estudiar-con-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "recuperar-whatsapp-hackeado.html" not in llms_text or "que-son-passkeys.html" not in llms_text or "como-borrar-datos-personales-google.html" not in llms_text or "vpn-gratis-es-segura.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -384,11 +399,11 @@ def validate() -> None:
         fail("index missing SearchAction schema")
 
     follow_text = (PUBLIC / "seguir.html").read_text(encoding="utf-8")
-    for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "OPML", "Directorio de feeds", "Inteligencia artificial hoy"]:
+    for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "RSS de inteligencia artificial", "RSS de ciberseguridad", "RSS de chips", "OPML", "Directorio de feeds", "Inteligencia artificial hoy"]:
         if required not in follow_text:
             fail(f"seguir.html missing {required}")
     feeds_text = (PUBLIC / "feeds.html").read_text(encoding="utf-8")
-    if "Feeds RSS y OPML" not in feeds_text or "opml.xml" not in feeds_text or "RSS del blog en Blogger" not in feeds_text:
+    if "Feeds RSS y OPML" not in feeds_text or "opml.xml" not in feeds_text or "RSS del blog en Blogger" not in feeds_text or "feed-ia.xml" not in feeds_text or "feed-ciberseguridad.xml" not in feeds_text or "feed-chips.xml" not in feeds_text:
         fail("feeds.html missing feed directory content")
     guides_text = (PUBLIC / "guias.html").read_text(encoding="utf-8")
     if (
