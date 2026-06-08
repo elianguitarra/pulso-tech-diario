@@ -265,6 +265,86 @@ STATIC_PAGES = {
 <p><a href="./">Volver al resumen diario</a></p>
 """,
     },
+    "herramientas-ia-gratis.html": {
+        "title": "Herramientas de IA gratis: como elegir sin perder tiempo",
+        "description": "Guia en espanol para elegir herramientas de IA gratis segun tarea, privacidad, limites y valor real.",
+        "body": f"""
+<p>Las herramientas de IA gratis sirven para probar flujos, aprender y ahorrar tiempo en tareas concretas. La clave no es acumular cuentas, sino elegir segun lo que necesitas resolver.</p>
+<h2>Empieza por la tarea</h2>
+<p>Define si necesitas resumir textos, escribir borradores, estudiar, programar, generar ideas, transcribir audio o analizar documentos. Una herramienta gratuita es buena si reduce pasos sin aumentar errores.</p>
+<h2>Revisa los limites</h2>
+<p>Muchos planes gratis tienen limites de mensajes, archivos, velocidad, modelos disponibles o historial. Antes de depender de una herramienta, prueba que el limite no rompa tu flujo diario.</p>
+<h2>Cuida tus datos</h2>
+<p>No subas contrasenas, datos de clientes, documentos privados, claves API ni informacion que no publicarias. Para datos sensibles, usa ejemplos ficticios o versiones anonimizadas.</p>
+<h2>Como comparar rapido</h2>
+<p>Prueba la misma tarea en dos o tres herramientas: un resumen, una tabla y un borrador. Quedate con la que requiere menos correcciones y explica mejor sus resultados.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude: como elegir</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Cual es la mejor herramienta de IA gratis?", "Depende de la tarea. La mejor es la que resuelve tu caso real con menos correcciones y sin exponer datos sensibles."),
+            ("Conviene pagar por una herramienta de IA?", "Conviene si el plan gratis se queda corto y la herramienta ahorra tiempo de forma constante."),
+            ("Puedo usar IA gratis para trabajo?", "Si, pero evita datos confidenciales y revisa las politicas de tu empresa o cliente."),
+        ],
+    },
+    "proteger-cuenta-google.html": {
+        "title": "Como proteger tu cuenta Google: checklist rapido",
+        "description": "Checklist en espanol para proteger una cuenta Google con contrasena segura, verificacion en dos pasos, sesiones y alertas.",
+        "body": f"""
+<p>Tu cuenta Google suele concentrar correo, archivos, fotos, Android, recuperacion de contrasenas y acceso a otros servicios. Protegerla reduce mucho el riesgo digital diario.</p>
+<h2>1. Activa verificacion en dos pasos</h2>
+<p>Usa una app autenticadora, passkey o llave de seguridad cuando sea posible. El SMS es mejor que nada, pero no es la opcion mas resistente.</p>
+<h2>2. Revisa dispositivos conectados</h2>
+<p>En seguridad de la cuenta, cierra sesiones que no reconozcas y elimina equipos antiguos. Si ves actividad rara, cambia contrasena y revisa recuperacion.</p>
+<h2>3. Cuida correo y recuperacion</h2>
+<p>Verifica que el correo y telefono de recuperacion sean tuyos. Si alguien controla la recuperacion, puede intentar recuperar tu cuenta.</p>
+<h2>4. Desconfia de avisos urgentes</h2>
+<p>No abras enlaces de correos que amenazan con cerrar tu cuenta. Entra manualmente a Google desde el navegador y revisa alertas oficiales.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con IA</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que hago si alguien entro a mi cuenta Google?", "Cambia la contrasena, cierra sesiones desconocidas, revisa recuperacion, activa verificacion en dos pasos y revisa actividad reciente."),
+            ("Las passkeys son mejores que contrasenas?", "Pueden reducir phishing y robo de contrasenas, pero conviene mantener metodos de recuperacion seguros."),
+            ("Debo revisar permisos de apps?", "Si. Elimina apps que no uses o que tengan permisos excesivos sobre correo, archivos o contactos."),
+        ],
+    },
+    "ia-para-estudiantes.html": {
+        "title": "IA para estudiantes: usos utiles y errores a evitar",
+        "description": "Guia para usar IA al estudiar sin copiar: resumenes, preguntas, explicaciones, privacidad y revision critica.",
+        "body": f"""
+<p>La IA puede ayudar a estudiar mejor si se usa como apoyo, no como sustituto del aprendizaje. Sirve para explicar, practicar, ordenar ideas y detectar dudas.</p>
+<h2>Usos utiles</h2>
+<p>Pide explicaciones con ejemplos, preguntas de repaso, mapas de conceptos, resumenes comparativos o una lista de temas que debes dominar antes de un examen.</p>
+<h2>Errores a evitar</h2>
+<p>No entregues respuestas generadas sin revisar, no copies trabajos completos y no confies en datos sin verificar. La IA puede inventar referencias o equivocarse con seguridad.</p>
+<h2>Mejor prompt</h2>
+<p>Da nivel, tema, objetivo y formato. Por ejemplo: explicame fotosintesis como si estuviera en secundaria y luego hazme 10 preguntas con respuestas.</p>
+<h2>Privacidad</h2>
+<p>No subas datos personales, documentos internos de la escuela, nombres de companeros ni informacion sensible. Puedes reemplazar datos reales por ejemplos ficticios.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="chatgpt-gemini-claude.html">Elegir chatbot de IA</a></li>
+  <li><a href="glosario-ia-tecnologia.html">Glosario rapido de IA</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Usar IA para estudiar es trampa?", "Depende del uso y las reglas de tu escuela. Usarla para explicar o practicar puede ayudar; entregar respuestas copiadas suele ser un problema."),
+            ("La IA siempre da respuestas correctas?", "No. Conviene verificar datos, fuentes y ejercicios, especialmente en matematicas, fechas y citas."),
+            ("Como uso IA sin dejar de aprender?", "Pide pistas, explicaciones y preguntas de practica antes de pedir una respuesta final."),
+        ],
+    },
     "que-es-ia-local.html": {
         "title": "Que es la IA local y cuando conviene usarla",
         "description": "Explicacion clara sobre IA local, modelos en el dispositivo, ventajas, limites y casos donde conviene frente a la nube.",
@@ -1184,7 +1264,10 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("Ciberseguridad hoy", "ciberseguridad-hoy.html", "Riesgos, phishing y privacidad explicados rapido."),
         ("Chips IA hoy", "chips-ia-hoy.html", "GPU, NPU y hardware para la carrera de IA."),
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
+        ("Herramientas IA gratis", "herramientas-ia-gratis.html", "Como elegir herramientas gratuitas sin perder tiempo."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
+        ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
+        ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
         ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),
@@ -2231,6 +2314,9 @@ def render_llms_txt() -> str:
         in {
             "noticias-tecnologia-espanol.html",
             "glosario-ia-tecnologia.html",
+            "herramientas-ia-gratis.html",
+            "ia-para-estudiantes.html",
+            "proteger-cuenta-google.html",
             "chatgpt-gemini-claude.html",
             "que-es-ia-local.html",
             "npu-vs-gpu.html",

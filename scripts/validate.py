@@ -102,6 +102,9 @@ def validate() -> None:
         "noticias-tecnologia-espanol.html",
         "seguir.html",
         "glosario-ia-tecnologia.html",
+        "herramientas-ia-gratis.html",
+        "ia-para-estudiantes.html",
+        "proteger-cuenta-google.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
         "inteligencia-artificial.html",
@@ -142,6 +145,9 @@ def validate() -> None:
         "ciberseguridad-hoy.html",
         "chips-ia-hoy.html",
         "glosario-ia-tecnologia.html",
+        "herramientas-ia-gratis.html",
+        "ia-para-estudiantes.html",
+        "proteger-cuenta-google.html",
     ]:
         if guide_page not in index_text:
             fail(f"index missing evergreen guide link {guide_page}")
@@ -189,6 +195,9 @@ def validate() -> None:
         "noticias-tecnologia-espanol.html",
         "seguir.html",
         "glosario-ia-tecnologia.html",
+        "herramientas-ia-gratis.html",
+        "ia-para-estudiantes.html",
+        "proteger-cuenta-google.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
         "inteligencia-artificial.html",
@@ -217,7 +226,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "inteligencia-artificial-hoy.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -236,6 +245,14 @@ def validate() -> None:
     for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "Inteligencia artificial hoy"]:
         if required not in follow_text:
             fail(f"seguir.html missing {required}")
+    for long_tail_page, phrase in {
+        "herramientas-ia-gratis.html": "Herramientas de IA gratis",
+        "ia-para-estudiantes.html": "IA para estudiantes",
+        "proteger-cuenta-google.html": "Como proteger tu cuenta Google",
+    }.items():
+        page_text = (PUBLIC / long_tail_page).read_text(encoding="utf-8")
+        if phrase not in page_text or "FAQPage" not in page_text or "Blogger" not in page_text:
+            fail(f"{long_tail_page} missing long-tail SEO content")
 
     trend_pages = {
         "tendencias-tecnologia-hoy.html": "Tendencias de tecnologia hoy",
