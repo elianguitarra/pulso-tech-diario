@@ -31,8 +31,8 @@ BRAND_ASSET_DEST = PUBLIC / "assets" / "brand"
 
 SITE_NAME = "Pulso Tech Diario"
 SITE_DESCRIPTION = (
-    "Un resumen diario y automatizado de las noticias tecnologicas mas relevantes, "
-    "con imagenes originales generadas por el propio sitio."
+    "Pulso Tech Diario publica noticias de tecnologia en espanol sobre IA, "
+    "ciberseguridad, chips y herramientas digitales con resumen diario automatizado."
 )
 SITE_URL = os.environ.get("SITE_URL", "https://elianguitarra.github.io/pulso-tech-diario").rstrip("/")
 WEBSUB_HUB_URL = "https://pubsubhubbub.appspot.com/"
@@ -147,6 +147,35 @@ TREND_PAGES = [
 ]
 
 STATIC_PAGES = {
+    "pulso-tech-diario.html": {
+        "title": "Pulso Tech Diario: noticias de tecnologia en espanol",
+        "description": "Pagina oficial de Pulso Tech Diario, blog en espanol sobre inteligencia artificial, ciberseguridad, chips y herramientas digitales.",
+        "schema_type": "AboutPage",
+        "body": f"""
+<p><strong>Pulso Tech Diario</strong> es un blog de tecnologia en espanol que resume senales relevantes sobre inteligencia artificial, ciberseguridad, chips, plataformas y herramientas digitales.</p>
+<p>La lectura principal vive en Blogger para mantener una ruta gratuita compatible con AdSense. GitHub Pages funciona como mapa publico, archivo, feeds, guias y paginas de descubrimiento.</p>
+<h2>Que encontraras en Pulso Tech Diario</h2>
+<ul>
+  <li>Resumen diario de noticias de tecnologia en espanol.</li>
+  <li>Guias practicas sobre IA, privacidad, phishing, laptops con NPU y automatizacion.</li>
+  <li>Feeds RSS, Atom, JSON Feed y OPML para seguir el contenido sin depender de redes sociales.</li>
+  <li>Enlaces a fuentes originales para comprobar cada nota.</li>
+</ul>
+<h2>Rutas oficiales</h2>
+<ul>
+  <li><a href="{BLOG_HOME_TRACKED}">Blog principal de Pulso Tech Diario en Blogger</a></li>
+  <li><a href="ultima-entrada.html">Ultima entrada publicada</a></li>
+  <li><a href="guias.html">Guias de tecnologia en espanol</a></li>
+  <li><a href="feeds.html">Feeds RSS y OPML</a></li>
+  <li><a href="links.html">Link en bio de Pulso Tech Diario</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que es Pulso Tech Diario?", "Pulso Tech Diario es un blog de tecnologia en espanol con resumen diario sobre inteligencia artificial, ciberseguridad, chips y herramientas digitales."),
+            ("Donde se lee Pulso Tech Diario?", "La lectura principal esta en Blogger y las paginas de apoyo, guias y feeds estan en GitHub Pages."),
+            ("Pulso Tech Diario cuesta algo?", "No. El sitio usa Blogger y GitHub Pages como rutas gratuitas de publicacion."),
+        ],
+    },
     "acerca.html": {
         "title": "Acerca de",
         "description": "Pulso Tech Diario resume tecnologia relevante cada dia con fuentes publicas, enlaces originales e imagenes propias.",
@@ -1488,6 +1517,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
     lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
     evergreen_guides = [
+        ("Que es Pulso Tech Diario", "pulso-tech-diario.html", "Pagina oficial, rutas y feeds del blog de tecnologia."),
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
         ("Tendencias tech hoy", "tendencias-tecnologia-hoy.html", "Lo mas relevante del dia en IA, chips y seguridad."),
         ("Todas las guias", "guias.html", "Indice practico de IA, seguridad, chips y automatizacion."),
@@ -1549,6 +1579,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
     </a>
     <nav aria-label="Acciones">
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
+      <a href="pulso-tech-diario.html">Pulso Tech Diario</a>
       <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
       <a href="links.html">Links</a>
       <a href="seguir.html">Seguir</a>
@@ -2619,6 +2650,7 @@ def render_llms_txt() -> str:
         if filename
         in {
             "noticias-tecnologia-espanol.html",
+            "pulso-tech-diario.html",
             "glosario-ia-tecnologia.html",
             "guias.html",
             "feeds.html",
@@ -2645,6 +2677,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 ## URLs principales
 
 - Blog principal: {BLOG_URL}/
+- Pagina oficial: {SITE_URL}/pulso-tech-diario.html
 - Ultima entrada: {SITE_URL}/ultima-entrada.html
 - Seguir el sitio: {SITE_URL}/seguir.html
 - Link en bio: {SITE_URL}/links.html

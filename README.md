@@ -18,6 +18,7 @@ Medicion de trafico: [`docs/TRAFFIC_MEASUREMENT.md`](docs/TRAFFIC_MEASUREMENT.md
 
 Estas paginas estan pensadas como entradas de busqueda en espanol y enlazan hacia el blog principal en Blogger:
 
+- Pulso Tech Diario pagina oficial: https://elianguitarra.github.io/pulso-tech-diario/pulso-tech-diario.html
 - Noticias de tecnologia en espanol: https://elianguitarra.github.io/pulso-tech-diario/noticias-tecnologia-espanol.html
 - Tendencias de tecnologia hoy: https://elianguitarra.github.io/pulso-tech-diario/tendencias-tecnologia-hoy.html
 - Herramientas de IA gratis: https://elianguitarra.github.io/pulso-tech-diario/herramientas-ia-gratis.html

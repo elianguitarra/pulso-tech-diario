@@ -129,11 +129,13 @@ def validate() -> None:
         "assets/social-card.png",
         "blogger-archivo.html",
         "ultima-entrada.html",
+        "pulso-tech-diario.html",
         "acerca.html",
         "politica-editorial.html",
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "pulso-tech-diario.html",
         "seguir.html",
         "feeds.html",
         "guias.html",
@@ -179,6 +181,7 @@ def validate() -> None:
         "privacidad-chatbots-ia.html",
         "checklist-phishing.html",
         "noticias-tecnologia-espanol.html",
+        "pulso-tech-diario.html",
         "seguir.html",
         "tendencias-tecnologia-hoy.html",
         "inteligencia-artificial-hoy.html",
@@ -238,6 +241,7 @@ def validate() -> None:
     sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
     for page in [
         "acerca.html",
+        "pulso-tech-diario.html",
         "politica-editorial.html",
         "privacidad.html",
         "contacto.html",
@@ -282,7 +286,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -314,6 +318,15 @@ def validate() -> None:
         or "ItemList" not in guides_text
     ):
         fail("guias.html missing guide hub schema")
+    brand_text = (PUBLIC / "pulso-tech-diario.html").read_text(encoding="utf-8")
+    if (
+        "Pulso Tech Diario: noticias de tecnologia en espanol" not in brand_text
+        or "AboutPage" not in brand_text
+        or "FAQPage" not in brand_text
+        or "Blog principal de Pulso Tech Diario en Blogger" not in brand_text
+        or "sameAs" not in brand_text
+    ):
+        fail("pulso-tech-diario.html missing brand discovery schema")
     for long_tail_page, phrase in {
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
         "ia-para-estudiantes.html": "IA para estudiantes",

@@ -33,6 +33,7 @@ PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 PAGES_WORK_AI_URL = f"{PAGES_URL}/ia-en-el-trabajo.html"
 PAGES_LAPTOP_AI_URL = f"{PAGES_URL}/comprar-laptop-para-ia.html"
 PAGES_EXTRA_GUIDES = [
+    ("Que es Pulso Tech Diario", f"{PAGES_URL}/pulso-tech-diario.html"),
     ("Prompts de IA", f"{PAGES_URL}/prompts-ia-productividad.html"),
     ("Correo hackeado", f"{PAGES_URL}/que-hacer-si-hackearon-mi-correo.html"),
     ("Laptop con NPU", f"{PAGES_URL}/laptop-con-npu-vale-la-pena.html"),
