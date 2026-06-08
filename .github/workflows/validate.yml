@@ -22,10 +22,13 @@ jobs:
           python-version: "3.12"
 
       - name: Compilar scripts
-        run: python -m py_compile scripts/build.py scripts/publish_blogger.py scripts/publish_email.py scripts/publish_feature_email.py scripts/publish_feature_blogger.py scripts/setup_email.py scripts/setup_oauth.py scripts/setup_oauth_device.py scripts/validate.py scripts/doctor.py scripts/submit_indexnow.py scripts/generate_share_pack.py
+        run: python -m py_compile scripts/build.py scripts/publish_blogger.py scripts/publish_email.py scripts/publish_feature_email.py scripts/publish_feature_blogger.py scripts/setup_email.py scripts/setup_oauth.py scripts/setup_oauth_device.py scripts/validate.py scripts/doctor.py scripts/submit_indexnow.py scripts/notify_websub.py scripts/generate_share_pack.py
 
       - name: Validar build de preview
         run: python scripts/validate.py
 
       - name: Validar payload IndexNow
         run: python scripts/submit_indexnow.py --dry-run
+
+      - name: Validar payload WebSub
+        run: python scripts/notify_websub.py --dry-run

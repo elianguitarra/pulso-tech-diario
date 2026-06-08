@@ -35,6 +35,7 @@ SITE_DESCRIPTION = (
     "con imagenes originales generadas por el propio sitio."
 )
 SITE_URL = os.environ.get("SITE_URL", "https://elianguitarra.github.io/pulso-tech-diario").rstrip("/")
+WEBSUB_HUB_URL = "https://pubsubhubbub.appspot.com/"
 ADSENSE_CLIENT = os.environ.get("ADSENSE_CLIENT", "").strip()
 ADSENSE_TOP_SLOT = os.environ.get("ADSENSE_TOP_SLOT", "").strip()
 ADSENSE_IN_ARTICLE_SLOT = os.environ.get("ADSENSE_IN_ARTICLE_SLOT", "").strip()
@@ -667,6 +668,10 @@ def image_filename(item: Item, ordinal: int) -> str:
     return f"{ordinal:02d}-{slugify(display_title(item))}.svg"
 
 
+def story_filename(item: Item, ordinal: int) -> str:
+    return f"noticias/{ordinal:02d}-{slugify(display_title(item))}.html"
+
+
 def palette_for(category: str) -> tuple[str, str, str, str]:
     palettes = {
         "inteligencia artificial": ("#0b1220", "#2dd4bf", "#facc15", "#e0f2fe"),
@@ -1146,23 +1151,25 @@ def extract_entities(value: str) -> list[str]:
     return entities
 
 
-def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
+def render_index(items: list[Item], image_paths: dict[str, str], story_paths: dict[str, str]) -> str:
     now = datetime.now(timezone.utc)
     lead = items[0] if items else None
     cards = []
     for rank, item in enumerate(items, start=1):
         image_path = image_paths[item.link]
+        story_path = story_paths[item.link]
         cards.append(
             f"""
         <article class="story" data-category="{esc(item.category)}">
-          <a class="story-image" href="{esc(item.link)}" target="_blank" rel="noopener">
+          <a class="story-image" href="{esc(story_path)}">
             <img src="{esc(image_path)}" alt="{esc(display_title(item))}" loading="lazy" width="1200" height="630">
           </a>
           <div class="story-body">
             <div class="story-meta"><span>#{rank}</span><span>{esc(item.category)}</span><span>{esc(item.source)}</span></div>
-            <h2><a href="{esc(item.link)}" target="_blank" rel="noopener">{esc(display_title(item))}</a></h2>
+            <h2><a href="{esc(story_path)}">{esc(display_title(item))}</a></h2>
             <p>{esc(display_summary(item))}</p>
             <p class="angle">{esc(reading_angle(item))}</p>
+            <p><a href="{esc(item.link)}" target="_blank" rel="noopener">Fuente original</a></p>
           </div>
         </article>"""
         )
@@ -1214,7 +1221,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
   <meta name="twitter:image" content="{SITE_URL}/{esc(lead_image)}">
   {adsense_head()}
   <link rel="stylesheet" href="style.css">
-  <script type="application/ld+json">{json.dumps(schema(items), ensure_ascii=False)}</script>
+  <script type="application/ld+json">{json.dumps(schema(items, story_paths), ensure_ascii=False)}</script>
 </head>
 <body>
   <header class="topbar">
@@ -1414,9 +1421,107 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
 </html>"""
 
 
+def render_story_page(item: Item, ordinal: int, image_path: str, filename: str) -> str:
+    title = display_title(item)
+    summary = display_summary(item)
+    canonical = f"{SITE_URL}/{filename}"
+    image_url = f"{SITE_URL}/{image_path}"
+    published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": title,
+        "description": summary,
+        "image": image_url,
+        "datePublished": published,
+        "dateModified": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "inLanguage": "es",
+        "mainEntityOfPage": canonical,
+        "publisher": {
+            "@type": "Organization",
+            "name": SITE_NAME,
+            "url": SITE_URL,
+            "logo": f"{SITE_URL}/assets/brand/pulso-tech-avatar.png",
+        },
+    }
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{esc(title)} | {SITE_NAME}</title>
+  <meta name="description" content="{esc(summary)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="{SITE_NAME}">
+  <meta property="og:title" content="{esc(title)}">
+  <meta property="og:description" content="{esc(summary)}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{image_url}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{esc(title)}">
+  <meta name="twitter:description" content="{esc(summary)}">
+  <meta name="twitter:image" content="{image_url}">
+  {adsense_head()}
+  <link rel="stylesheet" href="../style.css">
+  <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="{SITE_NAME}">
+      <span class="brand-mark">PT</span>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="../">Inicio</a>
+      <a href="../tendencias-tecnologia-hoy.html">Tendencias</a>
+      <a href="../seguir.html">Seguir</a>
+      <a href="../share-pack.html">Compartir</a>
+    </nav>
+  </header>
+  <main class="page story-detail">
+    <p class="kicker">#{ordinal} · {esc(item.category)} · {esc(item.source)}</p>
+    <h1>{esc(title)}</h1>
+    <p class="lede">{esc(summary)}</p>
+    <img class="detail-image" src="../{esc(image_path)}" alt="{esc(title)}" width="1200" height="630">
+    <div class="page-body">
+      <h2>Por que importa</h2>
+      <p>{esc(reading_angle(item))}</p>
+      <h2>Lectura recomendada</h2>
+      <p>Esta nota forma parte del resumen diario de Pulso Tech Diario. Primero te damos el contexto en espanol y despues enlazamos la fuente original para leer mas.</p>
+      <p><a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Pulso Tech Diario en Blogger</a> · <a href="{esc(item.link)}" target="_blank" rel="noopener">Leer fuente original</a></p>
+      <p><a href="../tendencias-tecnologia-hoy.html">Ver mas tendencias de tecnologia</a> · <a href="../seguir.html">Seguir el sitio</a></p>
+    </div>
+  </main>
+  <footer>
+    <p><a href="../temas.html">Temas</a> · <a href="../feed.xml">RSS</a> · <a href="../contacto.html">Contacto</a></p>
+  </footer>
+</body>
+</html>"""
+
+
+def write_story_pages(items: list[Item], image_paths: dict[str, str]) -> dict[str, str]:
+    story_dir = PUBLIC / "noticias"
+    if story_dir.exists():
+        for old_page in story_dir.glob("*.html"):
+            old_page.unlink()
+    story_dir.mkdir(parents=True, exist_ok=True)
+    story_paths: dict[str, str] = {}
+    for ordinal, item in enumerate(items, start=1):
+        filename = story_filename(item, ordinal)
+        (PUBLIC / filename).write_text(
+            render_story_page(item, ordinal, image_paths[item.link], filename),
+            encoding="utf-8",
+        )
+        story_paths[item.link] = filename
+    return story_paths
+
+
 def render_trends_page(
     items: list[Item],
     image_paths: dict[str, str],
+    story_paths: dict[str, str],
     filename: str = "tendencias-tecnologia-hoy.html",
     title: str = "Tendencias de tecnologia hoy",
     description: str = "Tendencias de tecnologia hoy en espanol: IA, ciberseguridad, chips, plataformas y herramientas digitales resumidas rapido.",
@@ -1434,17 +1539,19 @@ def render_trends_page(
     lead_title = display_title(lead) if lead else title
     rows = []
     for rank, item in enumerate(filtered_items[:10], start=1):
+        story_path = story_paths[item.link]
         rows.append(
             f"""
       <article class="trend-item">
-        <a class="trend-image" href="{esc(item.link)}" target="_blank" rel="noopener">
+        <a class="trend-image" href="{esc(story_path)}">
           <img src="{esc(image_paths[item.link])}" alt="{esc(display_title(item))}" loading="lazy" width="1200" height="630">
         </a>
         <div>
           <p class="story-meta"><span>#{rank}</span><span>{esc(item.category)}</span><span>{esc(item.source)}</span></p>
-          <h2><a href="{esc(item.link)}" target="_blank" rel="noopener">{esc(display_title(item))}</a></h2>
+          <h2><a href="{esc(story_path)}">{esc(display_title(item))}</a></h2>
           <p>{esc(display_summary(item))}</p>
           <p class="angle">{esc(reading_angle(item))}</p>
+          <p><a href="{esc(item.link)}" target="_blank" rel="noopener">Fuente original</a></p>
         </div>
       </article>"""
         )
@@ -1576,7 +1683,7 @@ def ad_unit(kind: str, slot: str, label: str) -> str:
     </aside>"""
 
 
-def schema(items: list[Item]) -> dict:
+def schema(items: list[Item], story_paths: dict[str, str]) -> dict:
     return {
         "@context": "https://schema.org",
         "@type": "NewsMediaOrganization",
@@ -1587,7 +1694,12 @@ def schema(items: list[Item]) -> dict:
         "mainEntityOfPage": {
             "@type": "ItemList",
             "itemListElement": [
-                {"@type": "ListItem", "position": index + 1, "url": item.link, "name": display_title(item)}
+                {
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "url": f"{SITE_URL}/{story_paths[item.link]}",
+                    "name": display_title(item),
+                }
                 for index, item in enumerate(items)
             ],
         },
@@ -1872,6 +1984,21 @@ footer a { color: var(--ink); font-weight: 750; }
   line-height: 1;
   margin-bottom: 28px;
 }
+.lede {
+  color: #475569;
+  font-size: 21px;
+  line-height: 1.58;
+  margin: -12px 0 24px;
+}
+.detail-image {
+  aspect-ratio: 1200 / 630;
+  background: #0f172a;
+  display: block;
+  height: auto;
+  margin: 0 0 30px;
+  object-fit: cover;
+  width: 100%;
+}
 .page-body {
   display: grid;
   gap: 18px;
@@ -1932,24 +2059,27 @@ footer a { color: var(--ink); font-weight: 750; }
 """
 
 
-def render_feed(items: list[Item]) -> str:
+def render_feed(items: list[Item], story_paths: dict[str, str]) -> str:
     now = email.utils.format_datetime(datetime.now(timezone.utc))
     entries = []
     for item in items:
+        story_url = f"{SITE_URL}/{story_paths[item.link]}"
         entries.append(
             f"""  <item>
     <title>{esc(display_title(item))}</title>
-    <link>{esc(item.link)}</link>
-    <guid>{esc(item.link)}</guid>
+    <link>{esc(story_url)}</link>
+    <guid>{esc(story_url)}</guid>
     <pubDate>{email.utils.format_datetime(item.published)}</pubDate>
     <description>{esc(display_summary(item))}</description>
   </item>"""
         )
     return f"""<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>{SITE_NAME}</title>
   <link>{SITE_URL}/</link>
+  <atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="{WEBSUB_HUB_URL}" rel="hub"/>
   <description>{esc(SITE_DESCRIPTION)}</description>
   <lastBuildDate>{now}</lastBuildDate>
 {''.join(entries)}
@@ -1958,16 +2088,17 @@ def render_feed(items: list[Item]) -> str:
 """
 
 
-def render_atom_feed(items: list[Item]) -> str:
+def render_atom_feed(items: list[Item], story_paths: dict[str, str]) -> str:
     updated = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     entries = []
     for item in items:
         published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        story_url = f"{SITE_URL}/{story_paths[item.link]}"
         entries.append(
             f"""  <entry>
     <title>{esc(display_title(item))}</title>
-    <link href="{esc(item.link)}"/>
-    <id>{esc(item.link)}</id>
+    <link href="{esc(story_url)}"/>
+    <id>{esc(story_url)}</id>
     <updated>{published}</updated>
     <summary>{esc(display_summary(item))}</summary>
     <category term="{esc(item.category)}"/>
@@ -1978,6 +2109,7 @@ def render_atom_feed(items: list[Item]) -> str:
   <title>{SITE_NAME}</title>
   <subtitle>{esc(SITE_DESCRIPTION)}</subtitle>
   <link href="{SITE_URL}/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="{WEBSUB_HUB_URL}" rel="hub"/>
   <link href="{SITE_URL}/"/>
   <updated>{updated}</updated>
   <id>{SITE_URL}/</id>
@@ -1986,7 +2118,7 @@ def render_atom_feed(items: list[Item]) -> str:
 """
 
 
-def render_json_feed(items: list[Item]) -> str:
+def render_json_feed(items: list[Item], story_paths: dict[str, str]) -> str:
     payload = {
         "version": "https://jsonfeed.org/version/1.1",
         "title": SITE_NAME,
@@ -1996,8 +2128,9 @@ def render_json_feed(items: list[Item]) -> str:
         "language": "es",
         "items": [
             {
-                "id": item.link,
-                "url": item.link,
+                "id": f"{SITE_URL}/{story_paths[item.link]}",
+                "url": f"{SITE_URL}/{story_paths[item.link]}",
+                "external_url": item.link,
                 "title": display_title(item),
                 "summary": display_summary(item),
                 "date_published": item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
@@ -2009,8 +2142,17 @@ def render_json_feed(items: list[Item]) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
 
-def render_sitemap() -> str:
+def render_sitemap(story_paths: dict[str, str] | None = None) -> str:
     today = datetime.now(timezone.utc).date().isoformat()
+    story_urls = "\n".join(
+        f"""  <url>
+    <loc>{SITE_URL}/{filename}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>"""
+        for filename in (story_paths or {}).values()
+    )
     utility_urls = "\n".join(
         f"""  <url>
     <loc>{SITE_URL}/{filename}</loc>
@@ -2045,18 +2187,20 @@ def render_sitemap() -> str:
     <priority>1.0</priority>
   </url>
 {utility_urls}
+{story_urls}
 {page_urls}
 </urlset>
 """
 
 
-def render_news_sitemap(items: list[Item]) -> str:
+def render_news_sitemap(items: list[Item], story_paths: dict[str, str]) -> str:
     entries = []
     for item in items:
         published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        story_url = f"{SITE_URL}/{story_paths[item.link]}"
         entries.append(
             f"""  <url>
-    <loc>{esc(item.link)}</loc>
+    <loc>{esc(story_url)}</loc>
     <news:news>
       <news:publication>
         <news:name>{SITE_NAME}</news:name>
@@ -2150,6 +2294,7 @@ Feeds: {SITE_URL}/feed.xml, {SITE_URL}/atom.xml, {SITE_URL}/feed.json, {BLOGGER_
 def write_static(items: list[Item]) -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     image_paths = save_images(items)
+    story_paths = write_story_pages(items, image_paths)
     if FEATURE_ASSET_SOURCE.exists():
         FEATURE_ASSET_DEST.mkdir(parents=True, exist_ok=True)
         for asset in FEATURE_ASSET_SOURCE.iterdir():
@@ -2160,12 +2305,13 @@ def write_static(items: list[Item]) -> None:
         for asset in BRAND_ASSET_SOURCE.iterdir():
             if asset.is_file():
                 shutil.copy2(asset, BRAND_ASSET_DEST / asset.name)
-    (PUBLIC / "index.html").write_text(render_index(items, image_paths), encoding="utf-8")
+    (PUBLIC / "index.html").write_text(render_index(items, image_paths, story_paths), encoding="utf-8")
     for page in TREND_PAGES:
         (PUBLIC / page["filename"]).write_text(
             render_trends_page(
                 items,
                 image_paths,
+                story_paths,
                 filename=page["filename"],
                 title=page["title"],
                 description=page["description"],
@@ -2178,11 +2324,11 @@ def write_static(items: list[Item]) -> None:
     for filename, page in STATIC_PAGES.items():
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
-    (PUBLIC / "feed.xml").write_text(render_feed(items), encoding="utf-8")
-    (PUBLIC / "atom.xml").write_text(render_atom_feed(items), encoding="utf-8")
-    (PUBLIC / "feed.json").write_text(render_json_feed(items), encoding="utf-8")
-    (PUBLIC / "sitemap.xml").write_text(render_sitemap(), encoding="utf-8")
-    (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items), encoding="utf-8")
+    (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "sitemap.xml").write_text(render_sitemap(story_paths), encoding="utf-8")
+    (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items, story_paths), encoding="utf-8")
     (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
     (PUBLIC / "humans.txt").write_text(render_humans_txt(), encoding="utf-8")
     (PUBLIC / "robots.txt").write_text(
@@ -2202,6 +2348,8 @@ def write_static(items: list[Item]) -> None:
         payload = item.__dict__ | {"published": item.published.isoformat()}
         payload["title"] = display_title(item)
         payload["summary"] = display_summary(item)
+        payload["url"] = f"{SITE_URL}/{story_paths[item.link]}"
+        payload["external_url"] = item.link
         public_items.append(payload)
     (PUBLIC / "data.json").write_text(json.dumps(public_items, indent=2), encoding="utf-8")
 

@@ -117,6 +117,8 @@ def validate() -> None:
         fail(f"expected one image per story, found {parser.image_count} images for {parser.story_count} stories")
     if parser.link_count < parser.story_count:
         fail("expected story links")
+    if "noticias/01-" not in index_text or "Fuente original" not in index_text:
+        fail("index missing internal story links")
     for guide_page in [
         "que-es-ia-local.html",
         "npu-vs-gpu.html",
@@ -134,12 +136,24 @@ def validate() -> None:
             fail(f"index missing evergreen guide link {guide_page}")
 
     ET.parse(PUBLIC / "feed.xml")
+    feed_text = (PUBLIC / "feed.xml").read_text(encoding="utf-8")
+    if "rel=\"hub\"" not in feed_text or "pubsubhubbub.appspot.com" not in feed_text:
+        fail("feed.xml missing WebSub hub discovery")
+    if "<link>https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in feed_text:
+        fail("feed.xml missing internal story URLs")
     atom_root = ET.parse(PUBLIC / "atom.xml").getroot()
-    if "Atom" not in ET.tostring(atom_root, encoding="unicode") and not atom_root.tag.endswith("feed"):
+    atom_text = ET.tostring(atom_root, encoding="unicode")
+    if "Atom" not in atom_text and not atom_root.tag.endswith("feed"):
         fail("atom.xml is not an Atom feed")
+    if "rel=\"hub\"" not in atom_text or "pubsubhubbub.appspot.com" not in atom_text:
+        fail("atom.xml missing WebSub hub discovery")
+    if "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in atom_text:
+        fail("atom.xml missing internal story URLs")
     json_feed = json.loads((PUBLIC / "feed.json").read_text(encoding="utf-8"))
     if json_feed.get("version") != "https://jsonfeed.org/version/1.1" or len(json_feed.get("items", [])) < parser.story_count:
         fail("feed.json missing JSON Feed payload")
+    if not all(item.get("url", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/noticias/") for item in json_feed.get("items", [])):
+        fail("feed.json items should point to internal story URLs")
     if "atom.xml" not in index_text or "feed.json" not in index_text:
         fail("index missing alternate feed links")
     news_root = ET.parse(PUBLIC / "news-sitemap.xml").getroot()
@@ -149,6 +163,8 @@ def validate() -> None:
     news_titles = news_root.findall(".//{http://www.google.com/schemas/sitemap-news/0.9}title")
     if len(news_titles) < parser.story_count:
         fail("news sitemap missing story titles")
+    if "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in news_text:
+        fail("news sitemap missing internal story URLs")
     robots_text = (PUBLIC / "robots.txt").read_text(encoding="utf-8")
     if "news-sitemap.xml" not in robots_text:
         fail("robots.txt missing news sitemap")
@@ -272,6 +288,13 @@ def validate() -> None:
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:
         fail(f"data.json count {len(data)} does not match story count {parser.story_count}")
+    story_dir = PUBLIC / "noticias"
+    story_pages = list(story_dir.glob("*.html"))
+    if len(story_pages) != parser.story_count:
+        fail(f"expected {parser.story_count} story pages, found {len(story_pages)}")
+    sample_story = story_pages[0].read_text(encoding="utf-8")
+    if "NewsArticle" not in sample_story or "Leer fuente original" not in sample_story:
+        fail("story page missing article schema or source link")
 
     image_dir = PUBLIC / "assets" / "images"
     images = list(image_dir.glob("*.svg"))
