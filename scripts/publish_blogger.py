@@ -751,37 +751,6 @@ def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, d
                 raise
 
 
-def ensure_topic_digest_posts(
-    blog_id: str,
-    token: str,
-    existing_posts: dict[str, dict],
-    items: list[build.Item],
-    today: str,
-    daily_url: str,
-    guide_posts: list[tuple[str, str]] | None = None,
-) -> None:
-    for post in topic_digest_posts(items, today, daily_url, guide_posts):
-        title = post["title"]
-        payload = post_payload(title, post["content"], post["labels"])
-        existing = existing_posts.get(title)
-        try:
-            if existing and existing.get("id"):
-                update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
-                result = request_json(update_url, method="PUT", token=token, payload=payload)
-                print(f"Updated topic post: {result.get('url', result.get('id'))}")
-            else:
-                insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
-                result = request_json(insert_url, method="POST", token=token, payload=payload)
-                print(f"Created topic post: {result.get('url', result.get('id'))}")
-            throttle_write()
-        except urllib.error.HTTPError as exc:
-            body = exc.read().decode("utf-8", errors="replace")
-            print(f"Warning: skipped topic post after HTTP {exc.code}: {title}")
-            print(body[:600])
-            if exc.code not in {403, 429, 500, 502, 503, 504}:
-                raise
-
-
 def daily_growth_block(daily_url: str, items: list[build.Item]) -> str:
     topics = []
     for item in items:
@@ -800,32 +769,21 @@ def daily_growth_block(daily_url: str, items: list[build.Item]) -> str:
 
 
 def growth_refresh_titles(items: list[build.Item]) -> list[str]:
-    titles = [
+    priority = [
         "Como leer tecnologia sin ruido: metodo Pulso Tech",
         "Senales que miramos cada dia en chips, seguridad y startups",
+        "Glosario rapido de inteligencia artificial para lectores ocupados",
+        "Como elegir herramientas de IA sin caer en humo",
+        "Como detectar phishing: senales simples antes de hacer clic",
+        "Como proteger tus cuentas despues de una filtracion de datos",
+        "Chips de IA: que significan GPU, NPU y memoria unificada",
+        "Que es la IA local y por que puede cambiar tu computadora",
+        "Privacidad con IA: que datos no debes subir a un chatbot",
     ]
-    categories = {item.category for item in items}
-    if "inteligencia artificial" in categories:
-        titles.extend(
-            [
-                "Glosario rapido de inteligencia artificial para lectores ocupados",
-                "Como elegir herramientas de IA sin caer en humo",
-            ]
-        )
-    if "ciberseguridad" in categories:
-        titles.extend(
-            [
-                "Como detectar phishing: senales simples antes de hacer clic",
-                "Como proteger tus cuentas despues de una filtracion de datos",
-            ]
-        )
-    if "chips" in categories:
-        titles.append("Chips de IA: que significan GPU, NPU y memoria unificada")
-    unique_titles = []
-    for title in titles:
-        if title not in unique_titles:
-            unique_titles.append(title)
-    return unique_titles[:5]
+    available = [post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES]
+    ordered = [title for title in priority if title in available]
+    ordered.extend(title for title in available if title not in ordered)
+    return ordered[:10]
 
 
 def refresh_existing_growth_posts(

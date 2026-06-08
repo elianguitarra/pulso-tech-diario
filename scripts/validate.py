@@ -64,7 +64,7 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
-            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); block=p.daily_growth_block('https://pulsotechdiario.blogspot.com/example.html', items); titles=p.growth_refresh_titles(items); assert 'Hoy en Pulso Tech Diario' in block and 'Leer noticias de tecnologia de hoy' in block, block; assert len(titles) >= 5 and 'Como leer tecnologia sin ruido: metodo Pulso Tech' in titles, titles",
+            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); block=p.daily_growth_block('https://pulsotechdiario.blogspot.com/example.html', items); titles=p.growth_refresh_titles(items); assert 'Hoy en Pulso Tech Diario' in block and 'Leer noticias de tecnologia de hoy' in block, block; assert len(titles) >= 9 and 'Como leer tecnologia sin ruido: metodo Pulso Tech' in titles and 'Privacidad con IA: que datos no debes subir a un chatbot' in titles, titles",
         ],
         check=True,
         cwd=ROOT,
