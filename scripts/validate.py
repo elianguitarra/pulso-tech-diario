@@ -68,6 +68,10 @@ def validate() -> None:
         "chips-hardware.html",
         "ia-en-el-trabajo.html",
         "comprar-laptop-para-ia.html",
+        "que-es-ia-local.html",
+        "npu-vs-gpu.html",
+        "privacidad-chatbots-ia.html",
+        "checklist-phishing.html",
         f"{INDEXNOW_KEY}.txt",
     ]:
         require(PUBLIC / relative)
@@ -97,6 +101,10 @@ def validate() -> None:
         "chips-hardware.html",
         "ia-en-el-trabajo.html",
         "comprar-laptop-para-ia.html",
+        "que-es-ia-local.html",
+        "npu-vs-gpu.html",
+        "privacidad-chatbots-ia.html",
+        "checklist-phishing.html",
         "blogger-archivo.html",
     ]:
         if page not in sitemap_text:

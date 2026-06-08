@@ -173,6 +173,90 @@ STATIC_PAGES = {
 <p><a href="./">Volver al resumen diario</a></p>
 """,
     },
+    "que-es-ia-local.html": {
+        "title": "Que es la IA local y cuando conviene usarla",
+        "description": "Explicacion clara sobre IA local, modelos en el dispositivo, ventajas, limites y casos donde conviene frente a la nube.",
+        "body": f"""
+<p>La IA local es inteligencia artificial que corre en tu computadora, telefono o dispositivo sin depender todo el tiempo de un servidor externo. Puede servir para escribir, resumir, transcribir, clasificar archivos o ejecutar modelos pequenos con mas control.</p>
+<h2>Por que importa</h2>
+<p>Si una tarea se ejecuta localmente, puede mejorar privacidad, reducir latencia y funcionar incluso cuando la conexion no es ideal. Tambien puede bajar costos si haces muchas pruebas.</p>
+<h2>Limites reales</h2>
+<p>Los modelos locales suelen necesitar memoria, bateria y hardware adecuado. No siempre igualan a los modelos grandes en la nube, y requieren revisar resultados con criterio.</p>
+<h2>Cuando elegirla</h2>
+<p>Conviene para datos sensibles, tareas repetidas, prototipos, notas personales, busqueda interna y flujos donde la velocidad importa mas que tener el modelo mas grande.</p>
+<p><a href="comprar-laptop-para-ia.html">Ver que revisar antes de comprar una laptop para IA</a></p>
+<p><a href="{BLOGGER_LABEL_LOCAL_AI_TRACKED}">Leer entradas de IA local en Blogger</a></p>
+""",
+        "faq": [
+            ("La IA local necesita internet?", "No siempre. Algunas funciones pueden correr sin conexion, pero descargar modelos, actualizaciones o herramientas suele requerir internet."),
+            ("La IA local es mas privada?", "Puede serlo cuando los datos no salen del dispositivo, aunque depende de la app, permisos, sincronizacion y configuracion."),
+            ("Necesito una GPU para usar IA local?", "No para todo. Tareas pequenas pueden correr en CPU o NPU, pero modelos mas grandes y generacion multimedia suelen beneficiarse de GPU y mas memoria."),
+        ],
+    },
+    "npu-vs-gpu.html": {
+        "title": "NPU vs GPU: diferencias para inteligencia artificial",
+        "description": "Comparacion practica entre NPU, GPU y CPU para entender que hardware importa en laptops y PCs con inteligencia artificial.",
+        "body": f"""
+<p>NPU y GPU no son lo mismo. Ambas pueden acelerar tareas de inteligencia artificial, pero estan pensadas para necesidades distintas.</p>
+<h2>Que hace una GPU</h2>
+<p>La GPU esta disenada para procesamiento paralelo potente. Es clave en graficos, video, juegos, entrenamiento, generacion de imagenes y modelos pesados.</p>
+<h2>Que hace una NPU</h2>
+<p>La NPU busca eficiencia. Sirve para funciones integradas como desenfoque de camara, transcripcion, efectos en tiempo real o asistentes locales con menor consumo.</p>
+<h2>Que mirar al comprar</h2>
+<p>No compres solo por una sigla. Revisa memoria RAM, compatibilidad de software, autonomia, temperatura, puertos y si tus aplicaciones realmente aprovechan esa NPU o GPU.</p>
+<p><a href="comprar-laptop-para-ia.html">Guia de compra de laptops para IA</a></p>
+<p><a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Leer entradas de chips en Blogger</a></p>
+""",
+        "faq": [
+            ("Es mejor una NPU o una GPU?", "Depende del uso. La GPU suele rendir mejor en tareas pesadas; la NPU suele ser mas eficiente para funciones integradas y continuas."),
+            ("Una laptop con NPU sirve para generar imagenes?", "Puede ayudar en algunas funciones, pero la generacion exigente normalmente depende mas de GPU, memoria y soporte de software."),
+            ("La CPU deja de importar?", "No. La CPU sigue siendo central para rendimiento general, multitarea, navegacion, programacion y muchas tareas diarias."),
+        ],
+    },
+    "privacidad-chatbots-ia.html": {
+        "title": "Privacidad con chatbots de IA: que datos no subir",
+        "description": "Lista practica de datos que conviene evitar en chatbots de IA y como usarlos con menor riesgo.",
+        "body": f"""
+<p>Los chatbots de IA son utiles, pero no todo debe pegarse en una conversacion. La regla simple: si no lo publicarias o no tienes permiso para compartirlo, no lo subas.</p>
+<h2>Datos que debes evitar</h2>
+<p>No subas contrasenas, codigos de verificacion, documentos legales sensibles, datos medicos, claves API, informacion bancaria, datos de clientes o archivos internos sin autorizacion.</p>
+<h2>Como reducir riesgo</h2>
+<p>Quita nombres, cambia numeros, resume el contexto y usa ejemplos ficticios. Si trabajas en empresa, revisa politicas internas antes de subir documentos.</p>
+<h2>Buen uso</h2>
+<p>Puedes pedir estructuras, listas de revision, ideas, borradores y explicaciones sin revelar datos reales. El valor aparece cuando separas la tarea del dato sensible.</p>
+<p><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Leer mas sobre privacidad en Blogger</a></p>
+<p><a href="ia-en-el-trabajo.html">Ver usos de IA en el trabajo</a></p>
+""",
+        "faq": [
+            ("Puedo pegar datos de clientes en un chatbot?", "Solo si tienes permiso, contrato, configuracion adecuada y una politica clara. En caso de duda, no lo hagas."),
+            ("Que hago si necesito ayuda con un documento sensible?", "Crea una version anonimizada, elimina identificadores y pregunta por estructura o criterios, no por datos reales."),
+            ("Los chatbots siempre entrenan con mis datos?", "Depende del servicio, plan y configuracion. Revisa privacidad, controles de historial y politicas de uso de datos."),
+        ],
+    },
+    "checklist-phishing.html": {
+        "title": "Checklist anti phishing antes de hacer clic",
+        "description": "Checklist rapido para detectar phishing en correos, mensajes, enlaces, adjuntos y codigos de verificacion.",
+        "body": f"""
+<p>El phishing funciona porque empuja a actuar rapido. Esta checklist ayuda a frenar unos segundos antes de entregar contrasenas, codigos o datos personales.</p>
+<h2>Revision rapida</h2>
+<ul>
+  <li>Confirma el dominio real del enlace.</li>
+  <li>Desconfia de urgencia extrema o amenazas.</li>
+  <li>No abras adjuntos inesperados.</li>
+  <li>No compartas codigos de verificacion.</li>
+  <li>Entra al servicio escribiendo la direccion manualmente.</li>
+</ul>
+<h2>Senales comunes</h2>
+<p>Errores raros, remitentes parecidos, enlaces acortados, formularios externos y solicitudes de pago fuera del canal normal son senales para detenerse.</p>
+<p><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Leer guias de phishing en Blogger</a></p>
+<p><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Ver mas sobre ciberseguridad</a></p>
+""",
+        "faq": [
+            ("Que hago si ya hice clic?", "Cambia la contrasena desde el sitio oficial, cierra sesiones activas, activa verificacion en dos pasos y revisa actividad reciente."),
+            ("Un mensaje puede ser phishing si viene de alguien conocido?", "Si. Las cuentas comprometidas tambien se usan para enviar enlaces maliciosos a contactos reales."),
+            ("Debo abrir un adjunto para comprobarlo?", "No. Si no esperabas el archivo, confirma por otro canal antes de abrirlo."),
+        ],
+    },
     "temas.html": {
         "title": "Temas de tecnologia",
         "description": "Mapa de temas de Pulso Tech Diario para leer sobre inteligencia artificial, ciberseguridad, chips y guias practicas.",
@@ -181,13 +265,13 @@ STATIC_PAGES = {
 <p><a href="blogger-archivo.html">Ver archivo de entradas reales de Blogger</a></p>
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
-<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
-<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
-<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
 """,
     },
     "inteligencia-artificial.html": {
@@ -200,6 +284,8 @@ STATIC_PAGES = {
   <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
+  <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
 </ul>
 <h2>Que mirar</h2>
@@ -216,6 +302,7 @@ STATIC_PAGES = {
 <ul>
   <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
   <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
@@ -234,6 +321,7 @@ STATIC_PAGES = {
   <li><a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas de chips en Blogger</a></li>
   <li><a href="{BLOGGER_LABEL_LOCAL_AI_TRACKED}">IA local</a></li>
   <li><a href="comprar-laptop-para-ia.html">Que revisar antes de comprar una laptop para IA</a></li>
+  <li><a href="npu-vs-gpu.html">NPU vs GPU para IA</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
 <h2>Que mirar</h2>
@@ -1005,6 +1093,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     title = page["title"]
     description = page["description"]
     body = page["body"]
+    faq = page.get("faq", [])
     canonical = f"{SITE_URL}/{filename}"
     social_image = f"{SITE_URL}/assets/brand/pulso-tech-avatar.png"
     page_schema = {
@@ -1025,6 +1114,40 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
             "logo": social_image,
         },
     }
+    schemas: list[dict] = [page_schema]
+    if faq:
+        schemas.append(
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": question,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": answer,
+                        },
+                    }
+                    for question, answer in faq
+                ],
+            }
+        )
+    schema_payload: dict | list[dict] = schemas[0] if len(schemas) == 1 else schemas
+    faq_html = ""
+    if faq:
+        faq_items = "\n".join(
+            f"""<details>
+        <summary>{esc(question)}</summary>
+        <p>{esc(answer)}</p>
+      </details>"""
+            for question, answer in faq
+        )
+        faq_html = f"""
+    <section class="faq-block" aria-label="Preguntas frecuentes">
+      <h2>Preguntas frecuentes</h2>
+      {faq_items}
+    </section>"""
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -1046,7 +1169,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
   <meta name="twitter:image" content="{social_image}">
   {adsense_head()}
   <link rel="stylesheet" href="style.css">
-  <script type="application/ld+json">{json.dumps(page_schema, ensure_ascii=False)}</script>
+  <script type="application/ld+json">{json.dumps(schema_payload, ensure_ascii=False)}</script>
 </head>
 <body>
   <header class="topbar">
@@ -1067,6 +1190,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     <div class="page-body">
       {body}
     </div>
+    {faq_html}
   </main>
   <footer>
     <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
@@ -1333,6 +1457,26 @@ footer a { color: var(--ink); font-weight: 750; }
   font-weight: 800;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.faq-block {
+  margin-top: 36px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+.faq-block h2 { margin: 0 0 14px; font-size: 28px; }
+.faq-block details {
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+}
+.faq-block summary {
+  cursor: pointer;
+  font-weight: 850;
+  color: var(--ink);
+}
+.faq-block p {
+  color: #475569;
+  line-height: 1.65;
+  margin: 10px 0 0;
 }
 @media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
