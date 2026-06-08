@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "public"
 TXT_OUT = PUBLIC / "share-pack.txt"
 HTML_OUT = PUBLIC / "share-pack.html"
+ARCHIVE_OUT = PUBLIC / "blogger-archivo.html"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
@@ -49,7 +50,8 @@ def feed_items() -> list[dict[str, str]]:
         title = clean(item.findtext("title", "Pulso Tech Diario"))
         link = clean(item.findtext("link", BLOG_URL + "/"))
         description = clean(item.findtext("description", ""))
-        items.append({"title": title, "link": link, "description": description})
+        published = clean(item.findtext("pubDate", ""))
+        items.append({"title": title, "link": link, "description": description, "published": published})
     return items
 
 
@@ -176,22 +178,74 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
 """
 
 
+def render_archive(items: list[dict[str, str]]) -> str:
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    if not items:
+        items = [{"title": "Pulso Tech Diario", "link": BLOG_URL + "/", "description": "Resumen diario de tecnologia en espanol.", "published": ""}]
+    rows = "\n".join(
+        f"""<article>
+      <p class="date">{html.escape(item.get("published", ""))}</p>
+      <h2><a href="{html.escape(item["link"])}">{html.escape(item["title"])}</a></h2>
+      <p>{html.escape(item.get("description", "")[:220])}</p>
+    </article>"""
+        for item in items[:30]
+    )
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Archivo de Blogger | Pulso Tech Diario</title>
+  <meta name="description" content="Archivo enlazado de entradas reales de Pulso Tech Diario en Blogger.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{PAGES_URL}/blogger-archivo.html">
+  <style>
+    body {{ margin: 0; font-family: Arial, Helvetica, sans-serif; background: #fbfcf8; color: #172033; }}
+    main {{ width: min(100% - 32px, 980px); margin: 0 auto; padding: 44px 0 64px; }}
+    h1 {{ font-size: clamp(38px, 8vw, 72px); line-height: 0.95; margin: 0 0 18px; }}
+    article {{ border-top: 1px solid #d9e2ec; padding: 20px 0; }}
+    article h2 {{ margin: 0 0 8px; font-size: 24px; line-height: 1.1; }}
+    a {{ color: #0f766e; font-weight: 850; }}
+    .date {{ color: #667085; font-size: 13px; margin: 0 0 8px; }}
+    .actions a {{ display: inline-block; margin: 0 10px 10px 0; padding: 10px 12px; background: #172033; color: white; text-decoration: none; }}
+  </style>
+</head>
+<body>
+  <main>
+    <p>Actualizado {now}</p>
+    <h1>Archivo de Blogger</h1>
+    <p>Entradas reales del blog principal enlazadas desde GitHub Pages para facilitar descubrimiento, lectura y rastreo.</p>
+    <p class="actions">
+      <a href="{BLOG_URL}/">Abrir Blogger</a>
+      <a href="{RSS_URL}">RSS de Blogger</a>
+      <a href="{PAGES_URL}/share-pack.html">Compartir</a>
+    </p>
+    {rows}
+  </main>
+</body>
+</html>
+"""
+
+
 def append_to_sitemap() -> None:
     if not SITEMAP.exists():
         return
     text = SITEMAP.read_text(encoding="utf-8")
-    loc = f"{PAGES_URL}/share-pack.html"
-    if loc in text:
-        return
     today = datetime.now(timezone.utc).date().isoformat()
-    entry = f"""  <url>
+    entries = []
+    for loc in [f"{PAGES_URL}/share-pack.html", f"{PAGES_URL}/blogger-archivo.html"]:
+        if loc in text:
+            continue
+        entries.append(f"""  <url>
     <loc>{loc}</loc>
     <lastmod>{today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
-"""
-    text = text.replace("</urlset>", f"{entry}</urlset>")
+""")
+    if not entries:
+        return
+    text = text.replace("</urlset>", f"{''.join(entries)}</urlset>")
     SITEMAP.write_text(text, encoding="utf-8")
 
 
@@ -202,8 +256,9 @@ def main() -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     TXT_OUT.write_text(render_text(title, url, guides), encoding="utf-8")
     HTML_OUT.write_text(render_html(title, url, guides), encoding="utf-8")
+    ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")
     append_to_sitemap()
-    print(f"share pack written to {TXT_OUT} and {HTML_OUT}")
+    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, and {ARCHIVE_OUT}")
 
 
 if __name__ == "__main__":

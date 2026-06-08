@@ -119,6 +119,7 @@ STATIC_PAGES = {
         "description": "Mapa de temas de Pulso Tech Diario para leer sobre inteligencia artificial, ciberseguridad, chips y guias practicas.",
         "body": f"""
 <p>Usa este mapa para entrar por tema y encontrar lecturas recurrentes de Pulso Tech Diario.</p>
+<p><a href="blogger-archivo.html">Ver archivo de entradas reales de Blogger</a></p>
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
 <p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> · <a href="{BLOG_URL}/search/label/inteligencia%20artificial">Entradas en Blogger</a></p>
@@ -896,6 +897,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
       <div class="cta-actions">
         <a href="{BLOG_URL}/" target="_blank" rel="noopener">Abrir Blogger</a>
         <a href="{BLOGGER_START_URL}" target="_blank" rel="noopener">Empieza aqui</a>
+        <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>
         <a href="{BLOGGER_RSS_URL}" target="_blank" rel="noopener">RSS Blogger</a>
         <a href="share-pack.html">Compartir</a>

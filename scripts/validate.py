@@ -48,6 +48,7 @@ def require(path: Path) -> None:
 
 def validate() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build.py")], check=True, cwd=ROOT)
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_share_pack.py")], check=True, cwd=ROOT)
 
     for relative in [
         "index.html",
@@ -56,6 +57,7 @@ def validate() -> None:
         "sitemap.xml",
         "robots.txt",
         "data.json",
+        "blogger-archivo.html",
         "acerca.html",
         "politica-editorial.html",
         "privacidad.html",
@@ -95,6 +97,7 @@ def validate() -> None:
         "chips-hardware.html",
         "ia-en-el-trabajo.html",
         "comprar-laptop-para-ia.html",
+        "blogger-archivo.html",
     ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
