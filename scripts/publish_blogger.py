@@ -594,6 +594,7 @@ def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str
 
 def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, dict]) -> None:
     guide_posts = guide_posts_from(existing_posts)
+    update_existing = os.environ.get("BLOGGER_UPDATE_EXISTING_EVERGREEN", "").strip().lower() in {"1", "true", "yes"}
     for post in EVERGREEN_POSTS:
         title = post["title"]
         content = f"{post['content'].strip()}\n{internal_link_block(guide_posts)}"
@@ -601,14 +602,18 @@ def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, d
         existing = existing_posts.get(title)
         try:
             if existing and existing.get("id"):
-                update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
-                request_json(update_url, method="PUT", token=token, payload=payload)
-                print(f"Updated evergreen post: {title}")
+                if update_existing:
+                    update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
+                    request_json(update_url, method="PUT", token=token, payload=payload)
+                    print(f"Updated evergreen post: {title}")
+                    throttle_write()
+                else:
+                    print(f"Evergreen post already exists: {title}")
             else:
                 insert_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
                 request_json(insert_url, method="POST", token=token, payload=payload)
                 print(f"Created evergreen post: {title}")
-            throttle_write()
+                throttle_write()
         except urllib.error.HTTPError as exc:
             body = exc.read().decode("utf-8", errors="replace")
             print(f"Warning: skipped evergreen post after HTTP {exc.code}: {title}")
