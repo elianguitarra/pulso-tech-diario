@@ -123,6 +123,7 @@ def validate() -> None:
         "contacto.html",
         "noticias-tecnologia-espanol.html",
         "seguir.html",
+        "guias.html",
         "glosario-ia-tecnologia.html",
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
@@ -171,6 +172,7 @@ def validate() -> None:
         "ciberseguridad-hoy.html",
         "chips-ia-hoy.html",
         "glosario-ia-tecnologia.html",
+        "guias.html",
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
@@ -225,6 +227,7 @@ def validate() -> None:
         "noticias-tecnologia-espanol.html",
         "seguir.html",
         "glosario-ia-tecnologia.html",
+        "guias.html",
         "herramientas-ia-gratis.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
@@ -260,7 +263,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -279,6 +282,9 @@ def validate() -> None:
     for required in ["RSS del sitio", "Atom del sitio", "JSON Feed del sitio", "RSS de Blogger", "Inteligencia artificial hoy"]:
         if required not in follow_text:
             fail(f"seguir.html missing {required}")
+    guides_text = (PUBLIC / "guias.html").read_text(encoding="utf-8")
+    if "Guias de tecnologia en espanol" not in guides_text or "BreadcrumbList" not in guides_text or "FAQPage" not in guides_text:
+        fail("guias.html missing guide hub schema")
     for long_tail_page, phrase in {
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
         "ia-para-estudiantes.html": "IA para estudiantes",

@@ -229,6 +229,47 @@ STATIC_PAGES = {
             ("Puedo compartir esta pagina?", "Si. Es una pagina publica pensada como punto de seguimiento para nuevos lectores."),
         ],
     },
+    "guias.html": {
+        "title": "Guias de tecnologia en espanol",
+        "description": "Indice de guias practicas de Pulso Tech Diario sobre IA, ciberseguridad, chips, privacidad y automatizacion.",
+        "body": f"""
+<p>Estas guias estan pensadas para responder busquedas concretas y llevar al lector hacia las noticias diarias de Pulso Tech Diario.</p>
+<h2>Inteligencia artificial</h2>
+<ul>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
+  <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude</a></li>
+  <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
+  <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
+</ul>
+<h2>Ciberseguridad y privacidad</h2>
+<ul>
+  <li><a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a></li>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+</ul>
+<h2>Chips, hardware y automatizacion</h2>
+<ul>
+  <li><a href="laptop-con-npu-vale-la-pena.html">Laptop con NPU</a></li>
+  <li><a href="npu-vs-gpu.html">NPU vs GPU</a></li>
+  <li><a href="comprar-laptop-para-ia.html">Comprar laptop para IA</a></li>
+  <li><a href="automatizar-blogger-gratis.html">Automatizar Blogger gratis</a></li>
+</ul>
+<h2>Seguir leyendo</h2>
+<ul>
+  <li><a href="{BLOG_HOME_TRACKED}">Abrir Blogger</a></li>
+  <li><a href="tendencias-tecnologia-hoy.html">Tendencias de tecnologia hoy</a></li>
+  <li><a href="ultima-entrada.html">Ultima entrada</a></li>
+</ul>
+""",
+        "faq": [
+            ("Para que sirven estas guias?", "Sirven como respuestas rapidas a dudas frecuentes y como rutas para descubrir el resumen diario del blog."),
+            ("Las guias se actualizan?", "El sitio se reconstruye a diario y las guias enlazan hacia contenido reciente en Blogger y paginas de tendencia."),
+            ("Donde esta el blog principal?", "El blog principal esta en Blogger, donde se concentran las entradas diarias y la monetizacion con AdSense cuando sea aprobada."),
+        ],
+    },
     "ia-en-el-trabajo.html": {
         "title": "IA en el trabajo: donde si ahorra tiempo",
         "description": "Guia practica para saber en que tareas laborales la inteligencia artificial ayuda y donde requiere supervision humana.",
@@ -1411,6 +1452,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
     evergreen_guides = [
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
         ("Tendencias tech hoy", "tendencias-tecnologia-hoy.html", "Lo mas relevante del dia en IA, chips y seguridad."),
+        ("Todas las guias", "guias.html", "Indice practico de IA, seguridad, chips y automatizacion."),
         ("IA hoy", "inteligencia-artificial-hoy.html", "Modelos, agentes y herramientas que se mueven ahora."),
         ("Ciberseguridad hoy", "ciberseguridad-hoy.html", "Riesgos, phishing y privacidad explicados rapido."),
         ("Chips IA hoy", "chips-ia-hoy.html", "GPU, NPU y hardware para la carrera de IA."),
@@ -1472,6 +1514,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
       <a href="tendencias-tecnologia-hoy.html">Tendencias</a>
       <a href="links.html">Links</a>
       <a href="seguir.html">Seguir</a>
+      <a href="guias.html">Guias</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
@@ -1573,7 +1616,25 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
             "logo": social_image,
         },
     }
-    schemas: list[dict] = [page_schema]
+    breadcrumb_schema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": SITE_NAME,
+                "item": f"{SITE_URL}/",
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": title,
+                "item": canonical,
+            },
+        ],
+    }
+    schemas: list[dict] = [page_schema, breadcrumb_schema]
     if faq:
         schemas.append(
             {
@@ -1640,6 +1701,7 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
       <a href="./">Inicio</a>
       <a href="noticias-tecnologia-espanol.html">Noticias</a>
       <a href="temas.html">Temas</a>
+      <a href="guias.html">Guias</a>
       <a href="feed.xml">RSS</a>
       <a href="contacto.html">Contacto</a>
     </nav>
@@ -2469,6 +2531,7 @@ def render_llms_txt() -> str:
         in {
             "noticias-tecnologia-espanol.html",
             "glosario-ia-tecnologia.html",
+            "guias.html",
             "herramientas-ia-gratis.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
