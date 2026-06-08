@@ -23,11 +23,12 @@ LATEST_OUT = PUBLIC / "ultima-entrada.html"
 LATEST_JSON_OUT = PUBLIC / "latest.json"
 LINKS_OUT = PUBLIC / "links.html"
 SOCIAL_JSON_OUT = PUBLIC / "social-payload.json"
+SOCIAL_CARD_OUT = PUBLIC / "assets" / "social-card.svg"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
-SOCIAL_IMAGE = f"{PAGES_URL}/assets/brand/pulso-tech-avatar.png"
+SOCIAL_IMAGE = f"{PAGES_URL}/assets/social-card.svg"
 
 
 def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
@@ -107,8 +108,76 @@ def guide_links(items: list[dict[str, str]]) -> list[tuple[str, str]]:
     return guides[:7]
 
 
+def wrap_text(value: str, max_chars: int, max_lines: int) -> list[str]:
+    words = clean(value).split()
+    lines: list[str] = []
+    current: list[str] = []
+    for word in words:
+        candidate = " ".join(current + [word])
+        if current and len(candidate) > max_chars:
+            lines.append(" ".join(current))
+            current = [word]
+        else:
+            current.append(word)
+        if len(lines) == max_lines:
+            break
+    if current and len(lines) < max_lines:
+        lines.append(" ".join(current))
+    if len(lines) == max_lines and len(" ".join(words)) > len(" ".join(lines)):
+        lines[-1] = lines[-1].rstrip(" .,:;") + "..."
+    return lines
+
+
+def share_headline(title: str) -> str:
+    normalized = clean(title)
+    if re.fullmatch(r"Pulso Tech Diario:\s*\d{4}-\d{2}-\d{2}", normalized):
+        return "IA, chips y ciberseguridad del dia"
+    if normalized.startswith("Pulso Tech Diario:"):
+        normalized = normalized.replace("Pulso Tech Diario:", "", 1).strip()
+    return normalized or "Tecnologia importante, filtrada a diario"
+
+
+def render_social_card(title: str) -> str:
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    headline = share_headline(title)
+    title_lines = wrap_text(headline, 32, 3)
+    text_nodes = "\n".join(
+        f'<text x="76" y="{206 + index * 68}" fill="#fff7ed" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="900">{html.escape(line)}</text>'
+        for index, line in enumerate(title_lines)
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Pulso Tech Diario">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#101010"/>
+      <stop offset="0.52" stop-color="#211816"/>
+      <stop offset="1" stop-color="#073b3a"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="78%" cy="38%" r="52%">
+      <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.95"/>
+      <stop offset="0.42" stop-color="#ff7058" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#101010" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#pulse)"/>
+  <path d="M690 108 C850 62 1038 130 1094 274 C1006 326 930 432 900 560 C790 476 676 408 536 396 C572 260 604 160 690 108 Z" fill="#ff7058" opacity="0.88"/>
+  <path d="M752 160 C876 134 1008 190 1032 292 C938 322 872 396 842 492 C758 430 666 384 580 374 C612 268 654 190 752 160 Z" fill="#fff7ed" opacity="0.15"/>
+  <circle cx="858" cy="292" r="82" fill="#2dd4bf" opacity="0.86"/>
+  <path d="M700 458 C798 396 880 404 978 334 C1038 292 1082 230 1134 144" fill="none" stroke="#fff7ed" stroke-width="20" stroke-linecap="round" opacity="0.82"/>
+  <g opacity="0.18" stroke="#fff7ed" stroke-width="1">
+    <path d="M76 104 H518 M76 148 H458 M76 432 H392 M76 476 H456"/>
+    <path d="M76 104 V476 M156 104 V476 M236 104 V476 M316 104 V476 M396 104 V476"/>
+  </g>
+  <rect x="54" y="48" width="1092" height="534" fill="none" stroke="#fff7ed" stroke-width="3" opacity="0.22"/>
+  <text x="76" y="104" fill="#ff7058" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="900" letter-spacing="2">PULSO TECH DIARIO</text>
+  {text_nodes}
+  <text x="76" y="542" fill="#fff7ed" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800" opacity="0.9">Tecnologia importante en espanol | {today}</text>
+  <text x="948" y="548" fill="#101010" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="950">PT</text>
+</svg>"""
+
+
 def share_url(service: str, title: str, url: str) -> str:
-    text = f"{title} - tecnologia explicada en espanol"
+    text = f"{share_headline(title)} - tecnologia explicada en espanol"
     if service == "x":
         return f"https://twitter.com/intent/tweet?text={urllib.parse.quote(text)}&url={urllib.parse.quote(url)}"
     if service == "whatsapp":
@@ -134,20 +203,22 @@ def social_payload(title: str, url: str, guides: list[tuple[str, str]]) -> dict:
         "hackernews": tracked_url(url, "share_pack", "community", "daily_share", "hackernews"),
     }
     posts = {
-        "x": f"{title}\n\nIA, ciberseguridad, chips y herramientas digitales explicadas en espanol.\n\n{tracked['x']}",
+        "x": f"{share_headline(title)}\n\nIA, ciberseguridad, chips y herramientas digitales explicadas en espanol.\n\n{tracked['x']}",
         "linkedin": (
             "Hoy en Pulso Tech Diario seleccione las senales tecnologicas que pueden afectar producto, "
             f"seguridad y trabajo.\n\nResumen:\n{tracked['linkedin']}"
         ),
         "whatsapp": f"Pulso Tech Diario:\n- IA y productividad\n- Seguridad digital\n- Chips y plataformas\n\nLeer aqui: {tracked['whatsapp']}",
         "telegram": f"Pulso Tech Diario: tecnologia importante explicada en espanol.\n\n{tracked['telegram']}",
-        "reddit": f"{title}\n\nResumen diario en espanol con enlaces a fuentes originales: {tracked['reddit']}",
-        "hackernews": f"{title} - Pulso Tech Diario",
+        "reddit": f"{share_headline(title)}\n\nResumen diario en espanol con enlaces a fuentes originales: {tracked['reddit']}",
+        "hackernews": f"{share_headline(title)} - Pulso Tech Diario",
     }
     return {
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "title": title,
+        "headline": share_headline(title),
         "url": url,
+        "image": SOCIAL_IMAGE,
         "tracked_urls": tracked,
         "share_urls": {service: share_url(service, title, service_url) for service, service_url in tracked.items()},
         "posts": posts,
@@ -227,6 +298,16 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
   <meta name="description" content="Textos y botones para compartir Pulso Tech Diario en redes y mensajeria.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="{PAGES_URL}/share-pack.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Compartir Pulso Tech Diario">
+  <meta property="og:description" content="{html.escape(title)}">
+  <meta property="og:image" content="{SOCIAL_IMAGE}">
+  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:url" content="{PAGES_URL}/share-pack.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Compartir Pulso Tech Diario">
+  <meta name="twitter:description" content="{html.escape(title)}">
+  <meta name="twitter:image" content="{SOCIAL_IMAGE}">
   <style>
     body {{ margin: 0; font-family: Arial, Helvetica, sans-serif; background: #151515; color: #f7f1e8; }}
     main {{ width: min(100% - 32px, 920px); margin: 0 auto; padding: 44px 0 64px; }}
@@ -238,6 +319,7 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     textarea {{ width: 100%; min-height: 260px; background: #0f0f0f; color: #f7f1e8; border: 1px solid #333; padding: 16px; line-height: 1.5; }}
     .channel {{ border-top: 1px solid #333; padding: 18px 0; }}
     .channel textarea {{ min-height: 150px; }}
+    .preview {{ width: 100%; max-width: 720px; border: 1px solid #333; background: #0f0f0f; }}
     li {{ margin-bottom: 10px; }}
   </style>
 </head>
@@ -246,6 +328,7 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     <p>Actualizado {now}</p>
     <h1>Compartir Pulso Tech Diario</h1>
     <p>Usa estos enlaces para mover la publicacion del dia y las guias que pueden atraer busquedas recurrentes.</p>
+    <p><img class="preview" src="assets/social-card.svg" alt="Tarjeta social de Pulso Tech Diario" width="1200" height="630"></p>
     <div class="panel">
       <h2>Publicacion principal</h2>
       <p><a href="{html.escape(main_url)}">{html.escape(title)}</a></p>
@@ -485,6 +568,8 @@ def main() -> None:
     title, url = latest_link(items)
     guides = guide_links(items)
     PUBLIC.mkdir(parents=True, exist_ok=True)
+    SOCIAL_CARD_OUT.parent.mkdir(parents=True, exist_ok=True)
+    SOCIAL_CARD_OUT.write_text(render_social_card(title), encoding="utf-8")
     TXT_OUT.write_text(render_text(title, url, guides), encoding="utf-8")
     HTML_OUT.write_text(render_html(title, url, guides), encoding="utf-8")
     ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")

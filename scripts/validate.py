@@ -61,6 +61,7 @@ def validate() -> None:
         "latest.json",
         "links.html",
         "social-payload.json",
+        "assets/social-card.svg",
         "blogger-archivo.html",
         "ultima-entrada.html",
         "acerca.html",
@@ -158,6 +159,11 @@ def validate() -> None:
         fail("ultima-entrada.html missing refresh redirect")
     if "og:image" not in latest_text or "twitter:card" not in latest_text:
         fail("ultima-entrada.html missing social preview metadata")
+    if "assets/social-card.svg" not in latest_text:
+        fail("ultima-entrada.html missing daily social card")
+    share_text = (PUBLIC / "share-pack.html").read_text(encoding="utf-8")
+    if "assets/social-card.svg" not in share_text or "og:image" not in share_text:
+        fail("share-pack.html missing social card preview metadata")
     latest_data = json.loads((PUBLIC / "latest.json").read_text(encoding="utf-8"))
     if not latest_data.get("url", "").startswith("https://pulsotechdiario.blogspot.com/"):
         fail("latest.json missing Blogger URL")
@@ -170,10 +176,20 @@ def validate() -> None:
         fail("social-payload.json missing required tracked channels")
     if "tecnologia" not in json.dumps(social_data.get("posts", {}), ensure_ascii=False).lower():
         fail("social-payload.json missing Spanish social copy")
+    if len(social_data.get("headline", "")) < 12:
+        fail("social-payload.json missing useful social headline")
+    if not social_data.get("image", "").endswith("/assets/social-card.svg"):
+        fail("social-payload.json missing daily social image")
     for channel in required_channels:
         tracked = social_data["tracked_urls"].get(channel, "")
         if "utm_campaign=daily_share" not in tracked:
             fail(f"social-payload.json missing daily_share tracking for {channel}")
+
+    social_card_text = (PUBLIC / "assets" / "social-card.svg").read_text(encoding="utf-8")
+    if "PULSO TECH DIARIO" not in social_card_text or "<svg" not in social_card_text:
+        fail("social-card.svg missing brand content")
+    if "IA, chips y ciberseguridad" not in social_card_text and "Tecnologia importante" not in social_card_text:
+        fail("social-card.svg missing useful headline")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:
