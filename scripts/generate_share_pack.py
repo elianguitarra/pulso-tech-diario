@@ -22,6 +22,7 @@ ARCHIVE_OUT = PUBLIC / "blogger-archivo.html"
 LATEST_OUT = PUBLIC / "ultima-entrada.html"
 LATEST_JSON_OUT = PUBLIC / "latest.json"
 LINKS_OUT = PUBLIC / "links.html"
+SOCIAL_JSON_OUT = PUBLIC / "social-payload.json"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
@@ -114,40 +115,70 @@ def share_url(service: str, title: str, url: str) -> str:
         return f"https://wa.me/?text={urllib.parse.quote(text + ' ' + url)}"
     if service == "linkedin":
         return f"https://www.linkedin.com/sharing/share-offsite/?url={urllib.parse.quote(url)}"
+    if service == "reddit":
+        return f"https://www.reddit.com/submit?url={urllib.parse.quote(url)}&title={urllib.parse.quote(text)}"
+    if service == "hackernews":
+        return f"https://news.ycombinator.com/submitlink?u={urllib.parse.quote(url)}&t={urllib.parse.quote(text)}"
+    if service == "telegram":
+        return f"https://t.me/share/url?url={urllib.parse.quote(url)}&text={urllib.parse.quote(text)}"
     return url
 
 
+def social_payload(title: str, url: str, guides: list[tuple[str, str]]) -> dict:
+    tracked = {
+        "x": tracked_url(url, "share_pack", "social", "daily_share", "x"),
+        "linkedin": tracked_url(url, "share_pack", "social", "daily_share", "linkedin"),
+        "whatsapp": tracked_url(url, "share_pack", "social", "daily_share", "whatsapp"),
+        "telegram": tracked_url(url, "share_pack", "social", "daily_share", "telegram"),
+        "reddit": tracked_url(url, "share_pack", "community", "daily_share", "reddit"),
+        "hackernews": tracked_url(url, "share_pack", "community", "daily_share", "hackernews"),
+    }
+    posts = {
+        "x": f"{title}\n\nIA, ciberseguridad, chips y herramientas digitales explicadas en espanol.\n\n{tracked['x']}",
+        "linkedin": (
+            "Hoy en Pulso Tech Diario seleccione las senales tecnologicas que pueden afectar producto, "
+            f"seguridad y trabajo.\n\nResumen:\n{tracked['linkedin']}"
+        ),
+        "whatsapp": f"Pulso Tech Diario:\n- IA y productividad\n- Seguridad digital\n- Chips y plataformas\n\nLeer aqui: {tracked['whatsapp']}",
+        "telegram": f"Pulso Tech Diario: tecnologia importante explicada en espanol.\n\n{tracked['telegram']}",
+        "reddit": f"{title}\n\nResumen diario en espanol con enlaces a fuentes originales: {tracked['reddit']}",
+        "hackernews": f"{title} - Pulso Tech Diario",
+    }
+    return {
+        "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "title": title,
+        "url": url,
+        "tracked_urls": tracked,
+        "share_urls": {service: share_url(service, title, service_url) for service, service_url in tracked.items()},
+        "posts": posts,
+        "guides": [
+            {
+                "title": guide_title,
+                "url": guide_url,
+                "tracked_url": tracked_if_blogger(guide_url, "share_pack", "social", "guide_share", f"guide_{index}"),
+            }
+            for index, (guide_title, guide_url) in enumerate(guides[:7], start=1)
+        ],
+    }
+
+
 def render_text(title: str, url: str, guides: list[tuple[str, str]]) -> str:
-    x_url = tracked_url(url, "share_pack", "social", "daily_share", "x")
-    linkedin_url = tracked_url(url, "share_pack", "social", "daily_share", "linkedin")
-    chat_url = tracked_url(url, "share_pack", "social", "daily_share", "chat")
+    payload = social_payload(title, url, guides)
     guide_lines = "\n".join(
         f"- {guide_title}: {tracked_if_blogger(guide_url, 'share_pack', 'social', 'guide_share', f'guide_{index}')}"
         for index, (guide_title, guide_url) in enumerate(guides[:4], start=1)
     )
     return f"""X / Twitter
-{title}
-
-IA, ciberseguridad, chips y herramientas digitales explicadas en espanol.
-
-Leer:
-{x_url}
+{payload["posts"]["x"]}
 
 LinkedIn
-Hoy en Pulso Tech Diario:
-
-Seleccion de tecnologia con contexto rapido para entender que cambia en IA, seguridad, hardware y productividad.
-
-Resumen:
-{linkedin_url}
+{payload["posts"]["linkedin"]}
 
 WhatsApp / Telegram
-Pulso Tech Diario:
-- IA y productividad
-- Seguridad digital
-- Chips y plataformas
+{payload["posts"]["whatsapp"]}
 
-Leer aqui: {chat_url}
+Reddit / comunidades
+{payload["posts"]["reddit"]}
 
 Guias para compartir
 {guide_lines}
@@ -159,9 +190,31 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
         f"""<li><a href="{html.escape(tracked_if_blogger(link, "share_pack", "referral", "guide_list", f"guide_{index}"))}">{html.escape(guide_title)}</a></li>"""
         for index, (guide_title, link) in enumerate(guides, start=1)
     )
+    payload = social_payload(title, url, guides)
     buttons = "\n".join(
-        f"""<a class="button" href="{html.escape(share_url(service, title, tracked_url(url, "share_pack", "social", "daily_share", service)))}">{label}</a>"""
-        for service, label in [("x", "Compartir en X"), ("whatsapp", "WhatsApp"), ("linkedin", "LinkedIn")]
+        f"""<a class="button" href="{html.escape(payload["share_urls"][service])}">{label}</a>"""
+        for service, label in [
+            ("x", "Compartir en X"),
+            ("whatsapp", "WhatsApp"),
+            ("telegram", "Telegram"),
+            ("linkedin", "LinkedIn"),
+            ("reddit", "Reddit"),
+            ("hackernews", "Hacker News"),
+        ]
+    )
+    channel_cards = "\n".join(
+        f"""<article class="channel">
+        <h3>{html.escape(label)}</h3>
+        <textarea readonly>{html.escape(payload["posts"][service])}</textarea>
+        <p><a class="button secondary" href="{html.escape(payload["share_urls"][service])}">Abrir {html.escape(label)}</a></p>
+      </article>"""
+        for service, label in [
+            ("x", "X"),
+            ("linkedin", "LinkedIn"),
+            ("whatsapp", "WhatsApp"),
+            ("telegram", "Telegram"),
+            ("reddit", "Reddit"),
+        ]
     )
     main_url = tracked_url(url, "share_pack", "referral", "daily_share", "main")
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -181,7 +234,10 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     h1 {{ font-size: clamp(38px, 8vw, 72px); line-height: 0.95; margin: 0 0 18px; }}
     .panel {{ border-top: 3px solid #ff7058; padding: 22px 0; margin-top: 28px; }}
     .button {{ display: inline-block; margin: 0 10px 10px 0; padding: 12px 14px; background: #ff7058; color: #201512; font-weight: 900; text-decoration: none; }}
+    .button.secondary {{ background: #f7f1e8; color: #151515; }}
     textarea {{ width: 100%; min-height: 260px; background: #0f0f0f; color: #f7f1e8; border: 1px solid #333; padding: 16px; line-height: 1.5; }}
+    .channel {{ border-top: 1px solid #333; padding: 18px 0; }}
+    .channel textarea {{ min-height: 150px; }}
     li {{ margin-bottom: 10px; }}
   </style>
 </head>
@@ -196,8 +252,17 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
       <p>{buttons}</p>
     </div>
     <div class="panel">
+      <h2>Textos por canal</h2>
+      <p>Publica solo donde las reglas de la comunidad permitan compartir enlaces propios.</p>
+      {channel_cards}
+    </div>
+    <div class="panel">
       <h2>Guias para compartir</h2>
       <ul>{guide_cards}</ul>
+    </div>
+    <div class="panel">
+      <h2>Payload para automatizar</h2>
+      <p><a href="social-payload.json">social-payload.json</a> contiene titulo, URL, UTMs y textos listos para conectarlo despues con herramientas gratuitas.</p>
     </div>
     <div class="panel">
       <h2>Texto listo</h2>
@@ -398,6 +463,7 @@ def append_to_sitemap() -> None:
         f"{PAGES_URL}/blogger-archivo.html",
         f"{PAGES_URL}/ultima-entrada.html",
         f"{PAGES_URL}/links.html",
+        f"{PAGES_URL}/social-payload.json",
     ]:
         if loc in text:
             continue
@@ -425,8 +491,9 @@ def main() -> None:
     LATEST_OUT.write_text(render_latest_redirect(title, url), encoding="utf-8")
     LATEST_JSON_OUT.write_text(latest_payload(title, url, items), encoding="utf-8")
     LINKS_OUT.write_text(render_links_page(title, url, guides), encoding="utf-8")
+    SOCIAL_JSON_OUT.write_text(json.dumps(social_payload(title, url, guides), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     append_to_sitemap()
-    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, {LATEST_OUT}, {LATEST_JSON_OUT}, and {LINKS_OUT}")
+    print(f"share pack written to {TXT_OUT}, {HTML_OUT}, {ARCHIVE_OUT}, {LATEST_OUT}, {LATEST_JSON_OUT}, {LINKS_OUT}, and {SOCIAL_JSON_OUT}")
 
 
 if __name__ == "__main__":

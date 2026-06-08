@@ -60,6 +60,7 @@ def validate() -> None:
         "data.json",
         "latest.json",
         "links.html",
+        "social-payload.json",
         "blogger-archivo.html",
         "ultima-entrada.html",
         "acerca.html",
@@ -139,6 +140,7 @@ def validate() -> None:
         "blogger-archivo.html",
         "ultima-entrada.html",
         "links.html",
+        "social-payload.json",
     ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
@@ -161,6 +163,17 @@ def validate() -> None:
         fail("latest.json missing Blogger URL")
     if "utm_campaign=latest_entry" not in latest_data.get("tracked_url", ""):
         fail("latest.json missing tracked latest URL")
+
+    social_data = json.loads((PUBLIC / "social-payload.json").read_text(encoding="utf-8"))
+    required_channels = {"x", "linkedin", "whatsapp", "telegram", "reddit", "hackernews"}
+    if set(social_data.get("tracked_urls", {})) != required_channels:
+        fail("social-payload.json missing required tracked channels")
+    if "tecnologia" not in json.dumps(social_data.get("posts", {}), ensure_ascii=False).lower():
+        fail("social-payload.json missing Spanish social copy")
+    for channel in required_channels:
+        tracked = social_data["tracked_urls"].get(channel, "")
+        if "utm_campaign=daily_share" not in tracked:
+            fail(f"social-payload.json missing daily_share tracking for {channel}")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:
