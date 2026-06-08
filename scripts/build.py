@@ -1707,6 +1707,19 @@ def render_feed(items: list[Item]) -> str:
 
 def render_sitemap() -> str:
     today = datetime.now(timezone.utc).date().isoformat()
+    utility_urls = "\n".join(
+        f"""  <url>
+    <loc>{SITE_URL}/{filename}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>{changefreq}</changefreq>
+    <priority>{priority}</priority>
+  </url>"""
+        for filename, changefreq, priority in [
+            ("feed.xml", "daily", "0.7"),
+            ("llms.txt", "weekly", "0.6"),
+            ("humans.txt", "monthly", "0.4"),
+        ]
+    )
     page_urls = "\n".join(
         f"""  <url>
     <loc>{SITE_URL}/{filename}</loc>
@@ -1724,6 +1737,7 @@ def render_sitemap() -> str:
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+{utility_urls}
 {page_urls}
 </urlset>
 """
@@ -1754,6 +1768,67 @@ def render_news_sitemap(items: list[Item]) -> str:
 """
 
 
+def render_llms_txt() -> str:
+    guide_lines = "\n".join(
+        f"- [{page['title']}]({SITE_URL}/{filename}): {page['description']}"
+        for filename, page in STATIC_PAGES.items()
+        if filename
+        in {
+            "noticias-tecnologia-espanol.html",
+            "glosario-ia-tecnologia.html",
+            "chatgpt-gemini-claude.html",
+            "que-es-ia-local.html",
+            "npu-vs-gpu.html",
+            "privacidad-chatbots-ia.html",
+            "checklist-phishing.html",
+        }
+    )
+    return f"""# {SITE_NAME}
+
+> {SITE_DESCRIPTION}
+
+Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, ciberseguridad, chips, plataformas y herramientas digitales. Publica un resumen diario en Blogger y mantiene guias evergreen en GitHub Pages.
+
+## URLs principales
+
+- Blog principal: {BLOG_URL}/
+- Ultima entrada: {SITE_URL}/ultima-entrada.html
+- Link en bio: {SITE_URL}/links.html
+- Kit para compartir: {SITE_URL}/share-pack.html
+- Archivo de Blogger: {SITE_URL}/blogger-archivo.html
+- Feed RSS del sitio: {SITE_URL}/feed.xml
+- Feed RSS de Blogger: {BLOGGER_RSS_URL}
+- Payload social diario: {SITE_URL}/social-payload.json
+- Datos publicos del resumen: {SITE_URL}/data.json
+
+## Guias utiles
+
+{guide_lines}
+
+## Uso recomendado
+
+Usa el blog principal como destino canonico de lectura y las guias como contexto estable. Las notas enlazan a fuentes originales y no deben tratarse como reproducciones completas de articulos externos.
+"""
+
+
+def render_humans_txt() -> str:
+    today = datetime.now(timezone.utc).date().isoformat()
+    return f"""/* TEAM */
+Site: {SITE_NAME}
+Role: Blog automatizado de tecnologia en espanol
+Contact: https://github.com/elianguitarra/pulso-tech-diario
+
+/* SITE */
+Blog: {BLOG_URL}/
+Static hub: {SITE_URL}/
+Last update: {today}
+Language: Spanish
+Topics: inteligencia artificial, ciberseguridad, chips, hardware, productividad, plataformas digitales
+Stack: Python, Blogger API, GitHub Actions, GitHub Pages
+Feeds: {SITE_URL}/feed.xml, {BLOGGER_RSS_URL}
+"""
+
+
 def write_static(items: list[Item]) -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     image_paths = save_images(items)
@@ -1774,6 +1849,8 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "feed.xml").write_text(render_feed(items), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(), encoding="utf-8")
     (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items), encoding="utf-8")
+    (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
+    (PUBLIC / "humans.txt").write_text(render_humans_txt(), encoding="utf-8")
     (PUBLIC / "robots.txt").write_text(
         f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\n",
         encoding="utf-8",

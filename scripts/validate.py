@@ -54,6 +54,8 @@ def validate() -> None:
         "index.html",
         "style.css",
         "feed.xml",
+        "llms.txt",
+        "humans.txt",
         "sitemap.xml",
         "news-sitemap.xml",
         "robots.txt",
@@ -142,9 +144,21 @@ def validate() -> None:
         "ultima-entrada.html",
         "links.html",
         "social-payload.json",
+        "llms.txt",
+        "humans.txt",
     ]:
         if page not in sitemap_text:
             fail(f"sitemap missing {page}")
+
+    llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
+    if "Payload social diario" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+        fail("llms.txt missing discovery links")
+    if "https://pulsotechdiario.blogspot.com/" not in llms_text:
+        fail("llms.txt missing Blogger URL")
+
+    humans_text = (PUBLIC / "humans.txt").read_text(encoding="utf-8")
+    if "Language: Spanish" not in humans_text or "GitHub Actions" not in humans_text:
+        fail("humans.txt missing site metadata")
 
     links_text = (PUBLIC / "links.html").read_text(encoding="utf-8")
     if "utm_campaign=profile_links" not in links_text:
