@@ -1443,7 +1443,7 @@ def render_trends_page(items: list[Item], image_paths: dict[str, str]) -> str:
   </main>
   <footer>
     <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
-    <p><a href="noticias-tecnologia-espanol.html">Noticias en espanol</a> Â· <a href="glosario-ia-tecnologia.html">Glosario</a> Â· <a href="privacidad.html">Privacidad</a></p>
+    <p><a href="noticias-tecnologia-espanol.html">Noticias en espanol</a> · <a href="glosario-ia-tecnologia.html">Glosario</a> · <a href="privacidad.html">Privacidad</a></p>
   </footer>
 </body>
 </html>"""

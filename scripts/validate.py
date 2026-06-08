@@ -84,7 +84,6 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
-        "tendencias-tecnologia-hoy.html",
         "glosario-ia-tecnologia.html",
         "chatgpt-gemini-claude.html",
         "temas.html",
