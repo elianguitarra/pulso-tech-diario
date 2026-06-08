@@ -292,6 +292,9 @@ STATIC_PAGES = {
   <li><a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a></li>
   <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
   <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada: que hacer</a></li>
+  <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
 </ul>
 <h2>Chips, hardware y automatizacion</h2>
@@ -725,6 +728,84 @@ STATIC_PAGES = {
             ("Debo abrir un adjunto para comprobarlo?", "No. Si no esperabas el archivo, confirma por otro canal antes de abrirlo."),
         ],
     },
+    "como-saber-si-un-enlace-es-seguro.html": {
+        "title": "Como saber si un enlace es seguro antes de abrirlo",
+        "description": "Guia en espanol para revisar enlaces sospechosos, dominios, acortadores, HTTPS, mensajes urgentes y senales de phishing.",
+        "body": f"""
+<p>Antes de abrir un enlace conviene revisar unos detalles simples. La mayoria de fraudes intenta que actues rapido, asi que detenerte unos segundos ya reduce mucho el riesgo.</p>
+<h2>Revisa el dominio real</h2>
+<p>Pasa el cursor sobre el enlace o manten presionado en el telefono para ver la direccion. Mira el dominio principal, no solo el texto bonito del mensaje. Un dominio parecido no es lo mismo que el oficial.</p>
+<h2>Cuidado con acortadores</h2>
+<p>Los enlaces acortados pueden ocultar el destino. Si el mensaje pide contrasena, pago, codigo o datos personales, entra manualmente al sitio oficial en vez de tocar el enlace.</p>
+<h2>HTTPS no basta</h2>
+<p>Que una pagina tenga candado no significa que sea confiable. Solo indica una conexion cifrada. Un sitio falso tambien puede usar HTTPS.</p>
+<h2>Senales de alerta</h2>
+<p>Urgencia extrema, amenazas, premios inesperados, errores raros, archivos no solicitados y peticiones de codigos de verificacion son motivos para detenerse.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
+  <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Como saber si un enlace es seguro?", "Revisa el dominio real, evita acortadores sospechosos, no confies solo en HTTPS y entra manualmente al sitio oficial cuando haya datos sensibles."),
+            ("El candado HTTPS significa que una pagina es segura?", "No necesariamente. HTTPS cifra la conexion, pero un sitio falso tambien puede tener candado."),
+            ("Que hago si ya abri un enlace sospechoso?", "No ingreses datos. Cierra la pagina, cambia contrasenas si escribiste alguna, revisa sesiones y activa verificacion en dos pasos."),
+        ],
+    },
+    "contrasena-filtrada-que-hacer.html": {
+        "title": "Contrasena filtrada: que hacer paso a paso",
+        "description": "Checklist en espanol para actuar si una contrasena fue filtrada: cambio de claves, 2FA, sesiones, correos y cuentas importantes.",
+        "body": f"""
+<p>Si una contrasena aparece filtrada, no significa siempre que alguien ya entro a tu cuenta, pero si significa que debes actuar rapido y con orden.</p>
+<h2>1. Cambia esa contrasena</h2>
+<p>Cambia la clave en el servicio afectado desde el sitio oficial. Usa una contrasena nueva, larga y unica. No reutilices una variacion de la anterior.</p>
+<h2>2. Cambia cuentas donde repetiste la clave</h2>
+<p>El mayor riesgo es reutilizar contrasenas. Si usaste la misma clave en correo, redes, tiendas o bancos, cambiala tambien alli.</p>
+<h2>3. Activa verificacion en dos pasos</h2>
+<p>Prefiere app autenticadora, passkey o llave de seguridad. El segundo factor ayuda incluso si alguien conoce tu contrasena.</p>
+<h2>4. Revisa sesiones y actividad</h2>
+<p>Cierra sesiones desconocidas, revisa dispositivos conectados, reglas de correo, apps autorizadas y cambios de recuperacion.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que hago si mi contrasena fue filtrada?", "Cambia esa contrasena, cambia otras cuentas donde la repetiste, activa verificacion en dos pasos y revisa sesiones activas."),
+            ("Debo cambiar todas mis contrasenas?", "Prioriza cuentas donde repetiste la clave filtrada y servicios criticos como correo, bancos, redes y tiendas."),
+            ("Un gestor de contrasenas ayuda?", "Si. Ayuda a crear claves largas y unicas para no reutilizar la misma en varios servicios."),
+        ],
+    },
+    "estafa-whatsapp-que-hacer.html": {
+        "title": "Estafa por WhatsApp: que hacer y como detectarla",
+        "description": "Guia en espanol para detectar estafas por WhatsApp, proteger codigos, evitar enlaces falsos y actuar si ya respondiste.",
+        "body": f"""
+<p>Las estafas por WhatsApp suelen mezclar urgencia, confianza y enlaces falsos. Pueden llegar desde numeros desconocidos o incluso desde contactos reales con cuentas comprometidas.</p>
+<h2>Senales comunes</h2>
+<p>Mensajes de premios, paquetes retenidos, familiares pidiendo dinero, ofertas demasiado buenas, supuestos bancos, codigos de verificacion y enlaces acortados son senales para desconfiar.</p>
+<h2>No compartas codigos</h2>
+<p>Nunca compartas codigos SMS, codigos de WhatsApp ni claves temporales. Si alguien pide un codigo, probablemente intenta tomar control de una cuenta.</p>
+<h2>Si ya respondiste</h2>
+<p>No envies mas datos. Bloquea y reporta el contacto, avisa a tus contactos si usaron tu cuenta, cambia contrasenas relacionadas y revisa dispositivos vinculados.</p>
+<h2>Como prevenir</h2>
+<p>Activa verificacion en dos pasos de WhatsApp, protege tu correo, desconfia de urgencias y confirma solicitudes de dinero por llamada directa.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Como detecto una estafa por WhatsApp?", "Desconfia de urgencias, premios, enlaces raros, pedidos de dinero y solicitudes de codigos de verificacion."),
+            ("Que hago si comparti un codigo por WhatsApp?", "Intenta recuperar la cuenta, activa verificacion en dos pasos, revisa dispositivos vinculados y avisa a tus contactos."),
+            ("Un contacto conocido puede enviarme una estafa?", "Si. Una cuenta comprometida puede escribir desde el numero real de alguien que conoces."),
+        ],
+    },
     "glosario-ia-tecnologia.html": {
         "title": "Glosario rapido de IA, chips y ciberseguridad",
         "description": "Definiciones simples de terminos frecuentes sobre inteligencia artificial, hardware, seguridad digital y tecnologia diaria.",
@@ -809,6 +890,7 @@ STATIC_PAGES = {
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a> &middot; <a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada</a> &middot; <a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
 <p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="laptop-con-npu-vale-la-pena.html">Laptop con NPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
@@ -852,6 +934,9 @@ STATIC_PAGES = {
   <li><a href="glosario-ia-tecnologia.html">Glosario de terminos clave</a></li>
   <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing</a></li>
   <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada: que hacer</a></li>
+  <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
@@ -1622,6 +1707,9 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
         ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
         ("Correo hackeado", "que-hacer-si-hackearon-mi-correo.html", "Pasos urgentes para recuperar y proteger tu email."),
+        ("Enlace seguro", "como-saber-si-un-enlace-es-seguro.html", "Como revisar URLs antes de abrirlas."),
+        ("Contrasena filtrada", "contrasena-filtrada-que-hacer.html", "Pasos para cambiar claves y cerrar sesiones."),
+        ("Estafa por WhatsApp", "estafa-whatsapp-que-hacer.html", "Senales de fraude y acciones urgentes."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
         ("Laptop con NPU", "laptop-con-npu-vale-la-pena.html", "Cuando vale la pena pagar por IA local en laptop."),
@@ -1800,6 +1888,9 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
                         ("Prompts de IA para productividad", "prompts-ia-productividad.html"),
                         ("IA para estudiantes", "ia-para-estudiantes.html"),
                         ("Que hacer si hackearon mi correo", "que-hacer-si-hackearon-mi-correo.html"),
+                        ("Como saber si un enlace es seguro", "como-saber-si-un-enlace-es-seguro.html"),
+                        ("Contrasena filtrada: que hacer", "contrasena-filtrada-que-hacer.html"),
+                        ("Estafa por WhatsApp: que hacer", "estafa-whatsapp-que-hacer.html"),
                         ("Laptop con NPU", "laptop-con-npu-vale-la-pena.html"),
                         ("Automatizar Blogger gratis", "automatizar-blogger-gratis.html"),
                     ],
@@ -2987,6 +3078,9 @@ def render_llms_txt() -> str:
             "proteger-cuenta-google.html",
             "prompts-ia-productividad.html",
             "que-hacer-si-hackearon-mi-correo.html",
+            "como-saber-si-un-enlace-es-seguro.html",
+            "contrasena-filtrada-que-hacer.html",
+            "estafa-whatsapp-que-hacer.html",
             "laptop-con-npu-vale-la-pena.html",
             "automatizar-blogger-gratis.html",
             "chatgpt-gemini-claude.html",

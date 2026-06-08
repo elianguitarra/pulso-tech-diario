@@ -31,6 +31,9 @@ Estas paginas estan pensadas como entradas de busqueda en espanol y enlazan haci
 - IA para estudiantes: https://elianguitarra.github.io/pulso-tech-diario/ia-para-estudiantes.html
 - Que hacer si hackearon mi correo: https://elianguitarra.github.io/pulso-tech-diario/que-hacer-si-hackearon-mi-correo.html
 - Como proteger tu cuenta Google: https://elianguitarra.github.io/pulso-tech-diario/proteger-cuenta-google.html
+- Como saber si un enlace es seguro: https://elianguitarra.github.io/pulso-tech-diario/como-saber-si-un-enlace-es-seguro.html
+- Contrasena filtrada, que hacer: https://elianguitarra.github.io/pulso-tech-diario/contrasena-filtrada-que-hacer.html
+- Estafa por WhatsApp, que hacer: https://elianguitarra.github.io/pulso-tech-diario/estafa-whatsapp-que-hacer.html
 - Laptop con NPU: https://elianguitarra.github.io/pulso-tech-diario/laptop-con-npu-vale-la-pena.html
 - Automatizar Blogger gratis: https://elianguitarra.github.io/pulso-tech-diario/automatizar-blogger-gratis.html
 
