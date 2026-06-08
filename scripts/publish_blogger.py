@@ -30,6 +30,8 @@ BLOGGER_SCOPE = "https://www.googleapis.com/auth/blogger"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
+PAGES_WORK_AI_URL = f"{PAGES_URL}/ia-en-el-trabajo.html"
+PAGES_LAPTOP_AI_URL = f"{PAGES_URL}/comprar-laptop-para-ia.html"
 
 
 def label_url(label: str) -> str:
@@ -132,6 +134,11 @@ def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
   <li><a href="{label_url("ciberseguridad")}">Ciberseguridad</a></li>
   <li><a href="{label_url("chips")}">Chips y hardware</a></li>
   <li><a href="{label_url("guia")}">Todas las guias</a></li>
+</ul>
+<h2>Guias extra</h2>
+<ul>
+  <li><a href="{PAGES_WORK_AI_URL}">IA en el trabajo: tareas donde si ahorra tiempo</a></li>
+  <li><a href="{PAGES_LAPTOP_AI_URL}">Que revisar antes de comprar una laptop para IA</a></li>
 </ul>
 <h2>Recibe nuevas publicaciones</h2>
 <p>Guarda el <a href="{RSS_URL}">RSS del blog</a> o visita la pagina principal cada dia: <a href="{BLOG_URL}/">{BLOG_URL}</a>.</p>
