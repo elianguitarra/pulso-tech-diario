@@ -14,6 +14,20 @@ Link en bio: https://elianguitarra.github.io/pulso-tech-diario/links.html
 
 Medicion de trafico: [`docs/TRAFFIC_MEASUREMENT.md`](docs/TRAFFIC_MEASUREMENT.md)
 
+## Rutas publicas para atraer lectores
+
+Estas paginas estan pensadas como entradas de busqueda en espanol y enlazan hacia el blog principal en Blogger:
+
+- Noticias de tecnologia en espanol: https://elianguitarra.github.io/pulso-tech-diario/noticias-tecnologia-espanol.html
+- Tendencias de tecnologia hoy: https://elianguitarra.github.io/pulso-tech-diario/tendencias-tecnologia-hoy.html
+- Herramientas de IA gratis: https://elianguitarra.github.io/pulso-tech-diario/herramientas-ia-gratis.html
+- Prompts de IA para productividad: https://elianguitarra.github.io/pulso-tech-diario/prompts-ia-productividad.html
+- IA para estudiantes: https://elianguitarra.github.io/pulso-tech-diario/ia-para-estudiantes.html
+- Que hacer si hackearon mi correo: https://elianguitarra.github.io/pulso-tech-diario/que-hacer-si-hackearon-mi-correo.html
+- Como proteger tu cuenta Google: https://elianguitarra.github.io/pulso-tech-diario/proteger-cuenta-google.html
+- Laptop con NPU: https://elianguitarra.github.io/pulso-tech-diario/laptop-con-npu-vale-la-pena.html
+- Automatizar Blogger gratis: https://elianguitarra.github.io/pulso-tech-diario/automatizar-blogger-gratis.html
+
 ## Como funciona
 
 - `scripts/build.py` lee fuentes RSS publicas de tecnologia y tambien puede generar una preview estatica.
@@ -168,6 +182,7 @@ El sitio incluye:
 
 - Paginas de confianza para lectores y revision de AdSense.
 - Posts evergreen propios sobre metodologia, glosario de IA y senales de industria.
+- Guias de cola larga sobre prompts, seguridad de correo, NPU, IA para estudiantes y automatizacion de Blogger.
 - Etiquetas tematicas para que Blogger agrupe los posts por tecnologia, IA y noticias tech.
 - Titulares enlazados a fuentes originales para evitar copiar contenido completo.
 - Imagenes propias por nota para mejorar vistas previas y diferenciacion visual.

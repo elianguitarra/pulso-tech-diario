@@ -18,7 +18,13 @@ https://pulsotechdiario.blogspot.com/feeds/posts/default?orderby=UPDATED
 
 ```text
 https://pulsotechdiario.blogspot.com/
-https://pulsotechdiario.blogspot.com/2026/06/pulso-tech-diario-2026-06-07.html
+https://pulsotechdiario.blogspot.com/2026/06/pulso-tech-diario-2026-06-08_0267219352.html
+https://elianguitarra.github.io/pulso-tech-diario/noticias-tecnologia-espanol.html
+https://elianguitarra.github.io/pulso-tech-diario/tendencias-tecnologia-hoy.html
+https://elianguitarra.github.io/pulso-tech-diario/prompts-ia-productividad.html
+https://elianguitarra.github.io/pulso-tech-diario/que-hacer-si-hackearon-mi-correo.html
+https://elianguitarra.github.io/pulso-tech-diario/laptop-con-npu-vale-la-pena.html
+https://elianguitarra.github.io/pulso-tech-diario/automatizar-blogger-gratis.html
 ```
 
 Google recomienda contenido util, confiable y pensado para personas, ademas de titulos claros y sitemaps en Search Console. Ver:
@@ -39,11 +45,24 @@ Publicar y mantener guias evergreen en espanol:
 - Como detectar phishing: senales simples antes de hacer clic.
 - IA en el trabajo: tareas donde si ahorra tiempo y donde no.
 - Que revisar antes de comprar una laptop para IA.
+- Herramientas de IA gratis: como elegir sin perder tiempo.
+- Prompts de IA para productividad.
+- IA para estudiantes: usos utiles y errores a evitar.
+- Que hacer si hackearon mi correo: pasos urgentes.
+- Laptop con NPU: cuando vale la pena para IA.
+- Como automatizar un blog en Blogger gratis.
 
 Cada guia debe enlazar al resumen diario cuando sea relevante.
 Tambien debe enlazar a otras guias relacionadas para aumentar paginas por visita y ayudar al rastreo interno.
 
 ## 3. Distribucion diaria sin pagar anuncios
+
+Canales ya automatizados:
+
+- GitHub Pages publica sitemap, RSS, Atom, JSON Feed, news sitemap, `llms.txt` y paginas evergreen.
+- IndexNow recibe las URLs del sitemap tras cada despliegue.
+- WebSub recibe avisos de RSS/Atom tras cada despliegue.
+- Blogger se actualiza a diario y enlaza guias internas y rutas de busqueda.
 
 Publicar manualmente el enlace del resumen diario en:
 
