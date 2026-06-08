@@ -108,6 +108,17 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; html=p.start_here_content([]); assert 'Guias rapidas para resolver problemas comunes' in html and 'WhatsApp hackeado' in html and 'Passkeys' in html and 'Correo falso' in html, html",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
             "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; content=p.start_here_content([('Guia prueba','https://example.com/guia')]); assert 'Mapa rapido' in content and 'Prompts de IA' in content and 'RSS del blog' in content and 'Pagina principal' in content, content",
         ],
         check=True,

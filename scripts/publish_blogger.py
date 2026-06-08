@@ -164,6 +164,19 @@ def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
   <li><a href="{PAGES_WORK_AI_URL}">IA en el trabajo: tareas donde si ahorra tiempo</a></li>
   <li><a href="{PAGES_LAPTOP_AI_URL}">Que revisar antes de comprar una laptop para IA</a></li>
 </ul>
+<h2>Guias rapidas para resolver problemas comunes</h2>
+<h3>WhatsApp hackeado</h3>
+<p>Si alguien tomo tu cuenta, intenta registrar de nuevo tu numero, no compartas codigos, avisa a tus contactos por otro canal y revisa dispositivos vinculados al recuperar acceso.</p>
+<h3>Passkeys</h3>
+<p>Las passkeys reducen el riesgo de phishing porque evitan escribir una contrasena en paginas falsas. Conviene activarlas primero en correo, cuentas principales y gestores de contrasenas.</p>
+<h3>VPN gratis</h3>
+<p>Una VPN gratuita no siempre mejora tu privacidad. Revisa quien opera el servicio, politica de registros, permisos, publicidad y limites antes de instalarla.</p>
+<h3>Imagenes con IA gratis</h3>
+<p>Para crear imagenes utiles con IA, define sujeto, estilo, encuadre, iluminacion y uso final. Revisa derechos, privacidad y detalles visuales antes de publicar.</p>
+<h3>Prompts para estudiar con IA</h3>
+<p>Usa la IA como tutor: pide explicaciones, preguntas, pistas y correcciones. Evita pedir respuestas finales para copiar en tareas o examenes.</p>
+<h3>Correo falso</h3>
+<p>Revisa remitente real, dominio, enlaces, adjuntos y urgencias exageradas antes de hacer clic. Si dudas, entra manualmente al sitio oficial.</p>
 <h2>Mas rutas utiles</h2>
 <ul>
 {''.join(f'<li><a href="{html.escape(url)}">{html.escape(title)}</a></li>' for title, url in PAGES_EXTRA_GUIDES)}
