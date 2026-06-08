@@ -150,12 +150,18 @@ def validate() -> None:
         "prompts-chatgpt-espanol.html",
         "ia-para-hacer-presentaciones.html",
         "extensiones-chrome-productividad-ia.html",
+        "crear-imagenes-ia-gratis.html",
+        "prompts-para-estudiar-con-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
         "como-detectar-correo-falso.html",
+        "recuperar-whatsapp-hackeado.html",
+        "que-son-passkeys.html",
+        "como-borrar-datos-personales-google.html",
+        "vpn-gratis-es-segura.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
         "mejor-antivirus-gratis-windows.html",
@@ -209,12 +215,18 @@ def validate() -> None:
         "prompts-chatgpt-espanol.html",
         "ia-para-hacer-presentaciones.html",
         "extensiones-chrome-productividad-ia.html",
+        "crear-imagenes-ia-gratis.html",
+        "prompts-para-estudiar-con-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
         "como-detectar-correo-falso.html",
+        "recuperar-whatsapp-hackeado.html",
+        "que-son-passkeys.html",
+        "como-borrar-datos-personales-google.html",
+        "vpn-gratis-es-segura.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
         "mejor-antivirus-gratis-windows.html",
@@ -294,12 +306,18 @@ def validate() -> None:
         "prompts-chatgpt-espanol.html",
         "ia-para-hacer-presentaciones.html",
         "extensiones-chrome-productividad-ia.html",
+        "crear-imagenes-ia-gratis.html",
+        "prompts-para-estudiar-con-ia.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
         "que-hacer-si-hackearon-mi-correo.html",
         "como-saber-si-un-enlace-es-seguro.html",
         "como-detectar-correo-falso.html",
+        "recuperar-whatsapp-hackeado.html",
+        "que-son-passkeys.html",
+        "como-borrar-datos-personales-google.html",
+        "vpn-gratis-es-segura.html",
         "contrasena-filtrada-que-hacer.html",
         "estafa-whatsapp-que-hacer.html",
         "mejor-antivirus-gratis-windows.html",
@@ -335,7 +353,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "ia-para-hacer-presentaciones.html" not in llms_text or "extensiones-chrome-productividad-ia.html" not in llms_text or "crear-imagenes-ia-gratis.html" not in llms_text or "prompts-para-estudiar-con-ia.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "como-detectar-correo-falso.html" not in llms_text or "recuperar-whatsapp-hackeado.html" not in llms_text or "que-son-passkeys.html" not in llms_text or "como-borrar-datos-personales-google.html" not in llms_text or "vpn-gratis-es-segura.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "mejor-antivirus-gratis-windows.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -357,6 +375,8 @@ def validate() -> None:
         or "mejor-ia-para-resumir-pdf.html" not in search_text
         or "alternativas-chatgpt-gratis.html" not in search_text
         or "ia-para-hacer-presentaciones.html" not in search_text
+        or "crear-imagenes-ia-gratis.html" not in search_text
+        or "recuperar-whatsapp-hackeado.html" not in search_text
         or "mejor-antivirus-gratis-windows.html" not in search_text
     ):
         fail("buscar.html missing internal search index or schema")
@@ -396,12 +416,18 @@ def validate() -> None:
         "prompts-chatgpt-espanol.html": "Prompts para ChatGPT en espanol",
         "ia-para-hacer-presentaciones.html": "IA para hacer presentaciones",
         "extensiones-chrome-productividad-ia.html": "Extensiones de Chrome con IA",
+        "crear-imagenes-ia-gratis.html": "Crear imagenes con IA gratis",
+        "prompts-para-estudiar-con-ia.html": "Prompts para estudiar con IA",
         "ia-para-estudiantes.html": "IA para estudiantes",
         "proteger-cuenta-google.html": "Como proteger tu cuenta Google",
         "prompts-ia-productividad.html": "Prompts de IA para productividad",
         "que-hacer-si-hackearon-mi-correo.html": "Que hacer si hackearon mi correo",
         "como-saber-si-un-enlace-es-seguro.html": "Como saber si un enlace es seguro",
         "como-detectar-correo-falso.html": "Como detectar un correo falso",
+        "recuperar-whatsapp-hackeado.html": "WhatsApp hackeado",
+        "que-son-passkeys.html": "Que son las passkeys",
+        "como-borrar-datos-personales-google.html": "Como borrar datos personales de Google",
+        "vpn-gratis-es-segura.html": "VPN gratis",
         "contrasena-filtrada-que-hacer.html": "Contrasena filtrada",
         "estafa-whatsapp-que-hacer.html": "Estafa por WhatsApp",
         "mejor-antivirus-gratis-windows.html": "Mejor antivirus gratis para Windows",

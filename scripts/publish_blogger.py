@@ -40,12 +40,18 @@ PAGES_EXTRA_GUIDES = [
     ("Prompts de IA", f"{PAGES_URL}/prompts-ia-productividad.html"),
     ("IA para presentaciones", f"{PAGES_URL}/ia-para-hacer-presentaciones.html"),
     ("Extensiones Chrome IA", f"{PAGES_URL}/extensiones-chrome-productividad-ia.html"),
+    ("Imagenes con IA", f"{PAGES_URL}/crear-imagenes-ia-gratis.html"),
+    ("Prompts para estudiar", f"{PAGES_URL}/prompts-para-estudiar-con-ia.html"),
     ("Correo hackeado", f"{PAGES_URL}/que-hacer-si-hackearon-mi-correo.html"),
     ("Enlace seguro", f"{PAGES_URL}/como-saber-si-un-enlace-es-seguro.html"),
     ("Correo falso", f"{PAGES_URL}/como-detectar-correo-falso.html"),
+    ("WhatsApp hackeado", f"{PAGES_URL}/recuperar-whatsapp-hackeado.html"),
+    ("Passkeys", f"{PAGES_URL}/que-son-passkeys.html"),
+    ("Borrar datos Google", f"{PAGES_URL}/como-borrar-datos-personales-google.html"),
     ("Contrasena filtrada", f"{PAGES_URL}/contrasena-filtrada-que-hacer.html"),
     ("Estafa WhatsApp", f"{PAGES_URL}/estafa-whatsapp-que-hacer.html"),
     ("Antivirus gratis", f"{PAGES_URL}/mejor-antivirus-gratis-windows.html"),
+    ("VPN gratis segura", f"{PAGES_URL}/vpn-gratis-es-segura.html"),
     ("Laptop con NPU", f"{PAGES_URL}/laptop-con-npu-vale-la-pena.html"),
     ("Automatizar Blogger", f"{PAGES_URL}/automatizar-blogger-gratis.html"),
 ]
@@ -71,7 +77,7 @@ def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
         return ""
     links = "".join(
         f'<li style="margin:0 0 8px;"><a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;text-decoration:none;">{html.escape(title)}</a></li>'
-        for title, url in guide_links[:24]
+        for title, url in guide_links[:32]
     )
     return f"""
   <div style="margin:18px 0 0;padding:16px;background:#181818;border:1px solid #2f2f2f;">

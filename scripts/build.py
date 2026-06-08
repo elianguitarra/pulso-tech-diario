@@ -282,6 +282,8 @@ STATIC_PAGES = {
   <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
   <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
   <li><a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></li>
+  <li><a href="crear-imagenes-ia-gratis.html">Crear imagenes con IA gratis</a></li>
+  <li><a href="prompts-para-estudiar-con-ia.html">Prompts para estudiar con IA</a></li>
   <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
   <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
   <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
@@ -299,6 +301,10 @@ STATIC_PAGES = {
   <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
   <li><a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></li>
   <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
+  <li><a href="recuperar-whatsapp-hackeado.html">Recuperar WhatsApp hackeado</a></li>
+  <li><a href="que-son-passkeys.html">Que son las passkeys</a></li>
+  <li><a href="como-borrar-datos-personales-google.html">Como borrar datos personales de Google</a></li>
+  <li><a href="vpn-gratis-es-segura.html">VPN gratis: es segura?</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
 </ul>
 <h2>Chips, hardware y automatizacion</h2>
@@ -401,6 +407,60 @@ STATIC_PAGES = {
             ("Como reduzco riesgo al probar extensiones?", "Instala pocas, revisa permisos, usa perfiles separados y desinstala las que no aporten valor real."),
         ],
     },
+    "crear-imagenes-ia-gratis.html": {
+        "title": "Crear imagenes con IA gratis: como empezar",
+        "description": "Guia en espanol para crear imagenes con IA gratis, escribir prompts, cuidar derechos, privacidad y calidad visual.",
+        "body": f"""
+<p>Crear imagenes con IA gratis es facil para probar ideas, pero la calidad depende del prompt, la herramienta y el uso que le daras a la imagen. No todo resultado sirve para publicar sin revisar.</p>
+<h2>Empieza con una idea concreta</h2>
+<p>Describe sujeto, estilo, encuadre, iluminacion, colores, formato y uso final. No pidas solo una imagen bonita; pide una imagen que comunique algo.</p>
+<h2>Prompt base</h2>
+<p>Crea una imagen editorial para una nota de tecnologia sobre este tema. Debe verse moderna, clara, sin texto dentro de la imagen, con foco en una idea principal y composicion llamativa para portada.</p>
+<h2>Que revisar antes de usarla</h2>
+<p>Mira manos, textos deformes, logos, marcas, rostros, objetos raros y detalles incoherentes. Si la imagen parece generica, ajusta el prompt con mas contexto.</p>
+<h2>Privacidad y derechos</h2>
+<p>No subas fotos privadas, documentos, rostros de personas sin permiso ni material que no puedas usar. Revisa las condiciones de cada herramienta antes de publicar comercialmente.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Puedo crear imagenes con IA gratis?", "Si, muchas herramientas permiten pruebas gratuitas o limites diarios. Revisa derechos de uso y privacidad antes de publicar."),
+            ("Como escribo un buen prompt para imagen?", "Incluye sujeto, estilo, encuadre, iluminacion, colores, formato y objetivo de la imagen."),
+            ("Puedo usar imagenes de IA en un blog?", "Depende de la herramienta y sus condiciones. Revisa permisos comerciales y evita logos, rostros o contenido sensible."),
+        ],
+    },
+    "prompts-para-estudiar-con-ia.html": {
+        "title": "Prompts para estudiar con IA sin copiar",
+        "description": "Prompts en espanol para estudiar con IA, explicar temas, crear preguntas, resumir apuntes y practicar sin copiar tareas.",
+        "body": f"""
+<p>La IA puede ayudarte a estudiar mejor si la usas como tutor, no como maquina para copiar respuestas. La clave es pedir explicaciones, preguntas y correcciones.</p>
+<h2>Prompt para entender un tema</h2>
+<p>Explicame este tema desde cero como si fuera principiante. Usa ejemplos simples, analogias y al final dame tres errores comunes que debo evitar.</p>
+<h2>Prompt para practicar</h2>
+<p>Hazme 10 preguntas sobre este tema, una por una. Espera mi respuesta, corrige con explicacion breve y sube la dificultad si respondo bien.</p>
+<h2>Prompt para resumir apuntes</h2>
+<p>Resume mis apuntes en ideas principales, definiciones, formulas o conceptos clave. Marca dudas y crea una lista de repaso para antes del examen.</p>
+<h2>Prompt para no copiar</h2>
+<p>No me des la respuesta final. Guiame con pistas, preguntas y pasos para que yo pueda resolver el ejercicio.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Como uso IA para estudiar sin copiar?", "Pide explicaciones, preguntas, pistas y correcciones. Evita pedir respuestas finales para entregar."),
+            ("La IA puede equivocarse al explicar?", "Si. Verifica con tus apuntes, libros o profesor, especialmente en datos, formulas y fechas."),
+            ("Que prompt sirve para practicar?", "Pide preguntas una por una, espera tu respuesta y solicita correccion breve antes de continuar."),
+        ],
+    },
     "mejor-antivirus-gratis-windows.html": {
         "title": "Mejor antivirus gratis para Windows: que revisar",
         "description": "Guia en espanol para elegir antivirus gratis para Windows, entender proteccion basica, evitar falsos limpiadores y mejorar seguridad.",
@@ -426,6 +486,114 @@ STATIC_PAGES = {
             ("Cual es el mejor antivirus gratis para Windows?", "El mejor depende del uso, pero debe tener proteccion en tiempo real, actualizaciones frecuentes y reputacion clara sin publicidad agresiva."),
             ("Windows necesita antivirus adicional?", "Para muchos usuarios, la proteccion integrada y buenos habitos pueden ser suficientes. Si instalas otro, usa fuentes oficiales."),
             ("Como evito antivirus falsos?", "No descargues desde anuncios raros, evita limpiadores milagro y confirma que estas en el sitio oficial del proveedor."),
+        ],
+    },
+    "recuperar-whatsapp-hackeado.html": {
+        "title": "WhatsApp hackeado: como recuperar tu cuenta",
+        "description": "Guia en espanol para actuar si hackearon tu WhatsApp, proteger codigos, cerrar sesiones y avisar a contactos.",
+        "body": f"""
+<p>Si alguien tomo tu WhatsApp o tus contactos reciben mensajes raros desde tu numero, actua rapido. El objetivo es recuperar acceso, cortar el fraude y evitar que usen tu identidad para pedir dinero o codigos.</p>
+<h2>Intenta verificar tu numero</h2>
+<p>Abre WhatsApp, registra tu numero y pide el codigo oficial. Nunca compartas ese codigo con nadie. Si el atacante activo verificacion en dos pasos, puede que debas esperar el plazo que indique la app.</p>
+<h2>Avisa por otro canal</h2>
+<p>Contacta a familiares, amigos y trabajo por llamada, SMS u otra red para decir que no respondan mensajes sospechosos ni envien dinero.</p>
+<h2>Revisa dispositivos vinculados</h2>
+<p>Cuando recuperes acceso, revisa dispositivos vinculados y cierra cualquiera que no reconozcas. Activa verificacion en dos pasos con un PIN que no uses en otros servicios.</p>
+<h2>Protege el correo y el telefono</h2>
+<p>Tu correo y tu SIM tambien importan. Cambia contrasenas importantes, activa verificacion en dos pasos y llama a tu operador si sospechas duplicado de SIM.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
+  <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que hago si hackearon mi WhatsApp?", "Intenta registrar de nuevo tu numero, no compartas codigos, avisa a tus contactos y cierra dispositivos vinculados al recuperar acceso."),
+            ("Por que piden codigos de WhatsApp?", "Porque el codigo permite registrar tu numero en otro dispositivo. Nunca debes compartirlo."),
+            ("Como evito que vuelva a pasar?", "Activa verificacion en dos pasos, protege tu correo, desconfia de mensajes urgentes y no compartas codigos temporales."),
+        ],
+    },
+    "que-son-passkeys.html": {
+        "title": "Que son las passkeys y por que protegen mejor",
+        "description": "Explicacion en espanol sobre passkeys, claves de acceso, diferencias con contrasenas y cuando conviene activarlas.",
+        "body": f"""
+<p>Las passkeys, o claves de acceso, son una forma de iniciar sesion sin escribir una contrasena tradicional. Usan tu dispositivo y una verificacion local como huella, rostro, PIN o llave de seguridad.</p>
+<h2>Por que son utiles</h2>
+<p>Una passkey reduce phishing porque no tienes una contrasena que copiar en una pagina falsa. El inicio de sesion queda ligado al sitio correcto y a una clave criptografica.</p>
+<h2>Que cambia frente a contrasenas</h2>
+<p>No necesitas recordar una clave larga ni reutilizarla. El riesgo se mueve hacia proteger tus dispositivos, copias de seguridad y metodo de recuperacion.</p>
+<h2>Donde activarlas primero</h2>
+<p>Empieza por correo, cuentas de Google, Apple, Microsoft, gestores de contrasenas, bancos o servicios donde perder acceso seria grave.</p>
+<h2>Que revisar</h2>
+<p>Antes de activar passkeys, confirma como recuperar la cuenta si pierdes el telefono o computadora. Mantener datos de recuperacion actualizados sigue siendo clave.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada: que hacer</a></li>
+  <li><a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Ciberseguridad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que son las passkeys?", "Son claves de acceso que permiten iniciar sesion usando tu dispositivo y una verificacion local, sin escribir una contrasena tradicional."),
+            ("Las passkeys eliminan el phishing?", "Reducen mucho el riesgo, pero aun debes cuidar dispositivos, recuperacion de cuenta y sitios falsos que pidan otros datos."),
+            ("Conviene activar passkeys?", "Si el servicio las ofrece y entiendes como recuperar acceso, suelen ser una mejora frente a contrasenas reutilizadas."),
+        ],
+    },
+    "como-borrar-datos-personales-google.html": {
+        "title": "Como borrar datos personales de Google: pasos utiles",
+        "description": "Guia en espanol para reducir datos personales visibles en Google, revisar resultados, privacidad y solicitudes de retirada.",
+        "body": f"""
+<p>Si aparecen datos personales en Google, conviene separar dos cosas: borrar informacion de la pagina original y pedir que Google actualice o retire el resultado cuando aplique.</p>
+<h2>Identifica donde esta el dato</h2>
+<p>Google muestra enlaces, pero muchas veces el dato vive en otro sitio. Abre el resultado, copia la URL y revisa si puedes contactar al sitio para eliminar o corregir la informacion.</p>
+<h2>Revisa opciones de retirada</h2>
+<p>Google ofrece formularios para ciertos datos personales sensibles, contenido desactualizado o resultados que ya no existen en la pagina original. Lee los requisitos antes de enviar la solicitud.</p>
+<h2>Busca variantes</h2>
+<p>Prueba tu nombre completo, telefono, correo, ciudad, usuario y combinaciones. Guarda las URLs exactas de resultados que quieras revisar.</p>
+<h2>Reduce exposicion futura</h2>
+<p>Ajusta privacidad en redes, elimina perfiles viejos, usa correos separados y evita publicar telefono, direccion o documentos en sitios abiertos.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="proteger-cuenta-google.html">Como proteger tu cuenta Google</a></li>
+  <li><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a></li>
+  <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Puedo borrar mis datos de Google?", "A veces puedes pedir retirada de resultados, pero tambien debes eliminar o corregir el dato en la pagina original."),
+            ("Google borra cualquier resultado?", "No. Depende del tipo de informacion, leyes aplicables y si el contenido sigue disponible en el sitio original."),
+            ("Que datos debo vigilar?", "Telefono, direccion, correo personal, documentos, perfiles viejos, imagenes privadas y datos financieros o medicos."),
+        ],
+    },
+    "vpn-gratis-es-segura.html": {
+        "title": "VPN gratis: es segura o conviene evitarla?",
+        "description": "Guia en espanol para evaluar VPN gratis, riesgos de privacidad, limites, registros y alternativas mas seguras.",
+        "body": f"""
+<p>Una VPN gratis puede servir para casos puntuales, pero no siempre mejora tu privacidad. Si el servicio no cobra, conviene preguntar como paga servidores, ancho de banda y soporte.</p>
+<h2>Que hace una VPN</h2>
+<p>Una VPN cifra la conexion entre tu dispositivo y el proveedor de VPN. Puede ocultar tu IP frente al sitio final, pero el proveedor de VPN puede ver metadatos y parte de tu actividad segun el caso.</p>
+<h2>Riesgos de una VPN gratis</h2>
+<p>Algunas tienen limites agresivos, publicidad, registros poco claros, velocidades bajas o modelos de negocio basados en datos. Evita servicios que no expliquen quien los opera.</p>
+<h2>Cuando puede servir</h2>
+<p>Puede ser util en una red publica si confias en el proveedor y solo necesitas una capa adicional. No es una licencia para descargar cualquier cosa ni reemplaza contrasenas seguras.</p>
+<h2>Que revisar antes de instalar</h2>
+<p>Politica de registros, empresa responsable, auditorias, apps oficiales, reputacion, permisos, limites y facilidad para borrar cuenta.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></li>
+  <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
+  <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Una VPN gratis es segura?", "Depende del proveedor. Revisa politica de registros, reputacion, permisos y modelo de negocio antes de confiar tus datos."),
+            ("Una VPN me vuelve anonimo?", "No totalmente. Puede ocultar tu IP frente a algunos sitios, pero no elimina rastreo, cuentas iniciadas ni malos habitos."),
+            ("Cuando conviene evitar una VPN gratis?", "Cuando no explica quien la opera, pide permisos raros, muestra publicidad agresiva o promete anonimato absoluto."),
         ],
     },
     "como-detectar-correo-falso.html": {
@@ -999,12 +1167,13 @@ STATIC_PAGES = {
 <p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="chatgpt-gemini-claude.html">ChatGPT vs Gemini vs Claude</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <p><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a> &middot; <a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a> &middot; <a href="ia-para-estudiantes.html">IA para estudiantes</a></p>
 <p><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a> &middot; <a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a> &middot; <a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></p>
-<p><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a> &middot; <a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></p>
+<p><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a> &middot; <a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a> &middot; <a href="crear-imagenes-ia-gratis.html">Crear imagenes con IA gratis</a> &middot; <a href="prompts-para-estudiar-con-ia.html">Prompts para estudiar con IA</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
 <p><a href="como-saber-si-un-enlace-es-seguro.html">Como saber si un enlace es seguro</a> &middot; <a href="contrasena-filtrada-que-hacer.html">Contrasena filtrada</a> &middot; <a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp</a></p>
 <p><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a> &middot; <a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></p>
+<p><a href="recuperar-whatsapp-hackeado.html">Recuperar WhatsApp hackeado</a> &middot; <a href="que-son-passkeys.html">Que son las passkeys</a> &middot; <a href="como-borrar-datos-personales-google.html">Borrar datos personales de Google</a> &middot; <a href="vpn-gratis-es-segura.html">VPN gratis segura</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
 <p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="npu-vs-gpu.html">NPU vs GPU</a> &middot; <a href="laptop-con-npu-vale-la-pena.html">Laptop con NPU</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
@@ -1030,6 +1199,8 @@ STATIC_PAGES = {
   <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
   <li><a href="ia-para-hacer-presentaciones.html">IA para hacer presentaciones</a></li>
   <li><a href="extensiones-chrome-productividad-ia.html">Extensiones de Chrome con IA</a></li>
+  <li><a href="crear-imagenes-ia-gratis.html">Crear imagenes con IA gratis</a></li>
+  <li><a href="prompts-para-estudiar-con-ia.html">Prompts para estudiar con IA</a></li>
   <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
@@ -1055,6 +1226,10 @@ STATIC_PAGES = {
   <li><a href="estafa-whatsapp-que-hacer.html">Estafa por WhatsApp: que hacer</a></li>
   <li><a href="como-detectar-correo-falso.html">Como detectar un correo falso</a></li>
   <li><a href="mejor-antivirus-gratis-windows.html">Mejor antivirus gratis para Windows</a></li>
+  <li><a href="recuperar-whatsapp-hackeado.html">Recuperar WhatsApp hackeado</a></li>
+  <li><a href="que-son-passkeys.html">Que son las passkeys</a></li>
+  <li><a href="como-borrar-datos-personales-google.html">Borrar datos personales de Google</a></li>
+  <li><a href="vpn-gratis-es-segura.html">VPN gratis: es segura?</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
@@ -1823,11 +1998,17 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("Prompts ChatGPT", "prompts-chatgpt-espanol.html", "Ejemplos en espanol para estudiar, resumir y decidir."),
         ("IA para presentaciones", "ia-para-hacer-presentaciones.html", "Como usar IA para armar diapositivas utiles sin perder criterio."),
         ("Extensiones de Chrome", "extensiones-chrome-productividad-ia.html", "Que revisar antes de instalar extensiones con IA."),
+        ("Imagenes con IA gratis", "crear-imagenes-ia-gratis.html", "Como probar generadores sin exponer datos ni perder tiempo."),
+        ("Prompts para estudiar", "prompts-para-estudiar-con-ia.html", "Plantillas para aprender mejor sin copiar."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
         ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
+        ("Que son las passkeys", "que-son-passkeys.html", "Claves de acceso explicadas para proteger cuentas."),
+        ("Borrar datos de Google", "como-borrar-datos-personales-google.html", "Pasos para reducir datos personales visibles."),
         ("Antivirus gratis Windows", "mejor-antivirus-gratis-windows.html", "Criterios para elegir proteccion gratuita sin caer en descargas raras."),
         ("Detectar correo falso", "como-detectar-correo-falso.html", "Senales simples para reconocer phishing por correo."),
+        ("WhatsApp hackeado", "recuperar-whatsapp-hackeado.html", "Que hacer si tomaron tu cuenta o pidieron codigos."),
+        ("VPN gratis segura", "vpn-gratis-es-segura.html", "Riesgos y criterios antes de instalar una VPN gratuita."),
         ("Correo hackeado", "que-hacer-si-hackearon-mi-correo.html", "Pasos urgentes para recuperar y proteger tu email."),
         ("Enlace seguro", "como-saber-si-un-enlace-es-seguro.html", "Como revisar URLs antes de abrirlas."),
         ("Contrasena filtrada", "contrasena-filtrada-que-hacer.html", "Pasos para cambiar claves y cerrar sesiones."),
@@ -2009,10 +2190,16 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
                         ("Prompts para ChatGPT en espanol", "prompts-chatgpt-espanol.html"),
                         ("IA para hacer presentaciones", "ia-para-hacer-presentaciones.html"),
                         ("Extensiones de Chrome con IA", "extensiones-chrome-productividad-ia.html"),
+                        ("Crear imagenes con IA gratis", "crear-imagenes-ia-gratis.html"),
+                        ("Prompts para estudiar con IA", "prompts-para-estudiar-con-ia.html"),
                         ("Prompts de IA para productividad", "prompts-ia-productividad.html"),
                         ("IA para estudiantes", "ia-para-estudiantes.html"),
                         ("Mejor antivirus gratis para Windows", "mejor-antivirus-gratis-windows.html"),
                         ("Como detectar un correo falso", "como-detectar-correo-falso.html"),
+                        ("Recuperar WhatsApp hackeado", "recuperar-whatsapp-hackeado.html"),
+                        ("Que son las passkeys", "que-son-passkeys.html"),
+                        ("Como borrar datos personales de Google", "como-borrar-datos-personales-google.html"),
+                        ("VPN gratis: es segura?", "vpn-gratis-es-segura.html"),
                         ("Que hacer si hackearon mi correo", "que-hacer-si-hackearon-mi-correo.html"),
                         ("Como saber si un enlace es seguro", "como-saber-si-un-enlace-es-seguro.html"),
                         ("Contrasena filtrada: que hacer", "contrasena-filtrada-que-hacer.html"),
@@ -3247,12 +3434,18 @@ def render_llms_txt() -> str:
             "prompts-chatgpt-espanol.html",
             "ia-para-hacer-presentaciones.html",
             "extensiones-chrome-productividad-ia.html",
+            "crear-imagenes-ia-gratis.html",
+            "prompts-para-estudiar-con-ia.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
             "prompts-ia-productividad.html",
             "que-hacer-si-hackearon-mi-correo.html",
             "como-saber-si-un-enlace-es-seguro.html",
             "como-detectar-correo-falso.html",
+            "recuperar-whatsapp-hackeado.html",
+            "que-son-passkeys.html",
+            "como-borrar-datos-personales-google.html",
+            "vpn-gratis-es-segura.html",
             "contrasena-filtrada-que-hacer.html",
             "estafa-whatsapp-que-hacer.html",
             "mejor-antivirus-gratis-windows.html",
