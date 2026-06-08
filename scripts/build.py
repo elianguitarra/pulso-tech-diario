@@ -181,13 +181,13 @@ STATIC_PAGES = {
 <p><a href="blogger-archivo.html">Ver archivo de entradas reales de Blogger</a></p>
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
-<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> · <a href="{BLOG_URL}/search/label/inteligencia%20artificial">Entradas en Blogger</a></p>
+<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
-<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> · <a href="{BLOG_URL}/search/label/ciberseguridad">Entradas en Blogger</a></p>
+<p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
 <h2>Chips y hardware</h2>
 <p>GPU, NPU, laptops, IA local y senales de la carrera por computo.</p>
-<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> · <a href="{BLOG_URL}/search/label/chips">Entradas en Blogger</a></p>
+<p><a href="chips-hardware.html">Ver hub de chips y hardware</a> &middot; <a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas en Blogger</a></p>
 """,
     },
     "inteligencia-artificial.html": {
@@ -197,10 +197,10 @@ STATIC_PAGES = {
 <p>La inteligencia artificial cambia software, trabajo, privacidad y hardware. Este hub agrupa rutas para leer sin perderse en el ruido.</p>
 <h2>Guias recomendadas</h2>
 <ul>
-  <li><a href="{BLOG_URL}/search/label/inteligencia%20artificial">Entradas de IA en Blogger</a></li>
-  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
+  <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
-  <li><a href="{BLOG_URL}/search/label/privacidad">Privacidad e IA</a></li>
+  <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
 </ul>
 <h2>Que mirar</h2>
 <p>Busca senales de impacto real: tareas que se vuelven mas rapidas, productos que cambian comportamiento, riesgos de datos y costos de computo.</p>
@@ -214,10 +214,10 @@ STATIC_PAGES = {
 <p>La ciberseguridad afecta cuentas, datos personales, empresas y servicios cotidianos. Este hub prioriza acciones simples y senales faciles de vigilar.</p>
 <h2>Lecturas recomendadas</h2>
 <ul>
-  <li><a href="{BLOG_URL}/search/label/ciberseguridad">Entradas de ciberseguridad en Blogger</a></li>
-  <li><a href="{BLOG_URL}/search/label/phishing">Guias sobre phishing</a></li>
-  <li><a href="{BLOG_URL}/search/label/privacidad">Privacidad y datos</a></li>
-  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+  <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
+  <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing</a></li>
+  <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
+  <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
 <h2>Que mirar</h2>
 <p>Prioriza cambios de contrasenas, verificacion en dos pasos, sesiones activas, enlaces sospechosos y datos que no deberian compartirse con herramientas externas.</p>
@@ -231,10 +231,10 @@ STATIC_PAGES = {
 <p>Los chips determinan que tan rapido crecen la IA, la nube, las laptops y los dispositivos personales. Este hub junta guias y rutas de lectura.</p>
 <h2>Lecturas recomendadas</h2>
 <ul>
-  <li><a href="{BLOG_URL}/search/label/chips">Entradas de chips en Blogger</a></li>
-  <li><a href="{BLOG_URL}/search/label/ia%20local">IA local</a></li>
+  <li><a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas de chips en Blogger</a></li>
+  <li><a href="{BLOGGER_LABEL_LOCAL_AI_TRACKED}">IA local</a></li>
   <li><a href="comprar-laptop-para-ia.html">Que revisar antes de comprar una laptop para IA</a></li>
-  <li><a href="{BLOGGER_START_URL}">Empieza aqui en Blogger</a></li>
+  <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
 </ul>
 <h2>Que mirar</h2>
 <p>No basta con una sigla. Revisa memoria, eficiencia, software compatible, disponibilidad, bateria y si la aplicacion que usas aprovecha realmente el hardware.</p>
