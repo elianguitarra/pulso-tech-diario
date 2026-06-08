@@ -22,6 +22,9 @@ Estas paginas estan pensadas como entradas de busqueda en espanol y enlazan haci
 - Noticias de tecnologia en espanol: https://elianguitarra.github.io/pulso-tech-diario/noticias-tecnologia-espanol.html
 - Tendencias de tecnologia hoy: https://elianguitarra.github.io/pulso-tech-diario/tendencias-tecnologia-hoy.html
 - Herramientas de IA gratis: https://elianguitarra.github.io/pulso-tech-diario/herramientas-ia-gratis.html
+- Mejor IA para resumir PDF: https://elianguitarra.github.io/pulso-tech-diario/mejor-ia-para-resumir-pdf.html
+- Alternativas gratis a ChatGPT: https://elianguitarra.github.io/pulso-tech-diario/alternativas-chatgpt-gratis.html
+- Prompts para ChatGPT en espanol: https://elianguitarra.github.io/pulso-tech-diario/prompts-chatgpt-espanol.html
 - Prompts de IA para productividad: https://elianguitarra.github.io/pulso-tech-diario/prompts-ia-productividad.html
 - IA para estudiantes: https://elianguitarra.github.io/pulso-tech-diario/ia-para-estudiantes.html
 - Que hacer si hackearon mi correo: https://elianguitarra.github.io/pulso-tech-diario/que-hacer-si-hackearon-mi-correo.html

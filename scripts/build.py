@@ -279,6 +279,9 @@ STATIC_PAGES = {
 <ul>
   <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
   <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
+  <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
   <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
   <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude</a></li>
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo</a></li>
@@ -398,6 +401,87 @@ STATIC_PAGES = {
             ("Cual es la mejor herramienta de IA gratis?", "Depende de la tarea. La mejor es la que resuelve tu caso real con menos correcciones y sin exponer datos sensibles."),
             ("Conviene pagar por una herramienta de IA?", "Conviene si el plan gratis se queda corto y la herramienta ahorra tiempo de forma constante."),
             ("Puedo usar IA gratis para trabajo?", "Si, pero evita datos confidenciales y revisa las politicas de tu empresa o cliente."),
+        ],
+    },
+    "mejor-ia-para-resumir-pdf.html": {
+        "title": "Mejor IA para resumir PDF: como elegir",
+        "description": "Guia en espanol para elegir una IA para resumir PDF, comparar resultados, cuidar privacidad y evitar resumenes falsos.",
+        "body": f"""
+<p>La mejor IA para resumir PDF no es siempre la mas famosa. Depende del tipo de documento, el nivel de privacidad y si necesitas citas, tabla, resumen ejecutivo o preguntas de estudio.</p>
+<h2>Que debe hacer bien</h2>
+<p>Una buena herramienta debe identificar ideas principales, separar datos de opiniones, conservar contexto y avisar cuando no puede leer una parte del archivo. Si inventa citas o cambia numeros, no sirve para trabajo serio.</p>
+<h2>Prueba rapida de calidad</h2>
+<p>Sube un PDF no sensible y pide tres salidas: resumen en 5 puntos, tabla de decisiones y preguntas pendientes. Compara si respeta fechas, nombres, cifras y conclusiones.</p>
+<h2>Privacidad antes que comodidad</h2>
+<p>No subas contratos, datos medicos, documentos de clientes, credenciales, estados de cuenta o informacion interna. Para probar, usa documentos publicos o versiones anonimizadas.</p>
+<h2>Prompt util</h2>
+<p>Resume este PDF para una persona que debe decidir hoy. Divide en hechos, riesgos, oportunidades, dudas y acciones. Marca cualquier dato que no puedas verificar dentro del documento.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Cual es la mejor IA para resumir PDF?", "La mejor es la que resume tu tipo de documento sin inventar datos, respeta cifras y permite revisar el resultado con facilidad."),
+            ("Puedo subir PDFs privados a una IA?", "Solo si tienes permiso y entiendes la politica de privacidad. Para datos sensibles, usa versiones anonimizadas o herramientas con controles empresariales."),
+            ("Como evito resumenes falsos?", "Pide que separe hechos de inferencias, que marque dudas y que cite secciones o paginas cuando la herramienta lo permita."),
+        ],
+    },
+    "alternativas-chatgpt-gratis.html": {
+        "title": "Alternativas gratis a ChatGPT: como compararlas",
+        "description": "Comparacion practica en espanol para evaluar alternativas gratis a ChatGPT segun tarea, limites, privacidad y calidad.",
+        "body": f"""
+<p>Hay muchas alternativas gratis a ChatGPT, pero conviene compararlas por tarea y no por moda. Lo importante es que ahorren tiempo, respondan claro y no te obliguen a corregir demasiado.</p>
+<h2>Que comparar primero</h2>
+<p>Prueba redaccion, resumen, analisis de archivos, ideas, explicacion de temas y ayuda con codigo si eso forma parte de tu uso diario. Usa siempre el mismo prompt para comparar con justicia.</p>
+<h2>Limites del plan gratis</h2>
+<p>Revisa cantidad de mensajes, modelos disponibles, subida de archivos, velocidad, historial, integraciones y si el servicio cambia de modelo cuando hay mucha demanda.</p>
+<h2>Privacidad y datos</h2>
+<p>Antes de usar cualquier chatbot gratis, revisa si tus conversaciones pueden usarse para mejorar el servicio, si puedes borrar historial y que permisos piden las integraciones.</p>
+<h2>Prueba de 10 minutos</h2>
+<p>Pide un resumen, una tabla comparativa y una explicacion simple. La mejor alternativa es la que responde util, reconoce limites y deja menos trabajo de revision.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude: como elegir</a></li>
+  <li><a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a></li>
+  <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Hay alternativas gratis a ChatGPT?", "Si. Lo importante es probarlas con tus tareas reales y revisar limites, privacidad y calidad de respuesta."),
+            ("Una alternativa gratis sirve para trabajar?", "Puede servir para borradores, ideas y resumenes no sensibles. Para datos de empresa, revisa permisos y politicas antes de usarla."),
+            ("Como comparo chatbots sin perder tiempo?", "Usa el mismo prompt en dos o tres herramientas y mide cual requiere menos correcciones."),
+        ],
+    },
+    "prompts-chatgpt-espanol.html": {
+        "title": "Prompts para ChatGPT en espanol: ejemplos utiles",
+        "description": "Prompts para ChatGPT en espanol orientados a resumir, estudiar, escribir, comparar opciones y trabajar con mejor criterio.",
+        "body": f"""
+<p>Los mejores prompts para ChatGPT en espanol son instrucciones concretas. Funcionan mejor cuando incluyen contexto, objetivo, formato y una forma de revisar la calidad.</p>
+<h2>Prompt para resumir</h2>
+<p>Resume este contenido en espanol claro. Divide la respuesta en ideas principales, datos importantes, riesgos, dudas y proximas acciones. No inventes informacion que no aparezca en el texto.</p>
+<h2>Prompt para estudiar</h2>
+<p>Explicame este tema desde cero con ejemplos simples. Luego hazme 10 preguntas de practica, espera mis respuestas y corrige una por una.</p>
+<h2>Prompt para tomar una decision</h2>
+<p>Compara estas opciones en una tabla con costo, dificultad, beneficios, riesgos y recomendacion. Si falta informacion para decidir, dilo antes de recomendar.</p>
+<h2>Prompt para mejorar un texto</h2>
+<p>Reescribe este texto para que sea mas claro, breve y profesional. Conserva el significado, elimina relleno y marca afirmaciones que necesiten fuente.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a></li>
+  <li><a href="ia-para-estudiantes.html">IA para estudiantes</a></li>
+  <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Noticias de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que hace bueno a un prompt para ChatGPT?", "Un buen prompt explica contexto, objetivo, formato esperado y criterios para revisar si la respuesta sirve."),
+            ("Puedo usar estos prompts en otros chatbots?", "Si. Funcionan tambien como base para Gemini, Claude u otras herramientas, con ajustes segun cada servicio."),
+            ("Conviene pedir respuestas largas?", "No siempre. Conviene pedir estructura clara, puntos verificables y una salida facil de revisar."),
         ],
     },
     "proteger-cuenta-google.html": {
@@ -721,6 +805,7 @@ STATIC_PAGES = {
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
 <p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="chatgpt-gemini-claude.html">ChatGPT vs Gemini vs Claude</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <p><a href="prompts-ia-productividad.html">Prompts de IA para productividad</a> &middot; <a href="herramientas-ia-gratis.html">Herramientas de IA gratis</a> &middot; <a href="ia-para-estudiantes.html">IA para estudiantes</a></p>
+<p><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a> &middot; <a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a> &middot; <a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="que-hacer-si-hackearon-mi-correo.html">Que hacer si hackearon mi correo</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
@@ -744,6 +829,9 @@ STATIC_PAGES = {
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
   <li><a href="glosario-ia-tecnologia.html">Glosario rapido de IA y tecnologia</a></li>
   <li><a href="chatgpt-gemini-claude.html">ChatGPT, Gemini o Claude: como elegir</a></li>
+  <li><a href="alternativas-chatgpt-gratis.html">Alternativas gratis a ChatGPT</a></li>
+  <li><a href="mejor-ia-para-resumir-pdf.html">Mejor IA para resumir PDF</a></li>
+  <li><a href="prompts-chatgpt-espanol.html">Prompts para ChatGPT en espanol</a></li>
   <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
@@ -1527,6 +1615,9 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
         ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
         ("Herramientas IA gratis", "herramientas-ia-gratis.html", "Como elegir herramientas gratuitas sin perder tiempo."),
         ("Prompts IA productividad", "prompts-ia-productividad.html", "Plantillas para resumir, comparar y estudiar mejor."),
+        ("IA para resumir PDF", "mejor-ia-para-resumir-pdf.html", "Como elegir herramientas para PDFs sin exponer datos."),
+        ("Alternativas a ChatGPT", "alternativas-chatgpt-gratis.html", "Comparar chatbots gratis por tarea y privacidad."),
+        ("Prompts ChatGPT", "prompts-chatgpt-espanol.html", "Ejemplos en espanol para estudiar, resumir y decidir."),
         ("ChatGPT, Gemini o Claude", "chatgpt-gemini-claude.html", "Como elegir un chatbot de IA segun tu tarea."),
         ("IA para estudiantes", "ia-para-estudiantes.html", "Usos utiles para estudiar sin copiar ni exponer datos."),
         ("Proteger cuenta Google", "proteger-cuenta-google.html", "Checklist de seguridad para una cuenta clave."),
@@ -1701,6 +1792,9 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
                 for index, (item_title, item_url) in enumerate(
                     [
                         ("Herramientas de IA gratis", "herramientas-ia-gratis.html"),
+                        ("Mejor IA para resumir PDF", "mejor-ia-para-resumir-pdf.html"),
+                        ("Alternativas gratis a ChatGPT", "alternativas-chatgpt-gratis.html"),
+                        ("Prompts para ChatGPT en espanol", "prompts-chatgpt-espanol.html"),
                         ("Prompts de IA para productividad", "prompts-ia-productividad.html"),
                         ("IA para estudiantes", "ia-para-estudiantes.html"),
                         ("Que hacer si hackearon mi correo", "que-hacer-si-hackearon-mi-correo.html"),
@@ -2655,6 +2749,9 @@ def render_llms_txt() -> str:
             "guias.html",
             "feeds.html",
             "herramientas-ia-gratis.html",
+            "mejor-ia-para-resumir-pdf.html",
+            "alternativas-chatgpt-gratis.html",
+            "prompts-chatgpt-espanol.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
             "prompts-ia-productividad.html",

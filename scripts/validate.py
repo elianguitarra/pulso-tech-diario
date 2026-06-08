@@ -141,6 +141,9 @@ def validate() -> None:
         "guias.html",
         "glosario-ia-tecnologia.html",
         "herramientas-ia-gratis.html",
+        "mejor-ia-para-resumir-pdf.html",
+        "alternativas-chatgpt-gratis.html",
+        "prompts-chatgpt-espanol.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
@@ -190,6 +193,9 @@ def validate() -> None:
         "glosario-ia-tecnologia.html",
         "guias.html",
         "herramientas-ia-gratis.html",
+        "mejor-ia-para-resumir-pdf.html",
+        "alternativas-chatgpt-gratis.html",
+        "prompts-chatgpt-espanol.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
@@ -251,6 +257,9 @@ def validate() -> None:
         "glosario-ia-tecnologia.html",
         "guias.html",
         "herramientas-ia-gratis.html",
+        "mejor-ia-para-resumir-pdf.html",
+        "alternativas-chatgpt-gratis.html",
+        "prompts-chatgpt-espanol.html",
         "ia-para-estudiantes.html",
         "proteger-cuenta-google.html",
         "prompts-ia-productividad.html",
@@ -286,7 +295,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")
@@ -329,6 +338,9 @@ def validate() -> None:
         fail("pulso-tech-diario.html missing brand discovery schema")
     for long_tail_page, phrase in {
         "herramientas-ia-gratis.html": "Herramientas de IA gratis",
+        "mejor-ia-para-resumir-pdf.html": "Mejor IA para resumir PDF",
+        "alternativas-chatgpt-gratis.html": "Alternativas gratis a ChatGPT",
+        "prompts-chatgpt-espanol.html": "Prompts para ChatGPT en espanol",
         "ia-para-estudiantes.html": "IA para estudiantes",
         "proteger-cuenta-google.html": "Como proteger tu cuenta Google",
         "prompts-ia-productividad.html": "Prompts de IA para productividad",

@@ -34,6 +34,9 @@ PAGES_WORK_AI_URL = f"{PAGES_URL}/ia-en-el-trabajo.html"
 PAGES_LAPTOP_AI_URL = f"{PAGES_URL}/comprar-laptop-para-ia.html"
 PAGES_EXTRA_GUIDES = [
     ("Que es Pulso Tech Diario", f"{PAGES_URL}/pulso-tech-diario.html"),
+    ("IA para resumir PDF", f"{PAGES_URL}/mejor-ia-para-resumir-pdf.html"),
+    ("Alternativas a ChatGPT", f"{PAGES_URL}/alternativas-chatgpt-gratis.html"),
+    ("Prompts ChatGPT", f"{PAGES_URL}/prompts-chatgpt-espanol.html"),
     ("Prompts de IA", f"{PAGES_URL}/prompts-ia-productividad.html"),
     ("Correo hackeado", f"{PAGES_URL}/que-hacer-si-hackearon-mi-correo.html"),
     ("Laptop con NPU", f"{PAGES_URL}/laptop-con-npu-vale-la-pena.html"),
@@ -61,7 +64,7 @@ def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
         return ""
     links = "".join(
         f'<li style="margin:0 0 8px;"><a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;text-decoration:none;">{html.escape(title)}</a></li>'
-        for title, url in guide_links[:13]
+        for title, url in guide_links[:16]
     )
     return f"""
   <div style="margin:18px 0 0;padding:16px;background:#181818;border:1px solid #2f2f2f;">
