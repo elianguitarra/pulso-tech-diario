@@ -573,16 +573,22 @@ def ensure_base_pages(blog_id: str, token: str, pages: dict[str, str] | None = N
     for title, content in pages.items():
         payload = page_payload(title, content)
         existing = existing_pages.get(title)
-        if existing and existing.get("id"):
-            update_url = f"{BLOGGER_API}/blogs/{blog_id}/pages/{existing['id']}"
-            request_json(update_url, method="PUT", token=token, payload=payload)
-            print(f"Updated page: {title}")
+        try:
+            if existing and existing.get("id"):
+                update_url = f"{BLOGGER_API}/blogs/{blog_id}/pages/{existing['id']}"
+                request_json(update_url, method="PUT", token=token, payload=payload)
+                print(f"Updated page: {title}")
+            else:
+                insert_url = f"{BLOGGER_API}/blogs/{blog_id}/pages"
+                request_json(insert_url, method="POST", token=token, payload=payload)
+                print(f"Created page: {title}")
             throttle_write()
-        else:
-            insert_url = f"{BLOGGER_API}/blogs/{blog_id}/pages"
-            request_json(insert_url, method="POST", token=token, payload=payload)
-            print(f"Created page: {title}")
-            throttle_write()
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            print(f"Warning: skipped page after HTTP {exc.code}: {title}")
+            print(body[:600])
+            if exc.code not in {403, 429, 500, 502, 503, 504}:
+                raise
 
 
 def list_posts(blog_id: str, token: str) -> list[dict]:
