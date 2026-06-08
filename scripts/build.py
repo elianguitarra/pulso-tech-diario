@@ -853,6 +853,26 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
     title = page["title"]
     description = page["description"]
     body = page["body"]
+    canonical = f"{SITE_URL}/{filename}"
+    social_image = f"{SITE_URL}/assets/brand/pulso-tech-avatar.png"
+    page_schema = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": title,
+        "description": description,
+        "url": canonical,
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": SITE_NAME,
+            "url": SITE_URL,
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": SITE_NAME,
+            "url": SITE_URL,
+            "logo": social_image,
+        },
+    }
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -861,9 +881,20 @@ def render_static_page(filename: str, page: dict[str, str]) -> str:
   <title>{esc(title)} | {SITE_NAME}</title>
   <meta name="description" content="{esc(description)}">
   <meta name="robots" content="index,follow">
-  <link rel="canonical" href="{SITE_URL}/{filename}">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="{SITE_NAME}">
+  <meta property="og:title" content="{esc(title)}">
+  <meta property="og:description" content="{esc(description)}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{social_image}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{esc(title)}">
+  <meta name="twitter:description" content="{esc(description)}">
+  <meta name="twitter:image" content="{social_image}">
   {adsense_head()}
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">{json.dumps(page_schema, ensure_ascii=False)}</script>
 </head>
 <body>
   <header class="topbar">
