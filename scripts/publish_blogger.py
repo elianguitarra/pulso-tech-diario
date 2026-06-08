@@ -367,25 +367,52 @@ def ensure_base_pages(blog_id: str, token: str) -> None:
             throttle_write()
 
 
-def find_post_by_title(blog_id: str, token: str, title: str) -> dict | None:
-    query = urllib.parse.urlencode({"q": title, "maxResults": "5"})
+def list_posts(blog_id: str, token: str) -> list[dict]:
+    query = urllib.parse.urlencode({"fetchBodies": "false", "maxResults": "500"})
     url = f"{BLOGGER_API}/blogs/{blog_id}/posts?{query}"
-    try:
-        payload = request_json(url, token=token)
-    except Exception:
-        return None
-    return next((post for post in payload.get("items", []) if post.get("title") == title), None)
+    return paginated_items(url, token=token)
+
+
+def posts_by_title(posts: list[dict]) -> dict[str, dict]:
+    grouped: dict[str, list[dict]] = {}
+    for post in posts:
+        title = post.get("title", "")
+        if title:
+            grouped.setdefault(title, []).append(post)
+    return {title: sorted(matches, key=lambda post: post.get("updated", ""), reverse=True)[0] for title, matches in grouped.items()}
+
+
+def find_post_by_title(blog_id: str, token: str, title: str) -> dict | None:
+    return posts_by_title(list_posts(blog_id, token)).get(title)
 
 
 def already_published(blog_id: str, token: str, title: str) -> bool:
     return find_post_by_title(blog_id, token, title) is not None
 
 
-def ensure_evergreen_posts(blog_id: str, token: str) -> None:
+def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str]) -> None:
+    grouped: dict[str, list[dict]] = {}
+    for post in list_posts(blog_id, token):
+        title = post.get("title", "")
+        if title in managed_titles:
+            grouped.setdefault(title, []).append(post)
+    for title, posts in grouped.items():
+        ordered = sorted(posts, key=lambda post: post.get("updated", ""), reverse=True)
+        for duplicate in ordered[1:]:
+            post_id = duplicate.get("id")
+            if not post_id:
+                continue
+            delete_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{post_id}"
+            request_json(delete_url, method="DELETE", token=token)
+            print(f"Deleted duplicate managed post: {title}")
+            throttle_write()
+
+
+def ensure_evergreen_posts(blog_id: str, token: str, existing_posts: dict[str, dict]) -> None:
     for post in EVERGREEN_POSTS:
         title = post["title"]
         payload = post_payload(title, post["content"], post["labels"])
-        existing = find_post_by_title(blog_id, token, title)
+        existing = existing_posts.get(title)
         if existing and existing.get("id"):
             print(f"Evergreen post already exists: {title}")
         else:
@@ -399,11 +426,16 @@ def publish() -> None:
     blog_id = required_env("BLOGGER_BLOG_ID")
     token = get_access_token()
     ensure_base_pages(blog_id, token)
-    ensure_evergreen_posts(blog_id, token)
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     title = f"Pulso Tech Diario: {today}"
-    existing = find_post_by_title(blog_id, token, title)
+    managed_titles = {post["title"] for post in EVERGREEN_POSTS}
+    managed_titles.add(title)
+    cleanup_managed_duplicates(blog_id, token, managed_titles)
+    existing_posts = posts_by_title(list_posts(blog_id, token))
+    ensure_evergreen_posts(blog_id, token, existing_posts)
+    existing_posts = posts_by_title(list_posts(blog_id, token))
+    existing = existing_posts.get(title)
     payload = post_payload(title, post_html(items), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
