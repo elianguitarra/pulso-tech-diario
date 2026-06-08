@@ -705,7 +705,10 @@ def spanishize_text(value: str) -> str:
 
 def display_title(item: Item) -> str:
     raw = clean_text(item.title)
-    if not looks_english(raw):
+    # Las fuentes principales son angloparlantes; para el sitio publico preferimos
+    # titulares editoriales propios en espanol antes que dejar pasar el titular RSS.
+    source_is_foreign = item.source in {source for source, _url in SOURCES}
+    if not source_is_foreign and not looks_english(raw):
         return raw
     entities = extract_entities(raw)
     subject = ", ".join(entities[:2])
@@ -798,7 +801,26 @@ def extract_entities(value: str) -> list[str]:
         "Agentic",
         "Games",
         "Campaign",
+        "Download",
+        "Evolved",
+        "Futurist",
+        "September",
+        "Showcase",
+        "Trailer",
+        "Trailers",
+        "War",
+        "World",
+        "January",
         "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "October",
+        "November",
+        "December",
         "Dungeons",
     }
     entities = []
