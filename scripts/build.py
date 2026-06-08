@@ -224,6 +224,8 @@ STATIC_PAGES = {
   <li><a href="atom.xml">Atom del sitio</a></li>
   <li><a href="feed.json">JSON Feed del sitio</a></li>
   <li><a href="{BLOGGER_RSS_URL}">RSS de Blogger</a></li>
+  <li><a href="opml.xml">OPML para importar en lectores RSS</a></li>
+  <li><a href="feeds.html">Directorio de feeds</a></li>
 </ul>
 <h2>Temas directos</h2>
 <ul>
@@ -278,6 +280,32 @@ STATIC_PAGES = {
             ("Para que sirven estas guias?", "Sirven como respuestas rapidas a dudas frecuentes y como rutas para descubrir el resumen diario del blog."),
             ("Las guias se actualizan?", "El sitio se reconstruye a diario y las guias enlazan hacia contenido reciente en Blogger y paginas de tendencia."),
             ("Donde esta el blog principal?", "El blog principal esta en Blogger, donde se concentran las entradas diarias y la monetizacion con AdSense cuando sea aprobada."),
+        ],
+    },
+    "feeds.html": {
+        "title": "Feeds RSS y OPML de Pulso Tech Diario",
+        "description": "Directorio de feeds RSS, Atom, JSON Feed y OPML para seguir Pulso Tech Diario desde lectores y agregadores.",
+        "body": f"""
+<p>Usa esta pagina para seguir Pulso Tech Diario sin depender de redes sociales. Los feeds se actualizan automaticamente con las noticias y guias del sitio.</p>
+<h2>Feeds principales</h2>
+<ul>
+  <li><a href="feed.xml">RSS del sitio estatico</a></li>
+  <li><a href="atom.xml">Atom del sitio estatico</a></li>
+  <li><a href="feed.json">JSON Feed del sitio estatico</a></li>
+  <li><a href="{BLOGGER_RSS_URL}">RSS del blog en Blogger</a></li>
+</ul>
+<h2>Importar en un lector</h2>
+<p>Si usas Feedly, Inoreader, NetNewsWire, FreshRSS u otro lector, puedes importar todos los feeds con el archivo OPML.</p>
+<ul>
+  <li><a href="opml.xml">Descargar OPML de Pulso Tech Diario</a></li>
+  <li><a href="seguir.html">Ver formas de seguir el sitio</a></li>
+  <li><a href="{BLOG_HOME_TRACKED}">Abrir Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que es OPML?", "OPML es un archivo que permite importar una lista de feeds en lectores RSS compatibles."),
+            ("Que feed conviene seguir?", "Para la lectura principal conviene el RSS de Blogger. Para noticias internas y guias, usa RSS, Atom o JSON Feed del sitio estatico."),
+            ("Los feeds cuestan algo?", "No. Son URLs publicas y gratuitas que se actualizan automaticamente."),
         ],
     },
     "ia-en-el-trabajo.html": {
@@ -1525,6 +1553,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
       <a href="links.html">Links</a>
       <a href="seguir.html">Seguir</a>
       <a href="guias.html">Guias</a>
+      <a href="feeds.html">Feeds</a>
       <a href="feed.xml">RSS</a>
       <a href="temas.html">Temas</a>
       <a href="share-pack.html">Compartir</a>
@@ -2501,6 +2530,7 @@ def render_sitemap(story_paths: dict[str, str] | None = None) -> str:
             ("feed.xml", "daily", "0.7"),
             ("atom.xml", "daily", "0.7"),
             ("feed.json", "daily", "0.7"),
+            ("opml.xml", "weekly", "0.6"),
             *[(page["filename"], "daily", "0.9") for page in TREND_PAGES],
             ("llms.txt", "weekly", "0.6"),
             ("humans.txt", "monthly", "0.4"),
@@ -2556,6 +2586,28 @@ def render_news_sitemap(items: list[Item], story_paths: dict[str, str]) -> str:
 """
 
 
+def render_opml() -> str:
+    now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>{SITE_NAME} feeds</title>
+    <dateCreated>{now}</dateCreated>
+    <ownerName>{SITE_NAME}</ownerName>
+    <ownerId>{SITE_URL}/</ownerId>
+  </head>
+  <body>
+    <outline text="{SITE_NAME}" title="{SITE_NAME}">
+      <outline text="RSS del sitio" title="RSS del sitio" type="rss" xmlUrl="{SITE_URL}/feed.xml" htmlUrl="{SITE_URL}/"/>
+      <outline text="Atom del sitio" title="Atom del sitio" type="atom" xmlUrl="{SITE_URL}/atom.xml" htmlUrl="{SITE_URL}/"/>
+      <outline text="JSON Feed del sitio" title="JSON Feed del sitio" type="json" xmlUrl="{SITE_URL}/feed.json" htmlUrl="{SITE_URL}/"/>
+      <outline text="RSS de Blogger" title="RSS de Blogger" type="rss" xmlUrl="{BLOGGER_RSS_URL}" htmlUrl="{BLOG_URL}/"/>
+    </outline>
+  </body>
+</opml>
+"""
+
+
 def render_llms_txt() -> str:
     trend_lines = "\n".join(
         f"- {page['title']}: {SITE_URL}/{page['filename']}"
@@ -2569,6 +2621,7 @@ def render_llms_txt() -> str:
             "noticias-tecnologia-espanol.html",
             "glosario-ia-tecnologia.html",
             "guias.html",
+            "feeds.html",
             "herramientas-ia-gratis.html",
             "ia-para-estudiantes.html",
             "proteger-cuenta-google.html",
@@ -2600,6 +2653,8 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Feed RSS del sitio: {SITE_URL}/feed.xml
 - Feed Atom del sitio: {SITE_URL}/atom.xml
 - JSON Feed del sitio: {SITE_URL}/feed.json
+- Directorio de feeds: {SITE_URL}/feeds.html
+- OPML de feeds: {SITE_URL}/opml.xml
 - Feed RSS de Blogger: {BLOGGER_RSS_URL}
 - Payload social diario: {SITE_URL}/social-payload.json
 - Datos publicos del resumen: {SITE_URL}/data.json
@@ -2632,7 +2687,7 @@ Last update: {today}
 Language: Spanish
 Topics: inteligencia artificial, ciberseguridad, chips, hardware, productividad, plataformas digitales
 Stack: Python, Blogger API, GitHub Actions, GitHub Pages
-Feeds: {SITE_URL}/feed.xml, {SITE_URL}/atom.xml, {SITE_URL}/feed.json, {BLOGGER_RSS_URL}
+Feeds: {SITE_URL}/feed.xml, {SITE_URL}/atom.xml, {SITE_URL}/feed.json, {SITE_URL}/opml.xml, {BLOGGER_RSS_URL}
 """
 
 
@@ -2672,6 +2727,7 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "opml.xml").write_text(render_opml(), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(story_paths), encoding="utf-8")
     (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items, story_paths), encoding="utf-8")
     (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
