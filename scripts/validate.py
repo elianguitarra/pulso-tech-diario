@@ -120,6 +120,7 @@ def validate() -> None:
         "chips-ia-hoy.html",
         "sitemap.xml",
         "news-sitemap.xml",
+        "image-sitemap.xml",
         "robots.txt",
         "data.json",
         "latest.json",
@@ -249,8 +250,15 @@ def validate() -> None:
     if "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in news_text:
         fail("news sitemap missing internal story URLs")
     robots_text = (PUBLIC / "robots.txt").read_text(encoding="utf-8")
-    if "news-sitemap.xml" not in robots_text:
-        fail("robots.txt missing news sitemap")
+    if "news-sitemap.xml" not in robots_text or "image-sitemap.xml" not in robots_text:
+        fail("robots.txt missing news or image sitemap")
+    image_root = ET.parse(PUBLIC / "image-sitemap.xml").getroot()
+    image_text = ET.tostring(image_root, encoding="unicode")
+    image_nodes = image_root.findall(".//{http://www.google.com/schemas/sitemap-image/1.1}image")
+    if len(image_nodes) < parser.story_count:
+        fail("image-sitemap.xml missing image namespace or image entries")
+    if "/assets/images/" not in image_text or "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in image_text:
+        fail("image-sitemap.xml missing story image URLs")
     sitemap_root = ET.parse(PUBLIC / "sitemap.xml").getroot()
     sitemap_text = ET.tostring(sitemap_root, encoding="unicode")
     for page in [
@@ -307,7 +315,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")

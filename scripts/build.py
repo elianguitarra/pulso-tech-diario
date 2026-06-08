@@ -3033,6 +3033,30 @@ def render_news_sitemap(items: list[Item], story_paths: dict[str, str]) -> str:
 """
 
 
+def render_image_sitemap(items: list[Item], story_paths: dict[str, str], image_paths: dict[str, str]) -> str:
+    entries = []
+    for item in items:
+        story_url = f"{SITE_URL}/{story_paths[item.link]}"
+        image_url = f"{SITE_URL}/{image_paths[item.link]}"
+        title = display_title(item)
+        entries.append(
+            f"""  <url>
+    <loc>{esc(story_url)}</loc>
+    <image:image>
+      <image:loc>{esc(image_url)}</image:loc>
+      <image:title>{esc(title)}</image:title>
+      <image:caption>{esc(display_summary(item))}</image:caption>
+    </image:image>
+  </url>"""
+        )
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+{''.join(entries)}
+</urlset>
+"""
+
+
 def render_opml() -> str:
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
     return f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -3111,6 +3135,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - JSON Feed del sitio: {SITE_URL}/feed.json
 - Directorio de feeds: {SITE_URL}/feeds.html
 - OPML de feeds: {SITE_URL}/opml.xml
+- Sitemap de imagenes: {SITE_URL}/image-sitemap.xml
 - Feed RSS de Blogger: {BLOGGER_RSS_URL}
 - Payload social diario: {SITE_URL}/social-payload.json
 - Datos publicos del resumen: {SITE_URL}/data.json
@@ -3187,10 +3212,11 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "opml.xml").write_text(render_opml(), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(story_paths), encoding="utf-8")
     (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items, story_paths), encoding="utf-8")
+    (PUBLIC / "image-sitemap.xml").write_text(render_image_sitemap(items, story_paths, image_paths), encoding="utf-8")
     (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
     (PUBLIC / "humans.txt").write_text(render_humans_txt(), encoding="utf-8")
     (PUBLIC / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\n",
+        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\nSitemap: {SITE_URL}/image-sitemap.xml\n",
         encoding="utf-8",
     )
     (PUBLIC / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY, encoding="utf-8")
