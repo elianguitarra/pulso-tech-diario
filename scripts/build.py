@@ -2324,19 +2324,28 @@ def ad_unit(kind: str, slot: str, label: str) -> str:
     </aside>"""
 
 
-def schema(items: list[Item], story_paths: dict[str, str]) -> dict:
-    return {
+def schema(items: list[Item], story_paths: dict[str, str]) -> list[dict]:
+    website_schema = {
         "@context": "https://schema.org",
-        "@type": "NewsMediaOrganization",
+        "@type": "WebSite",
         "name": SITE_NAME,
         "url": SITE_URL,
         "description": SITE_DESCRIPTION,
+        "inLanguage": "es",
         "sameAs": ENTITY_SAME_AS,
         "potentialAction": {
             "@type": "SearchAction",
             "target": f"{SITE_URL}/buscar.html?q={{search_term_string}}",
             "query-input": "required name=search_term_string",
         },
+    }
+    organization_schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsMediaOrganization",
+        "name": SITE_NAME,
+        "url": SITE_URL,
+        "description": SITE_DESCRIPTION,
+        "sameAs": ENTITY_SAME_AS,
         "publishingPrinciples": f"{REPOSITORY_URL}#readme",
         "mainEntityOfPage": {
             "@type": "ItemList",
@@ -2351,6 +2360,7 @@ def schema(items: list[Item], story_paths: dict[str, str]) -> dict:
             ],
         },
     }
+    return [website_schema, organization_schema]
 
 
 def render_css() -> str:

@@ -321,7 +321,7 @@ def validate() -> None:
         or "alternativas-chatgpt-gratis.html" not in search_text
     ):
         fail("buscar.html missing internal search index or schema")
-    if "SearchAction" not in index_text or "buscar.html?q={search_term_string}" not in index_text:
+    if "\"@type\": \"WebSite\"" not in index_text or "SearchAction" not in index_text or "buscar.html?q={search_term_string}" not in index_text:
         fail("index missing SearchAction schema")
 
     follow_text = (PUBLIC / "seguir.html").read_text(encoding="utf-8")
