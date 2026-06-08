@@ -1001,6 +1001,20 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
             cards.append(ad_unit("in-grid", ADSENSE_IN_ARTICLE_SLOT, "anuncio en el resumen"))
     lead_image = image_paths[lead.link] if lead else "assets/social-card.svg"
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
+    evergreen_guides = [
+        ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
+        ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
+        ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),
+        ("Checklist anti phishing", "checklist-phishing.html", "Una revision rapida antes de hacer clic."),
+    ]
+    guide_cards = "\n".join(
+        f"""        <a class="guide-card" href="{esc(url)}">
+          <span>{index:02d}</span>
+          <strong>{esc(title)}</strong>
+          <em>{esc(description)}</em>
+        </a>"""
+        for index, (title, url, description) in enumerate(evergreen_guides, start=1)
+    )
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -1071,6 +1085,16 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         <a href="temas.html">Temas</a>
         <a href="{BLOGGER_RSS_URL}" target="_blank" rel="noopener">RSS Blogger</a>
         <a href="share-pack.html">Compartir</a>
+      </div>
+    </section>
+
+    <section class="guide-strip" aria-label="Guias populares">
+      <div class="section-heading">
+        <p class="kicker">Guias populares</p>
+        <h2>Lecturas utiles que siguen trayendo busquedas</h2>
+      </div>
+      <div class="guide-grid">
+{guide_cards}
       </div>
     </section>
 
@@ -1404,6 +1428,53 @@ h1 {
   font-weight: 900;
   font-size: 13px;
 }
+.guide-strip {
+  margin: 0 0 34px;
+  padding: 26px 0 32px;
+  border-block: 1px solid var(--line);
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  max-width: 720px;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.guide-card {
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+}
+.guide-card span {
+  color: var(--hot);
+  font-weight: 950;
+  font-size: 13px;
+}
+.guide-card strong {
+  color: var(--ink);
+  font-size: 21px;
+  line-height: 1.08;
+}
+.guide-card em {
+  color: #475569;
+  font-style: normal;
+  line-height: 1.45;
+}
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding: 12px 0 64px; }
 .story {
   background: white;
@@ -1483,6 +1554,7 @@ footer a { color: var(--ink); font-weight: 750; }
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .blogger-cta { grid-template-columns: 1fr; }
   .cta-actions { justify-content: flex-start; max-width: none; }
+  .guide-grid { grid-template-columns: repeat(2, 1fr); }
   .grid { grid-template-columns: 1fr 1fr; }
   .story:first-child { grid-column: span 2; }
 }
@@ -1491,6 +1563,9 @@ footer a { color: var(--ink); font-weight: 750; }
   main { width: min(100% - 28px, 1180px); }
   .hero { padding-top: 36px; gap: 24px; }
   .hero-panel { min-height: 230px; padding: 24px; }
+  .section-heading { display: block; }
+  .guide-grid { grid-template-columns: 1fr; }
+  .guide-card { min-height: auto; }
   .grid { grid-template-columns: 1fr; }
   .story:first-child { grid-column: span 1; }
   h1 { font-size: 46px; }

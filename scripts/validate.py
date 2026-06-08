@@ -81,6 +81,7 @@ def validate() -> None:
 
     parser = SiteParser()
     parser.feed((PUBLIC / "index.html").read_text(encoding="utf-8"))
+    index_text = (PUBLIC / "index.html").read_text(encoding="utf-8")
     if parser.h1_count != 1:
         fail(f"expected one h1, found {parser.h1_count}")
     if parser.story_count < 4:
@@ -89,6 +90,14 @@ def validate() -> None:
         fail(f"expected one image per story, found {parser.image_count} images for {parser.story_count} stories")
     if parser.link_count < parser.story_count:
         fail("expected story links")
+    for guide_page in [
+        "que-es-ia-local.html",
+        "npu-vs-gpu.html",
+        "privacidad-chatbots-ia.html",
+        "checklist-phishing.html",
+    ]:
+        if guide_page not in index_text:
+            fail(f"index missing evergreen guide link {guide_page}")
 
     ET.parse(PUBLIC / "feed.xml")
     news_root = ET.parse(PUBLIC / "news-sitemap.xml").getroot()
