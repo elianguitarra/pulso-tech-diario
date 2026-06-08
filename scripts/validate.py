@@ -86,7 +86,7 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
-            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; existing={post['title']:{'url':'https://example.com/'+str(i)} for i,post in enumerate(p.EVERGREEN_POSTS)}; guides=p.guide_posts_from(existing); assert len(guides) >= 9, guides",
+            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; existing={post['title']:{'url':'https://example.com/'+str(i)} for i,post in enumerate(p.EVERGREEN_POSTS)}; guides=p.guide_posts_from(existing); titles=[title for title,_ in guides]; assert len(guides) >= 17, guides; assert 'WhatsApp hackeado: como recuperar tu cuenta' in titles and 'Prompts para estudiar con IA sin copiar' in titles and 'Como detectar un correo falso antes de hacer clic' in titles, titles",
         ],
         check=True,
         cwd=ROOT,

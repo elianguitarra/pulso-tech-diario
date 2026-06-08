@@ -68,7 +68,7 @@ def guide_posts_from(existing_posts: dict[str, dict]) -> list[tuple[str, str]]:
         url = existing.get("url", "")
         if url:
             guides.append((post["title"], url))
-    return guides[:9]
+    return guides[:24]
 
 
 def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
@@ -380,6 +380,96 @@ EVERGREEN_POSTS = [
 <p>La IA local puede consumir recursos. Mira reseñas de autonomia, ruido y temperatura, no solo numeros de rendimiento.</p>
 <h2>Compra con una tarea en mente</h2>
 <p>Si solo quieres escribir, navegar y usar chatbots en la nube, no necesitas pagar de mas. Si vas a editar video, programar, generar imagenes o probar modelos locales, hardware y memoria pesan mucho mas.</p>
+""",
+    },
+    {
+        "title": "WhatsApp hackeado: como recuperar tu cuenta",
+        "labels": ["ciberseguridad", "whatsapp", "phishing", "guia"],
+        "content": """
+<p>Si alguien tomo tu WhatsApp o tus contactos reciben mensajes raros desde tu numero, actua rapido. El objetivo es recuperar acceso, cortar el fraude y evitar que usen tu identidad para pedir dinero o codigos.</p>
+<h2>Intenta verificar tu numero</h2>
+<p>Abre WhatsApp, registra tu numero y pide el codigo oficial. Nunca compartas ese codigo con nadie. Si el atacante activo verificacion en dos pasos, puede que debas esperar el plazo que indique la app.</p>
+<h2>Avisa por otro canal</h2>
+<p>Contacta a familiares, amigos y trabajo por llamada, SMS u otra red para decir que no respondan mensajes sospechosos ni envien dinero.</p>
+<h2>Revisa dispositivos vinculados</h2>
+<p>Cuando recuperes acceso, revisa dispositivos vinculados y cierra cualquiera que no reconozcas. Activa verificacion en dos pasos con un PIN que no uses en otros servicios.</p>
+<h2>Protege correo y SIM</h2>
+<p>Cambia contrasenas importantes, activa verificacion en dos pasos y llama a tu operador si sospechas duplicado de SIM.</p>
+""",
+    },
+    {
+        "title": "Que son las passkeys y por que protegen mejor",
+        "labels": ["ciberseguridad", "passkeys", "privacidad", "guia"],
+        "content": """
+<p>Las passkeys, o claves de acceso, permiten iniciar sesion sin escribir una contrasena tradicional. Usan tu dispositivo y una verificacion local como huella, rostro, PIN o llave de seguridad.</p>
+<h2>Por que son utiles</h2>
+<p>Una passkey reduce phishing porque no tienes una contrasena que copiar en una pagina falsa. El inicio de sesion queda ligado al sitio correcto y a una clave criptografica.</p>
+<h2>Que cambia frente a contrasenas</h2>
+<p>No necesitas recordar una clave larga ni reutilizarla. El riesgo se mueve hacia proteger tus dispositivos, copias de seguridad y metodo de recuperacion.</p>
+<h2>Donde activarlas primero</h2>
+<p>Empieza por correo, cuentas de Google, Apple, Microsoft, gestores de contrasenas, bancos o servicios donde perder acceso seria grave.</p>
+<h2>Que revisar</h2>
+<p>Antes de activar passkeys, confirma como recuperar la cuenta si pierdes el telefono o computadora. Mantener datos de recuperacion actualizados sigue siendo clave.</p>
+""",
+    },
+    {
+        "title": "VPN gratis: es segura o conviene evitarla",
+        "labels": ["privacidad", "ciberseguridad", "vpn", "guia"],
+        "content": """
+<p>Una VPN gratis puede servir para casos puntuales, pero no siempre mejora tu privacidad. Si el servicio no cobra, conviene preguntar como paga servidores, ancho de banda y soporte.</p>
+<h2>Que hace una VPN</h2>
+<p>Una VPN cifra la conexion entre tu dispositivo y el proveedor de VPN. Puede ocultar tu IP frente al sitio final, pero el proveedor puede ver metadatos y parte de tu actividad segun el caso.</p>
+<h2>Riesgos de una VPN gratis</h2>
+<p>Algunas tienen limites agresivos, publicidad, registros poco claros, velocidades bajas o modelos de negocio basados en datos. Evita servicios que no expliquen quien los opera.</p>
+<h2>Cuando puede servir</h2>
+<p>Puede ser util en una red publica si confias en el proveedor y solo necesitas una capa adicional. No reemplaza contrasenas seguras ni verificacion en dos pasos.</p>
+<h2>Que revisar antes de instalar</h2>
+<p>Politica de registros, empresa responsable, auditorias, apps oficiales, reputacion, permisos, limites y facilidad para borrar cuenta.</p>
+""",
+    },
+    {
+        "title": "Crear imagenes con IA gratis: como empezar",
+        "labels": ["inteligencia artificial", "imagenes", "herramientas", "guia"],
+        "content": """
+<p>Crear imagenes con IA gratis es facil para probar ideas, pero la calidad depende del prompt, la herramienta y el uso que le daras a la imagen. No todo resultado sirve para publicar sin revisar.</p>
+<h2>Empieza con una idea concreta</h2>
+<p>Describe sujeto, estilo, encuadre, iluminacion, colores, formato y uso final. No pidas solo una imagen bonita; pide una imagen que comunique algo.</p>
+<h2>Prompt base</h2>
+<p>Crea una imagen editorial para una nota de tecnologia sobre este tema. Debe verse moderna, clara, sin texto dentro de la imagen, con foco en una idea principal y composicion llamativa para portada.</p>
+<h2>Que revisar antes de usarla</h2>
+<p>Mira manos, textos deformes, logos, marcas, rostros, objetos raros y detalles incoherentes. Si la imagen parece generica, ajusta el prompt con mas contexto.</p>
+<h2>Privacidad y derechos</h2>
+<p>No subas fotos privadas, documentos, rostros de personas sin permiso ni material que no puedas usar. Revisa las condiciones de cada herramienta antes de publicar comercialmente.</p>
+""",
+    },
+    {
+        "title": "Prompts para estudiar con IA sin copiar",
+        "labels": ["inteligencia artificial", "estudiantes", "prompts", "guia"],
+        "content": """
+<p>La IA puede ayudarte a estudiar mejor si la usas como tutor, no como maquina para copiar respuestas. La clave es pedir explicaciones, preguntas y correcciones.</p>
+<h2>Prompt para entender un tema</h2>
+<p>Explicame este tema desde cero como si fuera principiante. Usa ejemplos simples, analogias y al final dame tres errores comunes que debo evitar.</p>
+<h2>Prompt para practicar</h2>
+<p>Hazme 10 preguntas sobre este tema, una por una. Espera mi respuesta, corrige con explicacion breve y sube la dificultad si respondo bien.</p>
+<h2>Prompt para resumir apuntes</h2>
+<p>Resume mis apuntes en ideas principales, definiciones, formulas o conceptos clave. Marca dudas y crea una lista de repaso para antes del examen.</p>
+<h2>Prompt para no copiar</h2>
+<p>No me des la respuesta final. Guiame con pistas, preguntas y pasos para que yo pueda resolver el ejercicio.</p>
+""",
+    },
+    {
+        "title": "Como detectar un correo falso antes de hacer clic",
+        "labels": ["ciberseguridad", "phishing", "correo", "guia"],
+        "content": """
+<p>Un correo falso intenta que actues rapido: abrir un enlace, descargar un archivo, pagar, confirmar datos o compartir un codigo. Revisar unos detalles antes de hacer clic puede evitar muchos problemas.</p>
+<h2>Mira el remitente real</h2>
+<p>No te quedes con el nombre visible. Abre los detalles y revisa el dominio del correo. Un mensaje puede decir que viene de tu banco aunque el remitente use un dominio extrano.</p>
+<h2>Desconfia de urgencias</h2>
+<p>Frases como tu cuenta sera cerrada, pago rechazado, paquete retenido o premio disponible buscan presionarte. Entra manualmente al sitio oficial en vez de tocar el enlace del mensaje.</p>
+<h2>Revisa enlaces y adjuntos</h2>
+<p>Pasa el cursor sobre el enlace para ver el destino. No abras archivos inesperados, especialmente si piden habilitar macros, iniciar sesion o instalar algo.</p>
+<h2>Que hacer si dudaste</h2>
+<p>No respondas al correo. Contacta a la empresa desde su sitio oficial, busca avisos en la app real y reporta el mensaje como phishing si corresponde.</p>
 """,
     },
 ]
