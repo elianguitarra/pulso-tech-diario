@@ -64,7 +64,7 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
-            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); html=p.post_html(items, []); blocked=['Read more','Recent posts','Post a comment','Share this','Pulso Tech Diario: 2026']; assert all(text not in html for text in blocked), html[:500]; assert 'Notas recientes' in html and 'Compartir' in html and 'Leer fuente' in html, html[:500]",
+            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); html=p.post_html(items, []); blocked=['Read more','Recent posts','Post a comment','Share this','Subscribe','Search','Generated image','AI-generated','Pulso Tech Diario: 2026']; assert all(text not in html for text in blocked), html[:500]; assert 'Notas recientes' in html and 'Compartir' in html and 'Leer fuente' in html, html[:500]",
         ],
         check=True,
         cwd=ROOT,
@@ -119,6 +119,7 @@ def validate() -> None:
         "ciberseguridad-hoy.html",
         "chips-ia-hoy.html",
         "sitemap.xml",
+        "sitemap-index.xml",
         "news-sitemap.xml",
         "image-sitemap.xml",
         "robots.txt",
@@ -250,8 +251,15 @@ def validate() -> None:
     if "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in news_text:
         fail("news sitemap missing internal story URLs")
     robots_text = (PUBLIC / "robots.txt").read_text(encoding="utf-8")
-    if "news-sitemap.xml" not in robots_text or "image-sitemap.xml" not in robots_text:
-        fail("robots.txt missing news or image sitemap")
+    if "sitemap-index.xml" not in robots_text or "news-sitemap.xml" not in robots_text or "image-sitemap.xml" not in robots_text:
+        fail("robots.txt missing sitemap index, news or image sitemap")
+    sitemap_index_root = ET.parse(PUBLIC / "sitemap-index.xml").getroot()
+    sitemap_index_text = ET.tostring(sitemap_index_root, encoding="unicode")
+    if not sitemap_index_root.tag.endswith("sitemapindex"):
+        fail("sitemap-index.xml is not a sitemap index")
+    for required_sitemap in ["sitemap.xml", "news-sitemap.xml", "image-sitemap.xml"]:
+        if required_sitemap not in sitemap_index_text:
+            fail(f"sitemap-index.xml missing {required_sitemap}")
     image_root = ET.parse(PUBLIC / "image-sitemap.xml").getroot()
     image_text = ET.tostring(image_root, encoding="unicode")
     image_nodes = image_root.findall(".//{http://www.google.com/schemas/sitemap-image/1.1}image")
@@ -315,7 +323,7 @@ def validate() -> None:
             fail(f"sitemap missing {page}")
 
     llms_text = (PUBLIC / "llms.txt").read_text(encoding="utf-8")
-    if "Seguir el sitio" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
+    if "Seguir el sitio" not in llms_text or "sitemap-index.xml" not in llms_text or "image-sitemap.xml" not in llms_text or "buscar.html" not in llms_text or "pulso-tech-diario.html" not in llms_text or "feeds.html" not in llms_text or "opml.xml" not in llms_text or "guias.html" not in llms_text or "herramientas-ia-gratis.html" not in llms_text or "mejor-ia-para-resumir-pdf.html" not in llms_text or "alternativas-chatgpt-gratis.html" not in llms_text or "prompts-chatgpt-espanol.html" not in llms_text or "como-saber-si-un-enlace-es-seguro.html" not in llms_text or "contrasena-filtrada-que-hacer.html" not in llms_text or "estafa-whatsapp-que-hacer.html" not in llms_text or "chatgpt-gemini-claude.html" not in llms_text:
         fail("llms.txt missing discovery links")
     if "https://pulsotechdiario.blogspot.com/" not in llms_text:
         fail("llms.txt missing Blogger URL")

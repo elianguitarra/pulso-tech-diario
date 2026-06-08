@@ -3007,6 +3007,27 @@ def render_sitemap(story_paths: dict[str, str] | None = None) -> str:
 """
 
 
+def render_sitemap_index() -> str:
+    today = datetime.now(timezone.utc).date().isoformat()
+    sitemaps = [
+        "sitemap.xml",
+        "news-sitemap.xml",
+        "image-sitemap.xml",
+    ]
+    entries = "\n".join(
+        f"""  <sitemap>
+    <loc>{SITE_URL}/{filename}</loc>
+    <lastmod>{today}</lastmod>
+  </sitemap>"""
+        for filename in sitemaps
+    )
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{entries}
+</sitemapindex>
+"""
+
+
 def render_news_sitemap(items: list[Item], story_paths: dict[str, str]) -> str:
     entries = []
     for item in items:
@@ -3133,6 +3154,7 @@ Pulso Tech Diario es un blog en espanol sobre inteligencia artificial, cibersegu
 - Feed RSS del sitio: {SITE_URL}/feed.xml
 - Feed Atom del sitio: {SITE_URL}/atom.xml
 - JSON Feed del sitio: {SITE_URL}/feed.json
+- Indice de sitemaps: {SITE_URL}/sitemap-index.xml
 - Directorio de feeds: {SITE_URL}/feeds.html
 - OPML de feeds: {SITE_URL}/opml.xml
 - Sitemap de imagenes: {SITE_URL}/image-sitemap.xml
@@ -3211,12 +3233,13 @@ def write_static(items: list[Item]) -> None:
     (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths), encoding="utf-8")
     (PUBLIC / "opml.xml").write_text(render_opml(), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(story_paths), encoding="utf-8")
+    (PUBLIC / "sitemap-index.xml").write_text(render_sitemap_index(), encoding="utf-8")
     (PUBLIC / "news-sitemap.xml").write_text(render_news_sitemap(items, story_paths), encoding="utf-8")
     (PUBLIC / "image-sitemap.xml").write_text(render_image_sitemap(items, story_paths, image_paths), encoding="utf-8")
     (PUBLIC / "llms.txt").write_text(render_llms_txt(), encoding="utf-8")
     (PUBLIC / "humans.txt").write_text(render_humans_txt(), encoding="utf-8")
     (PUBLIC / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\nSitemap: {SITE_URL}/image-sitemap.xml\n",
+        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap-index.xml\nSitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\nSitemap: {SITE_URL}/image-sitemap.xml\n",
         encoding="utf-8",
     )
     (PUBLIC / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY, encoding="utf-8")
