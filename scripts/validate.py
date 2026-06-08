@@ -49,6 +49,17 @@ def require(path: Path) -> None:
 def validate() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build.py")], check=True, cwd=ROOT)
     subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_share_pack.py")], check=True, cwd=ROOT)
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); title=p.daily_post_title(items, '2026-01-02'); assert title.startswith('Noticias de tecnologia:') and 'Pulso Tech Diario:' not in title, title",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
 
     for relative in [
         "index.html",

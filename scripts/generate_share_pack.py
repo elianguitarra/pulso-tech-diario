@@ -85,9 +85,13 @@ def feed_items() -> list[dict[str, str]]:
     return items
 
 
+def is_daily_title(title: str) -> bool:
+    return title.startswith("Pulso Tech Diario:") or title.startswith("Noticias de tecnologia:")
+
+
 def latest_link(items: list[dict[str, str]]) -> tuple[str, str]:
     for item in items:
-        if item["title"].startswith("Pulso Tech Diario:"):
+        if is_daily_title(item["title"]):
             return item["title"], item["link"]
     if items:
         return items[0]["title"], items[0]["link"]
@@ -98,7 +102,7 @@ def guide_links(items: list[dict[str, str]]) -> list[tuple[str, str]]:
     guides = []
     for item in items:
         title = item["title"]
-        if title.startswith("Pulso Tech Diario:"):
+        if is_daily_title(title):
             continue
         if len(guides) < 5:
             guides.append((title, item["link"]))
@@ -138,6 +142,9 @@ def share_headline(title: str) -> str:
         return "IA, chips y ciberseguridad del dia"
     if normalized.startswith("Pulso Tech Diario:"):
         normalized = normalized.replace("Pulso Tech Diario:", "", 1).strip()
+    if normalized.startswith("Noticias de tecnologia:"):
+        normalized = normalized.replace("Noticias de tecnologia:", "", 1).strip()
+        normalized = re.sub(r"\s*\|\s*\d{4}-\d{2}-\d{2}\s*$", "", normalized).strip()
     return normalized or "Tecnologia importante, filtrada a diario"
 
 

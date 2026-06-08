@@ -621,6 +621,36 @@ def already_published(blog_id: str, token: str, title: str) -> bool:
     return find_post_by_title(blog_id, token, title) is not None
 
 
+def legacy_daily_title(today: str) -> str:
+    return f"Pulso Tech Diario: {today}"
+
+
+def daily_post_title(items: list[build.Item], today: str) -> str:
+    preferred = ["inteligencia artificial", "chips", "ciberseguridad", "web y plataformas", "startups"]
+    labels = {
+        "inteligencia artificial": "IA",
+        "chips": "chips",
+        "ciberseguridad": "ciberseguridad",
+        "web y plataformas": "plataformas",
+        "startups": "startups",
+        "consumo": "apps",
+        "ciencia": "ciencia",
+    }
+    categories = []
+    item_categories = {item.category for item in items}
+    for category in preferred:
+        if category in item_categories:
+            categories.append(labels[category])
+    for item in items:
+        label = labels.get(item.category, item.category)
+        if label not in categories:
+            categories.append(label)
+        if len(categories) == 3:
+            break
+    topic_text = ", ".join(categories[:3]) if categories else "IA, chips y ciberseguridad"
+    return f"Noticias de tecnologia: {topic_text} | {today}"
+
+
 def cleanup_managed_duplicates(blog_id: str, token: str, managed_titles: set[str]) -> None:
     grouped: dict[str, list[dict]] = {}
     for post in list_posts(blog_id, token):
@@ -678,16 +708,18 @@ def publish() -> None:
     ensure_base_pages(blog_id, token)
     items = build.collect_items() or build.fallback_items()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    title = f"Pulso Tech Diario: {today}"
+    title = daily_post_title(items, today)
+    old_title = legacy_daily_title(today)
     managed_titles = {post["title"] for post in EVERGREEN_POSTS if post["title"] not in PAGE_ONLY_GUIDES}
     managed_titles.add(title)
+    managed_titles.add(old_title)
     cleanup_managed_duplicates(blog_id, token, managed_titles)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     ensure_evergreen_posts(blog_id, token, existing_posts)
     existing_posts = posts_by_title(list_posts(blog_id, token))
     guide_posts = guide_posts_from(existing_posts)
     ensure_base_pages(blog_id, token, {"Empieza aqui": start_here_content(guide_posts)})
-    existing = existing_posts.get(title)
+    existing = existing_posts.get(title) or existing_posts.get(old_title)
     payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):
         update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{existing['id']}"
