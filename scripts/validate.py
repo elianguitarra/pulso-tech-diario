@@ -71,6 +71,17 @@ def validate() -> None:
         capture_output=True,
         text=True,
     )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import publish_blogger as p; existing={post['title']:{'url':'https://example.com/'+str(i)} for i,post in enumerate(p.EVERGREEN_POSTS)}; guides=p.guide_posts_from(existing); assert len(guides) >= 9, guides",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
 
     for relative in [
         "index.html",

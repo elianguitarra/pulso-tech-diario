@@ -45,7 +45,7 @@ def guide_posts_from(existing_posts: dict[str, dict]) -> list[tuple[str, str]]:
         url = existing.get("url", "")
         if url:
             guides.append((post["title"], url))
-    return guides[:5]
+    return guides[:9]
 
 
 def guide_links_html(guide_posts: list[tuple[str, str]]) -> str:
