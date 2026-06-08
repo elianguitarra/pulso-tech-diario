@@ -491,6 +491,12 @@ EVERGREEN_POSTS = [
 PAGE_ONLY_GUIDES = {
     "IA en el trabajo: tareas donde si ahorra tiempo y donde no",
     "Que revisar antes de comprar una laptop para IA",
+    "WhatsApp hackeado: como recuperar tu cuenta",
+    "Que son las passkeys y por que protegen mejor",
+    "VPN gratis: es segura o conviene evitarla",
+    "Crear imagenes con IA gratis: como empezar",
+    "Prompts para estudiar con IA sin copiar",
+    "Como detectar un correo falso antes de hacer clic",
 }
 
 BLOGGER_GUIDE_PAGE_TITLES = {
@@ -994,7 +1000,9 @@ def publish() -> None:
         token,
         {"Empieza aqui": start_here_content(guide_posts)},
     )
-    ensure_base_pages(blog_id, token, blogger_guide_pages(guide_posts))
+    create_extra_pages = os.environ.get("BLOGGER_CREATE_EXTRA_GUIDE_PAGES", "").strip().lower() in {"1", "true", "yes"}
+    if create_extra_pages:
+        ensure_base_pages(blog_id, token, blogger_guide_pages(guide_posts))
     existing = existing_posts.get(title) or existing_posts.get(old_title)
     payload = post_payload(title, post_html(items, guide_posts), ["tecnologia", "inteligencia artificial", "noticias tech", "pulso tech diario"])
     if existing and existing.get("id"):
