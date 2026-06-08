@@ -48,11 +48,22 @@ def internal_link_block() -> str:
         f'<a href="{html.escape(url)}" target="_blank" rel="noopener" style="display:inline-block;margin:0 8px 10px 0;padding:9px 12px;border:1px solid #ff7058;color:#ff7058;text-decoration:none;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.05em;">{html.escape(label)}</a>'
         for label, url in links
     )
+    share_text = "Pulso Tech Diario: tecnologia importante explicada en espanol"
+    share_links = [
+        ("Compartir en X", f"https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}&url={urllib.parse.quote(BLOG_URL + '/')}"),
+        ("WhatsApp", f"https://wa.me/?text={urllib.parse.quote(share_text + ' ' + BLOG_URL + '/')}"),
+        ("LinkedIn", f"https://www.linkedin.com/sharing/share-offsite/?url={urllib.parse.quote(BLOG_URL + '/')}"),
+    ]
+    share_items = "".join(
+        f'<a href="{html.escape(url)}" target="_blank" rel="noopener" style="display:inline-block;margin:0 8px 10px 0;padding:9px 12px;background:#ff7058;color:#201512;text-decoration:none;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.05em;">{html.escape(label)}</a>'
+        for label, url in share_links
+    )
     return f"""
 <div style="margin:34px 0 0;padding:22px;border-top:3px solid #ff7058;background:#101010;color:#f7f1e8;">
   <p style="margin:0 0 12px;color:#f7f1e8;font-size:18px;font-weight:900;">Sigue leyendo Pulso Tech Diario</p>
   <p style="margin:0 0 16px;color:#c8b8aa;line-height:1.65;">Explora mas notas por tema, guarda el RSS o comparte el resumen para que mas lectores encuentren tecnologia explicada en espanol.</p>
   <div>{items}</div>
+  <div style="margin-top:8px;">{share_items}</div>
   <p style="margin:8px 0 0;color:#c8b8aa;font-size:13px;line-height:1.6;">Pagina principal: <a href="{BLOG_URL}/" target="_blank" rel="noopener" style="color:#ff7058;font-weight:800;">{BLOG_URL}</a></p>
 </div>
 """
