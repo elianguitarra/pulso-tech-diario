@@ -12,6 +12,7 @@ import re
 import shutil
 import textwrap
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -41,6 +42,64 @@ INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "pulso-tech-diario-2026-indexnow-k
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 BLOGGER_START_URL = f"{BLOG_URL}/p/empieza-aqui.html"
 BLOGGER_RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+
+
+def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
+    params = {
+        "utm_source": source,
+        "utm_medium": medium,
+        "utm_campaign": campaign,
+    }
+    if content:
+        params["utm_content"] = content
+    separator = "&" if "?" in url else "?"
+    return f"{url}{separator}{urllib.parse.urlencode(params)}"
+
+
+BLOG_HOME_TRACKED = tracked_url(f"{BLOG_URL}/", "github_pages", "referral", "traffic_hub", "home")
+BLOGGER_START_TRACKED = tracked_url(BLOGGER_START_URL, "github_pages", "referral", "traffic_hub", "start")
+BLOGGER_LABEL_IA_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/inteligencia%20artificial",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "ia",
+)
+BLOGGER_LABEL_CYBER_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/ciberseguridad",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "ciberseguridad",
+)
+BLOGGER_LABEL_CHIPS_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/chips",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "chips",
+)
+BLOGGER_LABEL_PRIVACY_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/privacidad",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "privacidad",
+)
+BLOGGER_LABEL_PHISHING_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/phishing",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "phishing",
+)
+BLOGGER_LABEL_LOCAL_AI_TRACKED = tracked_url(
+    f"{BLOG_URL}/search/label/ia%20local",
+    "github_pages",
+    "referral",
+    "topic_hub",
+    "ia_local",
+)
 
 STATIC_PAGES = {
     "acerca.html": {
@@ -917,8 +976,8 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
         <p>Blogger es la casa principal de Pulso Tech Diario: ahi estan las entradas, etiquetas, guias y el flujo preparado para AdSense.</p>
       </div>
       <div class="cta-actions">
-        <a href="{BLOG_URL}/" target="_blank" rel="noopener">Abrir Blogger</a>
-        <a href="{BLOGGER_START_URL}" target="_blank" rel="noopener">Empieza aqui</a>
+        <a href="{BLOG_HOME_TRACKED}" target="_blank" rel="noopener">Abrir Blogger</a>
+        <a href="{BLOGGER_START_TRACKED}" target="_blank" rel="noopener">Empieza aqui</a>
         <a href="blogger-archivo.html">Archivo</a>
         <a href="temas.html">Temas</a>
         <a href="{BLOGGER_RSS_URL}" target="_blank" rel="noopener">RSS Blogger</a>

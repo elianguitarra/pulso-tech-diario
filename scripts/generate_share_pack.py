@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import email.utils
 import html
 import re
 import urllib.error
@@ -23,6 +22,24 @@ SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
+
+
+def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
+    params = {
+        "utm_source": source,
+        "utm_medium": medium,
+        "utm_campaign": campaign,
+    }
+    if content:
+        params["utm_content"] = content
+    separator = "&" if "?" in url else "?"
+    return f"{url}{separator}{urllib.parse.urlencode(params)}"
+
+
+def tracked_if_blogger(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
+    if url.startswith(BLOG_URL):
+        return tracked_url(url, source, medium, campaign, content)
+    return url
 
 
 def fetch_text(url: str) -> str:
@@ -51,6 +68,8 @@ def feed_items() -> list[dict[str, str]]:
         link = clean(item.findtext("link", BLOG_URL + "/"))
         description = clean(item.findtext("description", ""))
         published = clean(item.findtext("pubDate", ""))
+        if not title:
+            continue
         items.append({"title": title, "link": link, "description": description, "published": published})
     return items
 
@@ -94,14 +113,20 @@ def share_url(service: str, title: str, url: str) -> str:
 
 
 def render_text(title: str, url: str, guides: list[tuple[str, str]]) -> str:
-    guide_lines = "\n".join(f"- {guide_title}: {guide_url}" for guide_title, guide_url in guides[:4])
+    x_url = tracked_url(url, "share_pack", "social", "daily_share", "x")
+    linkedin_url = tracked_url(url, "share_pack", "social", "daily_share", "linkedin")
+    chat_url = tracked_url(url, "share_pack", "social", "daily_share", "chat")
+    guide_lines = "\n".join(
+        f"- {guide_title}: {tracked_if_blogger(guide_url, 'share_pack', 'social', 'guide_share', f'guide_{index}')}"
+        for index, (guide_title, guide_url) in enumerate(guides[:4], start=1)
+    )
     return f"""X / Twitter
 {title}
 
 IA, ciberseguridad, chips y herramientas digitales explicadas en espanol.
 
 Leer:
-{url}
+{x_url}
 
 LinkedIn
 Hoy en Pulso Tech Diario:
@@ -109,7 +134,7 @@ Hoy en Pulso Tech Diario:
 Seleccion de tecnologia con contexto rapido para entender que cambia en IA, seguridad, hardware y productividad.
 
 Resumen:
-{url}
+{linkedin_url}
 
 WhatsApp / Telegram
 Pulso Tech Diario:
@@ -117,7 +142,7 @@ Pulso Tech Diario:
 - Seguridad digital
 - Chips y plataformas
 
-Leer aqui: {url}
+Leer aqui: {chat_url}
 
 Guias para compartir
 {guide_lines}
@@ -126,13 +151,14 @@ Guias para compartir
 
 def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     guide_cards = "\n".join(
-        f"""<li><a href="{html.escape(link)}">{html.escape(guide_title)}</a></li>"""
-        for guide_title, link in guides
+        f"""<li><a href="{html.escape(tracked_if_blogger(link, "share_pack", "referral", "guide_list", f"guide_{index}"))}">{html.escape(guide_title)}</a></li>"""
+        for index, (guide_title, link) in enumerate(guides, start=1)
     )
     buttons = "\n".join(
-        f"""<a class="button" href="{html.escape(share_url(service, title, url))}">{label}</a>"""
+        f"""<a class="button" href="{html.escape(share_url(service, title, tracked_url(url, "share_pack", "social", "daily_share", service)))}">{label}</a>"""
         for service, label in [("x", "Compartir en X"), ("whatsapp", "WhatsApp"), ("linkedin", "LinkedIn")]
     )
+    main_url = tracked_url(url, "share_pack", "referral", "daily_share", "main")
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return f"""<!doctype html>
 <html lang="es">
@@ -161,7 +187,7 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     <p>Usa estos enlaces para mover la publicacion del dia y las guias que pueden atraer busquedas recurrentes.</p>
     <div class="panel">
       <h2>Publicacion principal</h2>
-      <p><a href="{html.escape(url)}">{html.escape(title)}</a></p>
+      <p><a href="{html.escape(main_url)}">{html.escape(title)}</a></p>
       <p>{buttons}</p>
     </div>
     <div class="panel">
@@ -185,11 +211,13 @@ def render_archive(items: list[dict[str, str]]) -> str:
     rows = "\n".join(
         f"""<article>
       <p class="date">{html.escape(item.get("published", ""))}</p>
-      <h2><a href="{html.escape(item["link"])}">{html.escape(item["title"])}</a></h2>
+      <h2><a href="{html.escape(tracked_if_blogger(item["link"], "github_pages", "archive", "blogger_bridge", f"post_{index}"))}">{html.escape(item["title"])}</a></h2>
       <p>{html.escape(item.get("description", "")[:220])}</p>
     </article>"""
-        for item in items[:30]
+        for index, item in enumerate(items[:30], start=1)
     )
+    blog_home = tracked_url(BLOG_URL + "/", "github_pages", "archive", "blogger_bridge", "home")
+    share_pack = tracked_url(f"{PAGES_URL}/share-pack.html", "github_pages", "archive", "blogger_bridge", "share_pack")
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -216,9 +244,9 @@ def render_archive(items: list[dict[str, str]]) -> str:
     <h1>Archivo de Blogger</h1>
     <p>Entradas reales del blog principal enlazadas desde GitHub Pages para facilitar descubrimiento, lectura y rastreo.</p>
     <p class="actions">
-      <a href="{BLOG_URL}/">Abrir Blogger</a>
+      <a href="{blog_home}">Abrir Blogger</a>
       <a href="{RSS_URL}">RSS de Blogger</a>
-      <a href="{PAGES_URL}/share-pack.html">Compartir</a>
+      <a href="{share_pack}">Compartir</a>
     </p>
     {rows}
   </main>

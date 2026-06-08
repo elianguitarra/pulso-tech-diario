@@ -8,6 +8,8 @@ Empieza aqui: https://pulsotechdiario.blogspot.com/p/empieza-aqui.html
 
 Kit para compartir: https://elianguitarra.github.io/pulso-tech-diario/share-pack.html
 
+Medicion de trafico: [`docs/TRAFFIC_MEASUREMENT.md`](docs/TRAFFIC_MEASUREMENT.md)
+
 ## Como funciona
 
 - `scripts/build.py` lee fuentes RSS publicas de tecnologia y tambien puede generar una preview estatica.
@@ -189,6 +191,7 @@ Siguientes pasos recomendados despues de publicarlo:
 - Enviar `sitemap.xml` a Google Search Console cuando quieras acelerar indexacion.
 - Compartir la URL diaria en X, LinkedIn, Reddit o comunidades tech.
 - Agregar la URL al perfil de GitHub y a cualquier bio publica.
+- Revisar semanalmente los enlaces UTM documentados en `docs/TRAFFIC_MEASUREMENT.md`.
 
 El workflow de GitHub Pages avisa a IndexNow despues de cada despliegue diario. Google Search Console todavia requiere verificacion manual de propiedad si quieres ver reportes de Google, pero el sitio ya publica sitemap, robots y RSS sin intervencion diaria.
 
