@@ -281,6 +281,39 @@ STATIC_PAGES = {
             ("Debo abrir un adjunto para comprobarlo?", "No. Si no esperabas el archivo, confirma por otro canal antes de abrirlo."),
         ],
     },
+    "glosario-ia-tecnologia.html": {
+        "title": "Glosario rapido de IA, chips y ciberseguridad",
+        "description": "Definiciones simples de terminos frecuentes sobre inteligencia artificial, hardware, seguridad digital y tecnologia diaria.",
+        "body": f"""
+<p>Este glosario resume terminos que aparecen una y otra vez en noticias de tecnologia. La idea es leer rapido, entender el contexto y saber que ruta seguir.</p>
+<h2>Inteligencia artificial</h2>
+<p><strong>IA:</strong> sistemas que realizan tareas asociadas con lenguaje, vision, prediccion, clasificacion o generacion de contenido.</p>
+<p><strong>LLM:</strong> modelo de lenguaje grande. Sirve para generar texto, resumir, responder preguntas y ayudar con codigo o documentos.</p>
+<p><strong>Agente de IA:</strong> sistema que no solo responde, sino que intenta ejecutar pasos para cumplir una tarea.</p>
+<p><strong>IA local:</strong> IA que corre en tu dispositivo. Puede mejorar privacidad y velocidad, pero depende de memoria, chips y software compatible.</p>
+<h2>Chips y hardware</h2>
+<p><strong>GPU:</strong> procesador grafico util para tareas paralelas, graficos, video y cargas pesadas de IA.</p>
+<p><strong>NPU:</strong> unidad pensada para acelerar funciones de IA con menor consumo en dispositivos modernos.</p>
+<p><strong>Memoria unificada:</strong> memoria compartida por CPU, GPU y otros componentes. Puede ayudar en equipos que ejecutan modelos o tareas multimedia.</p>
+<h2>Ciberseguridad</h2>
+<p><strong>Phishing:</strong> intento de engaño para robar contrasenas, codigos, dinero o datos personales.</p>
+<p><strong>Filtracion de datos:</strong> exposicion no autorizada de informacion privada, credenciales o registros internos.</p>
+<p><strong>2FA:</strong> verificacion en dos pasos. Agrega una segunda prueba de identidad ademas de la contrasena.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
+  <li><a href="npu-vs-gpu.html">NPU vs GPU</a></li>
+  <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
+  <li><a href="noticias-tecnologia-espanol.html">Noticias de tecnologia en espanol</a></li>
+  <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
+</ul>
+""",
+        "faq": [
+            ("Que significa LLM?", "LLM significa modelo de lenguaje grande. Es una tecnologia de IA entrenada para procesar y generar texto."),
+            ("Que diferencia hay entre GPU y NPU?", "La GPU suele ser mas potente para cargas paralelas pesadas; la NPU busca eficiencia para funciones de IA integradas y continuas."),
+            ("Que es phishing en palabras simples?", "Es un engaño para que entregues datos, contrasenas, codigos o dinero haciendose pasar por una entidad confiable."),
+        ],
+    },
     "temas.html": {
         "title": "Temas de tecnologia",
         "description": "Mapa de temas de Pulso Tech Diario para leer sobre inteligencia artificial, ciberseguridad, chips y guias practicas.",
@@ -289,7 +322,7 @@ STATIC_PAGES = {
 <p><a href="blogger-archivo.html">Ver archivo de entradas reales de Blogger</a></p>
 <h2>Inteligencia artificial</h2>
 <p>Noticias, guias y senales sobre IA, productividad, modelos, agentes y uso responsable.</p>
-<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
+<p><a href="inteligencia-artificial.html">Ver hub de inteligencia artificial</a> &middot; <a href="glosario-ia-tecnologia.html">Glosario</a> &middot; <a href="que-es-ia-local.html">IA local</a> &middot; <a href="privacidad-chatbots-ia.html">Privacidad con chatbots</a> &middot; <a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas en Blogger</a></p>
 <h2>Ciberseguridad</h2>
 <p>Riesgos, phishing, privacidad, cuentas y decisiones practicas para usuarios y equipos.</p>
 <p><a href="ciberseguridad.html">Ver hub de ciberseguridad</a> &middot; <a href="checklist-phishing.html">Checklist anti phishing</a> &middot; <a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas en Blogger</a></p>
@@ -308,6 +341,7 @@ STATIC_PAGES = {
   <li><a href="{BLOGGER_LABEL_IA_TRACKED}">Entradas de IA en Blogger</a></li>
   <li><a href="{BLOGGER_START_TRACKED}">Empieza aqui en Blogger</a></li>
   <li><a href="ia-en-el-trabajo.html">IA en el trabajo: donde si ahorra tiempo</a></li>
+  <li><a href="glosario-ia-tecnologia.html">Glosario rapido de IA y tecnologia</a></li>
   <li><a href="que-es-ia-local.html">Que es la IA local</a></li>
   <li><a href="privacidad-chatbots-ia.html">Privacidad con chatbots de IA</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad e IA</a></li>
@@ -325,6 +359,7 @@ STATIC_PAGES = {
 <h2>Lecturas recomendadas</h2>
 <ul>
   <li><a href="{BLOGGER_LABEL_CYBER_TRACKED}">Entradas de ciberseguridad en Blogger</a></li>
+  <li><a href="glosario-ia-tecnologia.html">Glosario de terminos clave</a></li>
   <li><a href="{BLOGGER_LABEL_PHISHING_TRACKED}">Guias sobre phishing</a></li>
   <li><a href="checklist-phishing.html">Checklist anti phishing</a></li>
   <li><a href="{BLOGGER_LABEL_PRIVACY_TRACKED}">Privacidad y datos</a></li>
@@ -343,6 +378,7 @@ STATIC_PAGES = {
 <h2>Lecturas recomendadas</h2>
 <ul>
   <li><a href="{BLOGGER_LABEL_CHIPS_TRACKED}">Entradas de chips en Blogger</a></li>
+  <li><a href="glosario-ia-tecnologia.html">Glosario de IA, chips y seguridad</a></li>
   <li><a href="{BLOGGER_LABEL_LOCAL_AI_TRACKED}">IA local</a></li>
   <li><a href="comprar-laptop-para-ia.html">Que revisar antes de comprar una laptop para IA</a></li>
   <li><a href="npu-vs-gpu.html">NPU vs GPU para IA</a></li>
@@ -1027,6 +1063,7 @@ def render_index(items: list[Item], image_paths: dict[str, str]) -> str:
     lead_title = display_title(lead) if lead else "Tecnologia diaria"
     evergreen_guides = [
         ("Noticias de tecnologia", "noticias-tecnologia-espanol.html", "Resumen diario en espanol para entender senales clave."),
+        ("Glosario tech rapido", "glosario-ia-tecnologia.html", "IA, chips y seguridad explicados sin vueltas."),
         ("Que es la IA local", "que-es-ia-local.html", "Modelos en tu dispositivo, privacidad y limites reales."),
         ("NPU vs GPU para IA", "npu-vs-gpu.html", "Diferencias practicas antes de comprar hardware."),
         ("Privacidad con chatbots", "privacidad-chatbots-ia.html", "Datos que conviene no subir a herramientas de IA."),

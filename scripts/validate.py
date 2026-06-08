@@ -67,6 +67,7 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "glosario-ia-tecnologia.html",
         "temas.html",
         "inteligencia-artificial.html",
         "ciberseguridad.html",
@@ -98,6 +99,7 @@ def validate() -> None:
         "privacidad-chatbots-ia.html",
         "checklist-phishing.html",
         "noticias-tecnologia-espanol.html",
+        "glosario-ia-tecnologia.html",
     ]:
         if guide_page not in index_text:
             fail(f"index missing evergreen guide link {guide_page}")
@@ -121,6 +123,7 @@ def validate() -> None:
         "privacidad.html",
         "contacto.html",
         "noticias-tecnologia-espanol.html",
+        "glosario-ia-tecnologia.html",
         "temas.html",
         "inteligencia-artificial.html",
         "ciberseguridad.html",
