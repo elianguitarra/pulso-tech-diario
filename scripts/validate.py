@@ -64,6 +64,7 @@ def validate() -> None:
         "links.html",
         "social-payload.json",
         "assets/social-card.svg",
+        "assets/social-card.png",
         "blogger-archivo.html",
         "ultima-entrada.html",
         "acerca.html",
@@ -173,11 +174,13 @@ def validate() -> None:
         fail("ultima-entrada.html missing refresh redirect")
     if "og:image" not in latest_text or "twitter:card" not in latest_text:
         fail("ultima-entrada.html missing social preview metadata")
-    if "assets/social-card.svg" not in latest_text:
-        fail("ultima-entrada.html missing daily social card")
+    if "assets/social-card.png" not in latest_text:
+        fail("ultima-entrada.html missing PNG daily social card")
     share_text = (PUBLIC / "share-pack.html").read_text(encoding="utf-8")
-    if "assets/social-card.svg" not in share_text or "og:image" not in share_text:
+    if "assets/social-card.png" not in share_text or "og:image" not in share_text:
         fail("share-pack.html missing social card preview metadata")
+    if "og:image:type\" content=\"image/png" not in share_text:
+        fail("share-pack.html missing PNG social image type")
     latest_data = json.loads((PUBLIC / "latest.json").read_text(encoding="utf-8"))
     if not latest_data.get("url", "").startswith("https://pulsotechdiario.blogspot.com/"):
         fail("latest.json missing Blogger URL")
@@ -192,8 +195,8 @@ def validate() -> None:
         fail("social-payload.json missing Spanish social copy")
     if len(social_data.get("headline", "")) < 12:
         fail("social-payload.json missing useful social headline")
-    if not social_data.get("image", "").endswith("/assets/social-card.svg"):
-        fail("social-payload.json missing daily social image")
+    if not social_data.get("image", "").endswith("/assets/social-card.png"):
+        fail("social-payload.json missing PNG daily social image")
     for channel in required_channels:
         tracked = social_data["tracked_urls"].get(channel, "")
         if "utm_campaign=daily_share" not in tracked:
@@ -204,6 +207,9 @@ def validate() -> None:
         fail("social-card.svg missing brand content")
     if "IA, chips y ciberseguridad" not in social_card_text and "Tecnologia importante" not in social_card_text:
         fail("social-card.svg missing useful headline")
+    social_card_png = (PUBLIC / "assets" / "social-card.png").read_bytes()
+    if not social_card_png.startswith(b"\x89PNG\r\n\x1a\n") or len(social_card_png) < 1000:
+        fail("social-card.png is not a valid generated PNG")
 
     data = json.loads((PUBLIC / "data.json").read_text(encoding="utf-8"))
     if len(data) != parser.story_count:

@@ -6,10 +6,13 @@ from __future__ import annotations
 import html
 import json
 import re
+import struct
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,11 +27,12 @@ LATEST_JSON_OUT = PUBLIC / "latest.json"
 LINKS_OUT = PUBLIC / "links.html"
 SOCIAL_JSON_OUT = PUBLIC / "social-payload.json"
 SOCIAL_CARD_OUT = PUBLIC / "assets" / "social-card.svg"
+SOCIAL_CARD_PNG_OUT = PUBLIC / "assets" / "social-card.png"
 SITEMAP = PUBLIC / "sitemap.xml"
 BLOG_URL = "https://pulsotechdiario.blogspot.com"
 PAGES_URL = "https://elianguitarra.github.io/pulso-tech-diario"
 RSS_URL = f"{BLOG_URL}/feeds/posts/default?alt=rss"
-SOCIAL_IMAGE = f"{PAGES_URL}/assets/social-card.svg"
+SOCIAL_IMAGE = f"{PAGES_URL}/assets/social-card.png"
 
 
 def tracked_url(url: str, source: str, medium: str, campaign: str, content: str = "") -> str:
@@ -176,6 +180,141 @@ def render_social_card(title: str) -> str:
 </svg>"""
 
 
+FONT_5X7 = {
+    "A": ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+    "B": ["11110", "10001", "10001", "11110", "10001", "10001", "11110"],
+    "C": ["01111", "10000", "10000", "10000", "10000", "10000", "01111"],
+    "D": ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+    "E": ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
+    "F": ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+    "G": ["01111", "10000", "10000", "10111", "10001", "10001", "01111"],
+    "H": ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+    "I": ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+    "J": ["00111", "00010", "00010", "00010", "10010", "10010", "01100"],
+    "K": ["10001", "10010", "10100", "11000", "10100", "10010", "10001"],
+    "L": ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+    "M": ["10001", "11011", "10101", "10101", "10001", "10001", "10001"],
+    "N": ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
+    "O": ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+    "P": ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+    "Q": ["01110", "10001", "10001", "10001", "10101", "10010", "01101"],
+    "R": ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+    "S": ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
+    "T": ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
+    "U": ["10001", "10001", "10001", "10001", "10001", "10001", "01110"],
+    "V": ["10001", "10001", "10001", "10001", "10001", "01010", "00100"],
+    "W": ["10001", "10001", "10001", "10101", "10101", "10101", "01010"],
+    "X": ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+    "Y": ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
+    "Z": ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
+    "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"],
+    "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+    "2": ["01110", "10001", "00001", "00010", "00100", "01000", "11111"],
+    "3": ["11110", "00001", "00001", "01110", "00001", "00001", "11110"],
+    "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"],
+    "5": ["11111", "10000", "10000", "11110", "00001", "00001", "11110"],
+    "6": ["01110", "10000", "10000", "11110", "10001", "10001", "01110"],
+    "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+    "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
+    "9": ["01110", "10001", "10001", "01111", "00001", "00001", "01110"],
+    ",": ["00000", "00000", "00000", "00000", "00000", "00100", "01000"],
+    "-": ["00000", "00000", "00000", "11111", "00000", "00000", "00000"],
+    "|": ["00100", "00100", "00100", "00100", "00100", "00100", "00100"],
+    ".": ["00000", "00000", "00000", "00000", "00000", "01100", "01100"],
+    ":": ["00000", "01100", "01100", "00000", "01100", "01100", "00000"],
+}
+
+
+def ascii_upper(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", value)
+    return "".join(char for char in normalized if not unicodedata.combining(char)).upper()
+
+
+def write_png(path: Path, width: int, height: int, pixels: bytearray) -> None:
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+
+    raw = bytearray()
+    stride = width * 3
+    for y in range(height):
+        raw.append(0)
+        raw.extend(pixels[y * stride : (y + 1) * stride])
+    png = b"\x89PNG\r\n\x1a\n"
+    png += chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+    png += chunk(b"IDAT", zlib.compress(bytes(raw), 9))
+    png += chunk(b"IEND", b"")
+    path.write_bytes(png)
+
+
+def render_social_card_png(title: str, path: Path) -> None:
+    width, height = 1200, 630
+    pixels = bytearray(width * height * 3)
+
+    def put(x: int, y: int, color: tuple[int, int, int]) -> None:
+        if 0 <= x < width and 0 <= y < height:
+            offset = (y * width + x) * 3
+            pixels[offset : offset + 3] = bytes(color)
+
+    def fill_rect(x: int, y: int, w: int, h: int, color: tuple[int, int, int]) -> None:
+        x0, y0 = max(0, x), max(0, y)
+        x1, y1 = min(width, x + w), min(height, y + h)
+        for py in range(y0, y1):
+            row = (py * width + x0) * 3
+            pixels[row : row + (x1 - x0) * 3] = bytes(color) * (x1 - x0)
+
+    def circle(cx: int, cy: int, radius: int, color: tuple[int, int, int]) -> None:
+        r2 = radius * radius
+        for py in range(cy - radius, cy + radius + 1):
+            for px in range(cx - radius, cx + radius + 1):
+                if (px - cx) * (px - cx) + (py - cy) * (py - cy) <= r2:
+                    put(px, py, color)
+
+    def text(value: str, x: int, y: int, scale: int, color: tuple[int, int, int]) -> None:
+        cursor = x
+        for char in ascii_upper(value):
+            if char == " ":
+                cursor += scale * 4
+                continue
+            glyph = FONT_5X7.get(char)
+            if not glyph:
+                cursor += scale * 3
+                continue
+            for gy, row in enumerate(glyph):
+                for gx, bit in enumerate(row):
+                    if bit == "1":
+                        fill_rect(cursor + gx * scale, y + gy * scale, scale, scale, color)
+            cursor += scale * 6
+
+    for y in range(height):
+        for x in range(width):
+            t = (x + y) / (width + height)
+            base = (
+                int(16 + 8 * t),
+                int(16 + 42 * t),
+                int(16 + 40 * t),
+            )
+            put(x, y, base)
+    fill_rect(0, 500, 1200, 130, (28, 88, 84))
+    fill_rect(54, 48, 1092, 4, (255, 247, 237))
+    fill_rect(54, 578, 1092, 4, (255, 247, 237))
+    fill_rect(54, 48, 4, 534, (255, 247, 237))
+    fill_rect(1142, 48, 4, 534, (255, 247, 237))
+    circle(880, 270, 190, (255, 112, 88))
+    circle(885, 286, 86, (45, 212, 191))
+    fill_rect(690, 450, 390, 28, (255, 247, 237))
+    fill_rect(760, 390, 310, 24, (255, 247, 237))
+    fill_rect(830, 330, 220, 22, (255, 247, 237))
+
+    text("PULSO TECH DIARIO", 76, 84, 6, (255, 112, 88))
+    headline_lines = wrap_text(share_headline(title), 18, 3)
+    for index, line in enumerate(headline_lines):
+        text(line, 76, 190 + index * 64, 7, (255, 247, 237))
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    text(f"TECNOLOGIA EN ESPANOL | {today}", 76, 532, 4, (255, 247, 237))
+    text("PT", 945, 512, 10, (16, 16, 16))
+    write_png(path, width, height, pixels)
+
+
 def share_url(service: str, title: str, url: str) -> str:
     text = f"{share_headline(title)} - tecnologia explicada en espanol"
     if service == "x":
@@ -302,7 +441,9 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
   <meta property="og:title" content="Compartir Pulso Tech Diario">
   <meta property="og:description" content="{html.escape(title)}">
   <meta property="og:image" content="{SOCIAL_IMAGE}">
-  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:url" content="{PAGES_URL}/share-pack.html">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Compartir Pulso Tech Diario">
@@ -328,7 +469,7 @@ def render_html(title: str, url: str, guides: list[tuple[str, str]]) -> str:
     <p>Actualizado {now}</p>
     <h1>Compartir Pulso Tech Diario</h1>
     <p>Usa estos enlaces para mover la publicacion del dia y las guias que pueden atraer busquedas recurrentes.</p>
-    <p><img class="preview" src="assets/social-card.svg" alt="Tarjeta social de Pulso Tech Diario" width="1200" height="630"></p>
+    <p><img class="preview" src="assets/social-card.png" alt="Tarjeta social de Pulso Tech Diario" width="1200" height="630"></p>
     <div class="panel">
       <h2>Publicacion principal</h2>
       <p><a href="{html.escape(main_url)}">{html.escape(title)}</a></p>
@@ -570,6 +711,7 @@ def main() -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     SOCIAL_CARD_OUT.parent.mkdir(parents=True, exist_ok=True)
     SOCIAL_CARD_OUT.write_text(render_social_card(title), encoding="utf-8")
+    render_social_card_png(title, SOCIAL_CARD_PNG_OUT)
     TXT_OUT.write_text(render_text(title, url, guides), encoding="utf-8")
     HTML_OUT.write_text(render_html(title, url, guides), encoding="utf-8")
     ARCHIVE_OUT.write_text(render_archive(items), encoding="utf-8")
