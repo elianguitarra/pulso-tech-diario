@@ -267,6 +267,8 @@ def validate() -> None:
         fail("feed.xml missing WebSub hub discovery")
     if "<link>https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in feed_text:
         fail("feed.xml missing internal story URLs")
+    if "content:encoded" not in feed_text or "media:content" not in feed_text or "/assets/images/" not in feed_text:
+        fail("feed.xml missing rich content or media images")
     atom_root = ET.parse(PUBLIC / "atom.xml").getroot()
     atom_text = ET.tostring(atom_root, encoding="unicode")
     if "Atom" not in atom_text and not atom_root.tag.endswith("feed"):
@@ -275,11 +277,15 @@ def validate() -> None:
         fail("atom.xml missing WebSub hub discovery")
     if "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in atom_text:
         fail("atom.xml missing internal story URLs")
+    if "/assets/images/" not in atom_text or "Leer nota en Pulso Tech Diario" not in atom_text:
+        fail("atom.xml missing rich content images")
     json_feed = json.loads((PUBLIC / "feed.json").read_text(encoding="utf-8"))
     if json_feed.get("version") != "https://jsonfeed.org/version/1.1" or len(json_feed.get("items", [])) < parser.story_count:
         fail("feed.json missing JSON Feed payload")
     if not all(item.get("url", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/noticias/") for item in json_feed.get("items", [])):
         fail("feed.json items should point to internal story URLs")
+    if not all(item.get("image", "").startswith("https://elianguitarra.github.io/pulso-tech-diario/assets/images/") and "content_html" in item for item in json_feed.get("items", [])):
+        fail("feed.json items missing images or rich HTML content")
     if "atom.xml" not in index_text or "feed.json" not in index_text or "feed-ia.xml" not in index_text or "feed-ciberseguridad.xml" not in index_text or "feed-chips.xml" not in index_text or "feeds.html" not in index_text:
         fail("index missing alternate feed links")
     for topic_feed, phrase in {
@@ -289,7 +295,8 @@ def validate() -> None:
     }.items():
         topic_root = ET.parse(PUBLIC / topic_feed).getroot()
         topic_text = ET.tostring(topic_root, encoding="unicode")
-        if phrase not in topic_text or "rel=\"hub\"" not in topic_text or "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in topic_text:
+        topic_raw = (PUBLIC / topic_feed).read_text(encoding="utf-8")
+        if phrase not in topic_text or "rel=\"hub\"" not in topic_text or "content:encoded" not in topic_raw or "media:content" not in topic_raw or "https://elianguitarra.github.io/pulso-tech-diario/noticias/" not in topic_text:
             fail(f"{topic_feed} missing topic RSS content or WebSub hub")
     ET.parse(PUBLIC / "opml.xml")
     opml_text = (PUBLIC / "opml.xml").read_text(encoding="utf-8")

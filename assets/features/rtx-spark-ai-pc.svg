@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Ilustracion original de un chip de inteligencia artificial local dentro de una laptop">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Visual editorial de un chip de inteligencia artificial local dentro de una laptop">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#07111f"/>
@@ -58,5 +58,5 @@
     <path d="M350 582 H750 L790 628 H310 Z" fill="#101b2a"/>
   </g>
   <text x="110" y="105" fill="#f8fafc" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900">IA local: la computadora pasa de herramienta a companero</text>
-  <text x="112" y="162" fill="#a7f3d0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Ilustracion original generada para Pulso Tech Diario</text>
+  <text x="112" y="162" fill="#a7f3d0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Visual editorial de Pulso Tech Diario</text>
 </svg>

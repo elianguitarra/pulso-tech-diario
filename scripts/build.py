@@ -215,7 +215,7 @@ STATIC_PAGES = {
         "body": """
 <p>Pulso Tech Diario no copia articulos completos. Cada entrada usa resumen editorial propio y enlaces directos a las fuentes originales.</p>
 <p>Las notas se seleccionan automaticamente con reglas de relevancia, pero el sitio prioriza contenido informativo, trazable y util para lectores interesados en tecnologia.</p>
-<p>Las imagenes que acompanan cada noticia son ilustraciones SVG originales generadas automaticamente para este sitio. No representan capturas ni fotografias de los articulos enlazados.</p>
+<p>Las imagenes que acompanan cada noticia son visuales editoriales propios del sitio. No representan capturas ni fotografias de los articulos enlazados.</p>
 """,
     },
     "privacidad.html": {
@@ -1627,7 +1627,7 @@ def svg_for_item(item: Item, index: int) -> str:
     visual = templates.get(item.category, fallback_variants[index % len(fallback_variants)])
     if item.category in {"tecnologia", "inteligencia artificial", "consumo"}:
         visual = fallback_variants[(index + seed) % len(fallback_variants)]
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="{html.escape(item.category)}">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="{html.escape(display_title(item))}">
   <defs>
     <radialGradient id="halo{index}" cx="70%" cy="28%" r="62%">
       <stop offset="0" stop-color="{secondary}" stop-opacity="0.58"/>
@@ -2170,7 +2170,7 @@ def render_index(items: list[Item], image_paths: dict[str, str], story_paths: di
   </main>
 
   <footer>
-    <p>Creado para publicarse gratis con GitHub Pages. Las imagenes son SVG originales generadas por el build diario.</p>
+    <p>Publicado gratis con GitHub Pages como apoyo al blog principal en Blogger.</p>
     <p>Fuentes: {", ".join(esc(name) for name, _ in SOURCES)}.</p>
     <p><a href="temas.html">Temas</a> · <a href="share-pack.html">Compartir</a> · <a href="acerca.html">Acerca de</a> · <a href="politica-editorial.html">Politica editorial</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a></p>
   </footer>
@@ -3217,9 +3217,21 @@ footer a { color: var(--ink); font-weight: 750; }
 """
 
 
+def feed_content_html(item: Item, story_url: str, image_url: str) -> str:
+    return (
+        f'<p><img src="{esc(image_url)}" alt="{esc(display_title(item))}" '
+        'width="1200" height="630"></p>'
+        f"<p>{esc(display_summary(item))}</p>"
+        f"<p><strong>Por que importa:</strong> {esc(reading_angle(item))}</p>"
+        f'<p><a href="{esc(story_url)}">Leer nota en Pulso Tech Diario</a> &middot; '
+        f'<a href="{esc(item.link)}">Fuente original</a></p>'
+    )
+
+
 def render_feed(
     items: list[Item],
     story_paths: dict[str, str],
+    image_paths: dict[str, str],
     title: str = SITE_NAME,
     description: str = SITE_DESCRIPTION,
     filename: str = "feed.xml",
@@ -3230,6 +3242,8 @@ def render_feed(
     entries = []
     for item in items:
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
+        image_url = f"{SITE_URL}/{image_paths[item.link]}"
+        content_html = feed_content_html(item, story_url, image_url)
         entries.append(
             f"""  <item>
     <title>{esc(display_title(item))}</title>
@@ -3237,10 +3251,13 @@ def render_feed(
     <guid>{esc(story_url)}</guid>
     <pubDate>{email.utils.format_datetime(item.published)}</pubDate>
     <description>{esc(display_summary(item))}</description>
+    <enclosure url="{esc(image_url)}" type="image/svg+xml" length="0"/>
+    <media:content url="{esc(image_url)}" medium="image" type="image/svg+xml"/>
+    <content:encoded><![CDATA[{content_html}]]></content:encoded>
   </item>"""
         )
     return f"""<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
   <title>{esc(title)}</title>
   <link>{esc(home_url)}</link>
@@ -3259,12 +3276,13 @@ def topic_items(items: list[Item], category: str) -> list[Item]:
     return filtered or items[: min(6, len(items))]
 
 
-def render_atom_feed(items: list[Item], story_paths: dict[str, str]) -> str:
+def render_atom_feed(items: list[Item], story_paths: dict[str, str], image_paths: dict[str, str]) -> str:
     updated = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     entries = []
     for item in items:
         published = item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
         story_url = f"{SITE_URL}/{story_paths[item.link]}"
+        image_url = f"{SITE_URL}/{image_paths[item.link]}"
         entries.append(
             f"""  <entry>
     <title>{esc(display_title(item))}</title>
@@ -3272,6 +3290,7 @@ def render_atom_feed(items: list[Item], story_paths: dict[str, str]) -> str:
     <id>{esc(story_url)}</id>
     <updated>{published}</updated>
     <summary>{esc(display_summary(item))}</summary>
+    <content type="html">{esc(feed_content_html(item, story_url, image_url))}</content>
     <category term="{esc(item.category)}"/>
   </entry>"""
         )
@@ -3289,7 +3308,7 @@ def render_atom_feed(items: list[Item], story_paths: dict[str, str]) -> str:
 """
 
 
-def render_json_feed(items: list[Item], story_paths: dict[str, str]) -> str:
+def render_json_feed(items: list[Item], story_paths: dict[str, str], image_paths: dict[str, str]) -> str:
     payload = {
         "version": "https://jsonfeed.org/version/1.1",
         "title": SITE_NAME,
@@ -3304,6 +3323,12 @@ def render_json_feed(items: list[Item], story_paths: dict[str, str]) -> str:
                 "external_url": item.link,
                 "title": display_title(item),
                 "summary": display_summary(item),
+                "content_html": feed_content_html(
+                    item,
+                    f"{SITE_URL}/{story_paths[item.link]}",
+                    f"{SITE_URL}/{image_paths[item.link]}",
+                ),
+                "image": f"{SITE_URL}/{image_paths[item.link]}",
                 "date_published": item.published.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
                 "tags": [item.category, item.source],
             }
@@ -3604,12 +3629,13 @@ def write_static(items: list[Item]) -> None:
         (PUBLIC / filename).write_text(render_static_page(filename, page), encoding="utf-8")
     (PUBLIC / "buscar.html").write_text(render_search_page(items, story_paths), encoding="utf-8")
     (PUBLIC / "style.css").write_text(render_css(), encoding="utf-8")
-    (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "feed.xml").write_text(render_feed(items, story_paths, image_paths), encoding="utf-8")
     for feed in TOPIC_FEEDS:
         (PUBLIC / feed["filename"]).write_text(
             render_feed(
                 topic_items(items, feed["category"]),
                 story_paths,
+                image_paths,
                 title=feed["title"],
                 description=feed["description"],
                 filename=feed["filename"],
@@ -3617,8 +3643,8 @@ def write_static(items: list[Item]) -> None:
             ),
             encoding="utf-8",
         )
-    (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths), encoding="utf-8")
-    (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths), encoding="utf-8")
+    (PUBLIC / "atom.xml").write_text(render_atom_feed(items, story_paths, image_paths), encoding="utf-8")
+    (PUBLIC / "feed.json").write_text(render_json_feed(items, story_paths, image_paths), encoding="utf-8")
     (PUBLIC / "opml.xml").write_text(render_opml(), encoding="utf-8")
     (PUBLIC / "sitemap.xml").write_text(render_sitemap(story_paths), encoding="utf-8")
     (PUBLIC / "sitemap-index.xml").write_text(render_sitemap_index(), encoding="utf-8")
