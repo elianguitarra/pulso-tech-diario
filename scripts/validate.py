@@ -64,6 +64,17 @@ def validate() -> None:
         [
             sys.executable,
             "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); html=p.post_html(items, []); blocked=['Read more','Recent posts','Post a comment','Share this','Pulso Tech Diario: 2026']; assert all(text not in html for text in blocked), html[:500]; assert 'Notas recientes' in html and 'Compartir' in html and 'Leer fuente' in html, html[:500]",
+        ],
+        check=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
             "import sys; sys.path.insert(0, 'scripts'); import build as b, publish_blogger as p; items=b.fallback_items(); block=p.daily_growth_block('https://pulsotechdiario.blogspot.com/example.html', items); titles=p.growth_refresh_titles(items); assert 'Hoy en Pulso Tech Diario' in block and 'Leer noticias de tecnologia de hoy' in block, block; assert len(titles) >= 9 and 'Como leer tecnologia sin ruido: metodo Pulso Tech' in titles and 'Privacidad con IA: que datos no debes subir a un chatbot' in titles, titles",
         ],
         check=True,
