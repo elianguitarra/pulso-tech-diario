@@ -37,7 +37,7 @@ BASE_PAGES = {
     "Politica editorial": """
 <p>Pulso Tech Diario no copia articulos completos. Cada entrada usa fragmentos breves, resumen editorial propio y enlaces directos a las fuentes originales.</p>
 <p>Las notas se seleccionan automaticamente con reglas de relevancia, pero el blog prioriza contenido informativo, trazable y util para lectores interesados en tecnologia.</p>
-<p>Las imagenes que acompanan cada noticia son ilustraciones SVG originales generadas automaticamente para este blog. No representan capturas ni fotografias de los articulos enlazados.</p>
+<p>Las imagenes que acompanan cada noticia son visuales editoriales propios del blog. No representan capturas ni fotografias de los articulos enlazados.</p>
 """,
     "Privacidad": """
 <p>Este blog se publica en Blogger, una plataforma de Google. Blogger puede procesar datos tecnicos habituales como cookies, direccion IP, navegador, dispositivo y datos de uso.</p>
@@ -96,6 +96,68 @@ EVERGREEN_POSTS = [
 <p>Financiamientos, adquisiciones y lanzamientos muestran donde se esta formando competencia nueva. No todo anuncio importa, pero algunos revelan mercados que estan naciendo.</p>
 <h2>Consumo y plataformas</h2>
 <p>Aplicaciones, sistemas operativos, redes sociales y buscadores afectan habitos diarios. Por eso una decision de producto puede tener impacto cultural y economico.</p>
+""",
+    },
+    {
+        "title": "Que es la IA local y por que puede cambiar tu computadora",
+        "labels": ["inteligencia artificial", "ia local", "pc", "guia"],
+        "content": """
+<p>La IA local significa ejecutar modelos o agentes directamente en tu computadora, telefono o dispositivo, en lugar de mandar todo a servidores remotos. Es una tendencia importante porque mezcla productividad, privacidad, hardware y software.</p>
+<h2>Por que importa</h2>
+<p>Cuando una tarea ocurre localmente, puede responder mas rapido, trabajar con archivos privados y depender menos de la conexion a internet. Esto puede cambiar editores de texto, hojas de calculo, asistentes de codigo, buscadores personales y herramientas creativas.</p>
+<h2>Que necesitas mirar</h2>
+<p>No basta con que una marca diga "AI PC". Conviene revisar memoria disponible, NPU o GPU, compatibilidad de aplicaciones, bateria, temperatura y si las funciones realmente ahorran tiempo.</p>
+<h2>Riesgos</h2>
+<p>La IA local tambien puede crear falsas expectativas. Algunos agentes prometen autonomia, pero aun fallan en tareas largas. La clave es preguntar: que hace mejor que una app normal y que datos necesita para hacerlo.</p>
+<h2>Resumen rapido</h2>
+<p>La IA local no reemplaza a la nube, pero puede volver a darle protagonismo a la computadora personal. Si madura, el PC podria pasar de ser una herramienta pasiva a un espacio de trabajo con asistencia permanente.</p>
+""",
+    },
+    {
+        "title": "Como proteger tus cuentas despues de una filtracion de datos",
+        "labels": ["ciberseguridad", "privacidad", "guia", "cuentas"],
+        "content": """
+<p>Las filtraciones de datos son frecuentes y no siempre puedes evitarlas. Lo que si puedes hacer es reducir el dano cuando una contrasena, correo o dato personal aparece en una base filtrada.</p>
+<h2>1. Cambia contrasenas repetidas</h2>
+<p>Si usaste la misma contrasena en varios servicios, cambia primero correo, banco, redes sociales y cuentas donde haya informacion personal o pagos.</p>
+<h2>2. Activa verificacion en dos pasos</h2>
+<p>Usa una app autenticadora o llave fisica cuando sea posible. Los codigos por SMS son mejores que nada, pero no son la opcion mas fuerte.</p>
+<h2>3. Usa un gestor de contrasenas</h2>
+<p>Un gestor permite crear claves unicas y largas sin memorizarlas. La defensa mas simple contra ataques por reutilizacion es que cada sitio tenga una clave distinta.</p>
+<h2>4. Revisa sesiones activas</h2>
+<p>Cierra sesiones desconocidas y elimina dispositivos que no reconozcas. Muchos servicios permiten ver actividad reciente desde seguridad o privacidad.</p>
+<h2>5. Desconfia de correos urgentes</h2>
+<p>Despues de una filtracion suelen crecer los ataques de phishing. No abras enlaces de supuestos avisos de seguridad; entra manualmente al sitio oficial.</p>
+""",
+    },
+    {
+        "title": "Chips de IA: que significan GPU, NPU y memoria unificada",
+        "labels": ["chips", "gpu", "npu", "ia", "guia"],
+        "content": """
+<p>Los chips de IA aparecen en noticias sobre Nvidia, AMD, Intel, Apple, Qualcomm y centros de datos. Entender algunos terminos ayuda a leer mejor que esta cambiando.</p>
+<h2>GPU</h2>
+<p>La GPU procesa muchas operaciones en paralelo. Por eso se volvio fundamental para entrenar y ejecutar modelos de inteligencia artificial.</p>
+<h2>NPU</h2>
+<p>La NPU es una unidad especializada para tareas de IA en dispositivos personales. Suele buscar eficiencia: consumir menos energia para funciones como transcripcion, vision o asistentes.</p>
+<h2>Memoria unificada</h2>
+<p>Permite que distintas partes del sistema compartan memoria con menos friccion. Para IA puede ser importante porque los modelos necesitan mover grandes cantidades de datos.</p>
+<h2>Que mirar en una noticia</h2>
+<p>No te quedes solo con el numero mas grande. Revisa consumo energetico, memoria, software compatible, precio y disponibilidad. Un chip potente sin ecosistema puede tardar en importar.</p>
+""",
+    },
+    {
+        "title": "Como elegir herramientas de IA sin caer en humo",
+        "labels": ["inteligencia artificial", "productividad", "herramientas", "guia"],
+        "content": """
+<p>Cada semana aparece una herramienta de IA que promete ahorrar horas. Algunas son utiles; otras solo agregan una caja de chat encima de un producto viejo. Esta guia ayuda a separar valor real de marketing.</p>
+<h2>Empieza por la tarea</h2>
+<p>No preguntes primero que modelo usa. Pregunta que tarea repetitiva o costosa resuelve: resumir reuniones, analizar documentos, generar borradores, revisar codigo o responder soporte.</p>
+<h2>Mide antes y despues</h2>
+<p>Una buena herramienta debe reducir tiempo, errores o friccion. Si despues de una semana sigues copiando y pegando igual que antes, probablemente no cambio el flujo real.</p>
+<h2>Cuida tus datos</h2>
+<p>Revisa si la herramienta usa tus datos para entrenamiento, donde procesa la informacion y si permite borrar historiales. Esto importa especialmente en trabajo, clientes y documentos internos.</p>
+<h2>Prefiere integraciones reales</h2>
+<p>Las mejores herramientas viven cerca del flujo: correo, documentos, hojas, codigo, CRM o navegador. Si todo depende de abrir otra pestana, el beneficio baja rapido.</p>
 """,
     },
 ]
