@@ -771,6 +771,21 @@ def find_daily_post_for_date(existing_posts: dict[str, dict], today: str) -> dic
     return None
 
 
+def find_latest_daily_post(existing_posts: dict[str, dict]) -> dict | None:
+    daily_posts = [
+        post
+        for title, post in existing_posts.items()
+        if title.startswith("Noticias de tecnologia:") and re.search(r"\|\s*\d{4}-\d{2}-\d{2}$", title)
+    ]
+    if not daily_posts:
+        return None
+    return sorted(
+        daily_posts,
+        key=lambda post: post.get("published") or post.get("updated") or "",
+        reverse=True,
+    )[0]
+
+
 def daily_post_title(items: list[build.Item], today: str) -> str:
     preferred = ["inteligencia artificial", "chips", "ciberseguridad", "web y plataformas", "startups"]
     labels = {
@@ -1048,9 +1063,24 @@ def publish() -> None:
         print(f"Updated daily post: {daily_url}")
     else:
         url = f"{BLOGGER_API}/blogs/{blog_id}/posts/"
-        result = request_json(url, method="POST", token=token, payload=payload)
-        daily_url = result.get("url", result.get("id", BLOG_URL + "/"))
-        print(f"Published: {daily_url}")
+        try:
+            result = request_json(url, method="POST", token=token, payload=payload)
+            daily_url = result.get("url", result.get("id", BLOG_URL + "/"))
+            print(f"Published: {daily_url}")
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            if exc.code != 403:
+                sys.stderr.write(body)
+                raise
+            fallback = find_latest_daily_post(existing_posts)
+            if not fallback or not fallback.get("id"):
+                sys.stderr.write(body)
+                raise
+            update_url = f"{BLOGGER_API}/blogs/{blog_id}/posts/{fallback['id']}"
+            result = request_json(update_url, method="PUT", token=token, payload=payload)
+            daily_url = result.get("url", result.get("id", BLOG_URL + "/"))
+            print("Warning: Blogger denied creating a new daily post; updated latest daily post instead.")
+            print(f"Updated daily post fallback: {daily_url}")
     throttle_write()
     existing_posts = posts_by_title(list_posts(blog_id, token))
     refresh_existing_growth_posts(blog_id, token, existing_posts, items, daily_url, guide_posts)
