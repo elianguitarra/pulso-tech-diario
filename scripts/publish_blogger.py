@@ -94,7 +94,7 @@ def internal_link_block(guide_posts: list[tuple[str, str]] | None = None) -> str
         ("Ciberseguridad", label_url("ciberseguridad")),
         ("Chips", label_url("chips")),
         ("Guias", label_url("guia")),
-        ("Temas", f"{BLOG_URL}/p/temas.html"),
+        ("Temas", f"{BLOG_URL}/p/empieza-aqui.html"),
         ("RSS", RSS_URL),
     ]
     items = "".join(
@@ -253,24 +253,6 @@ BASE_PAGES = {
   <li>Comentarios sobre navegacion, legibilidad o experiencia del sitio.</li>
 </ul>
 <p>No se aceptan solicitudes para comprar enlaces, publicar contenido enganoso, inflar trafico o manipular anuncios. El crecimiento del sitio debe venir de lectores reales y contenido util.</p>
-""",
-    "Temas": f"""
-<h2>Temas principales</h2>
-<p>Esta pagina organiza el contenido de Pulso Tech Diario para que puedas encontrar guias y noticias recientes por area. La seleccion se concentra en tecnologia util, explicada en espanol y con enlaces a fuentes originales cuando se trata de noticias.</p>
-<h3>Inteligencia artificial</h3>
-<p>Modelos, agentes, herramientas de productividad, privacidad con chatbots, IA local y cambios en plataformas que integran funciones inteligentes.</p>
-<p><a href="{label_url("inteligencia artificial")}">Ver entradas de inteligencia artificial</a></p>
-<h3>Ciberseguridad y privacidad</h3>
-<p>Phishing, correos falsos, filtraciones de datos, passkeys, VPN, recuperacion de cuentas y practicas sencillas para proteger informacion personal.</p>
-<p><a href="{label_url("ciberseguridad")}">Ver entradas de ciberseguridad</a></p>
-<h3>Chips y hardware</h3>
-<p>GPU, NPU, laptops para IA, memoria, eficiencia energetica y tendencias de computo que explican por que algunas funciones llegan a usuarios finales.</p>
-<p><a href="{label_url("chips")}">Ver entradas de chips</a></p>
-<h3>Guias practicas</h3>
-<p>Explicaciones permanentes para tomar mejores decisiones: elegir herramientas, estudiar con IA, detectar fraudes, comprar hardware y entender conceptos sin depender de titulares.</p>
-<p><a href="{label_url("guia")}">Ver guias practicas</a></p>
-<h2>Archivo y seguimiento</h2>
-<p>Para seguir publicaciones nuevas puedes visitar la portada del blog o guardar el <a href="{RSS_URL}">RSS de Pulso Tech Diario</a>. Las entradas diarias se complementan con guias permanentes para que el sitio no dependa solo de noticias de ultimo momento.</p>
 """,
 }
 
