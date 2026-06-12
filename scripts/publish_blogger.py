@@ -94,6 +94,7 @@ def internal_link_block(guide_posts: list[tuple[str, str]] | None = None) -> str
         ("Ciberseguridad", label_url("ciberseguridad")),
         ("Chips", label_url("chips")),
         ("Guias", label_url("guia")),
+        ("Temas", f"{BLOG_URL}/p/temas.html"),
         ("RSS", RSS_URL),
     ]
     items = "".join(
@@ -198,23 +199,78 @@ def start_here_content(guide_posts: list[tuple[str, str]] | None = None) -> str:
 BASE_PAGES = {
     "Empieza aqui": start_here_content(),
     "Acerca de": """
-<p><strong>Pulso Tech Diario</strong> es un blog automatizado que resume noticias tecnologicas relevantes cada dia.</p>
-<p>El objetivo es ayudar a lectores ocupados a detectar senales importantes sobre inteligencia artificial, chips, ciberseguridad, startups, consumo digital, ciencia aplicada y plataformas web.</p>
-<p>El sistema revisa fuentes publicas por RSS, ordena las notas por frescura, relevancia tematica y fuente, y enlaza siempre al articulo original.</p>
+<h2>Que es Pulso Tech Diario</h2>
+<p><strong>Pulso Tech Diario</strong> es un blog editorial en espanol sobre tecnologia practica: inteligencia artificial, ciberseguridad, chips, plataformas digitales, productividad y herramientas para usuarios reales.</p>
+<p>El objetivo no es publicar la mayor cantidad posible de notas, sino ayudar a leer mejor lo que cambia. Cada publicacion intenta responder tres preguntas: que paso, por que importa y que debe vigilar un lector comun, un creador, un estudiante o una persona que trabaja con herramientas digitales.</p>
+<h2>Como se prepara el contenido</h2>
+<p>El sitio usa automatizacion para detectar noticias recientes y mantener una rutina diaria, pero el formato editorial prioriza resumen propio, contexto, categorias claras y enlaces a la fuente original. Las guias permanentes explican conceptos que siguen siendo utiles aunque pase la noticia del dia.</p>
+<p>Cuando una nota enlaza a un medio externo, ese enlace sirve para leer el reporte completo. Pulso Tech Diario no sustituye a la fuente original ni copia articulos completos; ofrece una lectura breve y orientada a decisiones.</p>
+<h2>Para quien esta hecho</h2>
+<p>Esta pagina esta pensada para lectores que quieren entender tecnologia sin ruido: personas que usan IA en el trabajo o estudio, usuarios preocupados por seguridad digital, compradores de computadoras y curiosos que quieren seguir la industria sin leer decenas de sitios cada manana.</p>
+<h2>Rutas recomendadas</h2>
+<ul>
+  <li><a href="https://pulsotechdiario.blogspot.com/search/label/inteligencia%20artificial">Inteligencia artificial</a></li>
+  <li><a href="https://pulsotechdiario.blogspot.com/search/label/ciberseguridad">Ciberseguridad</a></li>
+  <li><a href="https://pulsotechdiario.blogspot.com/search/label/chips">Chips y hardware</a></li>
+  <li><a href="https://pulsotechdiario.blogspot.com/search/label/guia">Guias practicas</a></li>
+</ul>
 """,
     "Politica editorial": """
-<p>Pulso Tech Diario no copia articulos completos. Cada entrada usa fragmentos breves, resumen editorial propio y enlaces directos a las fuentes originales.</p>
-<p>Las notas se seleccionan automaticamente con reglas de relevancia, pero el blog prioriza contenido informativo, trazable y util para lectores interesados en tecnologia.</p>
-<p>Las imagenes que acompanan cada noticia son visuales editoriales propios del blog. No representan capturas ni fotografias de los articulos enlazados.</p>
+<h2>Principios editoriales</h2>
+<p>Pulso Tech Diario publica resumenes, guias y contexto sobre tecnologia en espanol. La prioridad es que cada lector entienda la utilidad real de una noticia, no solo el titular.</p>
+<h2>Fuentes y enlaces</h2>
+<p>Las entradas diarias enlazan a la fuente original o al medio que reporta la informacion. El blog no copia articulos completos, no reproduce notas de pago y no intenta reemplazar el trabajo del medio citado. Los enlaces externos permiten ampliar contexto y verificar el origen.</p>
+<h2>Seleccion de temas</h2>
+<p>Se priorizan temas con impacto practico: inteligencia artificial aplicada, seguridad digital, hardware para IA, cambios en plataformas, herramientas de productividad y movimientos que afecten a usuarios o empresas. No todo lanzamiento recibe cobertura; se eligen senales que puedan seguir siendo relevantes despues del dia de publicacion.</p>
+<h2>Uso de automatizacion</h2>
+<p>La automatizacion ayuda a revisar fuentes publicas, ordenar noticias y mantener una frecuencia diaria. Aun asi, el valor del sitio esta en la estructura editorial: resumen, contexto, etiquetas, lectura practica y enlaces internos para seguir aprendiendo.</p>
+<h2>Imagenes y visuales</h2>
+<p>Las imagenes publicadas son ilustraciones editoriales propias del blog. No deben interpretarse como fotografias reales del evento ni como capturas de los articulos enlazados. Su funcion es acompanar la lectura y diferenciar visualmente cada tema.</p>
+<h2>Correcciones</h2>
+<p>Si una nota queda desactualizada, un enlace cambia o existe una imprecision, se puede solicitar revision desde la pagina de contacto. Cuando corresponde, el contenido se actualiza para mejorar claridad, contexto o navegacion.</p>
 """,
     "Privacidad": """
-<p>Este blog se publica en Blogger, una plataforma de Google. Blogger puede procesar datos tecnicos habituales como cookies, direccion IP, navegador, dispositivo y datos de uso.</p>
-<p>Si el blog muestra anuncios mediante Google AdSense, Google y sus socios pueden usar cookies o identificadores para servir, medir y personalizar anuncios segun la configuracion del usuario.</p>
-<p>Como lector puedes administrar cookies y preferencias de anuncios desde tu navegador y desde las herramientas de privacidad de Google.</p>
+<h2>Privacidad de lectores</h2>
+<p>Pulso Tech Diario se publica en Blogger, una plataforma de Google. Al visitar el sitio, Google y Blogger pueden procesar datos tecnicos habituales como direccion IP, navegador, dispositivo, paginas visitadas, cookies y datos de uso necesarios para seguridad, medicion y funcionamiento del servicio.</p>
+<h2>Cookies y anuncios</h2>
+<p>Si el sitio muestra anuncios mediante Google AdSense, Google y sus socios pueden usar cookies o identificadores para servir, medir y personalizar anuncios segun la configuracion del usuario y la normativa aplicable. Los lectores pueden administrar preferencias de anuncios y cookies desde su navegador y desde las herramientas de privacidad de Google.</p>
+<h2>Analitica y medicion</h2>
+<p>El blog puede usar estadisticas agregadas para entender que paginas se leen mas, que temas interesan y como mejorar la navegacion. La finalidad es mejorar contenido y experiencia, no vender informacion personal de lectores.</p>
+<h2>Enlaces externos</h2>
+<p>Las entradas pueden incluir enlaces a medios, servicios, redes sociales o documentacion externa. Al abrir esos enlaces, se aplican las politicas de privacidad de cada sitio externo.</p>
+<h2>Control del usuario</h2>
+<p>Puedes borrar cookies, bloquear rastreadores, usar controles de privacidad del navegador y revisar la configuracion de anuncios de Google. Algunas funciones del sitio o de Blogger pueden cambiar si bloqueas cookies esenciales.</p>
 """,
     "Contacto": """
-<p>Para consultas editoriales, correcciones o propuestas relacionadas con Pulso Tech Diario, usa el perfil publico asociado al proyecto en GitHub.</p>
+<h2>Contacto editorial</h2>
+<p>Para correcciones, sugerencias de temas, avisos sobre enlaces rotos o propuestas relacionadas con Pulso Tech Diario, usa el perfil publico asociado al proyecto en GitHub.</p>
 <p>Repositorio del sistema: <a href="https://github.com/elianguitarra/pulso-tech-diario" target="_blank" rel="noopener">github.com/elianguitarra/pulso-tech-diario</a>.</p>
+<h2>Que tipo de mensajes son utiles</h2>
+<ul>
+  <li>Correcciones sobre una explicacion tecnica.</li>
+  <li>Reportes de enlaces que ya no funcionan.</li>
+  <li>Sugerencias de guias practicas sobre IA, seguridad, chips o productividad.</li>
+  <li>Comentarios sobre navegacion, legibilidad o experiencia del sitio.</li>
+</ul>
+<p>No se aceptan solicitudes para comprar enlaces, publicar contenido enganoso, inflar trafico o manipular anuncios. El crecimiento del sitio debe venir de lectores reales y contenido util.</p>
+""",
+    "Temas": f"""
+<h2>Temas principales</h2>
+<p>Esta pagina organiza el contenido de Pulso Tech Diario para que puedas encontrar guias y noticias recientes por area. La seleccion se concentra en tecnologia util, explicada en espanol y con enlaces a fuentes originales cuando se trata de noticias.</p>
+<h3>Inteligencia artificial</h3>
+<p>Modelos, agentes, herramientas de productividad, privacidad con chatbots, IA local y cambios en plataformas que integran funciones inteligentes.</p>
+<p><a href="{label_url("inteligencia artificial")}">Ver entradas de inteligencia artificial</a></p>
+<h3>Ciberseguridad y privacidad</h3>
+<p>Phishing, correos falsos, filtraciones de datos, passkeys, VPN, recuperacion de cuentas y practicas sencillas para proteger informacion personal.</p>
+<p><a href="{label_url("ciberseguridad")}">Ver entradas de ciberseguridad</a></p>
+<h3>Chips y hardware</h3>
+<p>GPU, NPU, laptops para IA, memoria, eficiencia energetica y tendencias de computo que explican por que algunas funciones llegan a usuarios finales.</p>
+<p><a href="{label_url("chips")}">Ver entradas de chips</a></p>
+<h3>Guias practicas</h3>
+<p>Explicaciones permanentes para tomar mejores decisiones: elegir herramientas, estudiar con IA, detectar fraudes, comprar hardware y entender conceptos sin depender de titulares.</p>
+<p><a href="{label_url("guia")}">Ver guias practicas</a></p>
+<h2>Archivo y seguimiento</h2>
+<p>Para seguir publicaciones nuevas puedes visitar la portada del blog o guardar el <a href="{RSS_URL}">RSS de Pulso Tech Diario</a>. Las entradas diarias se complementan con guias permanentes para que el sitio no dependa solo de noticias de ultimo momento.</p>
 """,
 }
 
@@ -612,16 +668,18 @@ def _legacy_card_post_html(items: list[build.Item]) -> str:
 </section>
 """
         )
-    adsense_client = os.environ.get("ADSENSE_CLIENT", "").strip()
-    if adsense_client:
-        blocks.append(
-            "<p><small>Monetizacion: este blog esta preparado para AdSense desde la configuracion de Blogger y ads.txt personalizado.</small></p>"
-        )
     return "\n".join(blocks)
 
 
 def post_html(items: list[build.Item], guide_posts: list[tuple[str, str]] | None = None) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    categories = []
+    for item in items:
+        if item.category not in categories:
+            categories.append(item.category)
+        if len(categories) == 4:
+            break
+    focus = ", ".join(categories) if categories else "inteligencia artificial, seguridad digital y plataformas"
     blocks = [
         f"""
 <div style="background:#151515;color:#f7f1e8;padding:30px 28px 36px;font-family:Arial,Helvetica,sans-serif;">
@@ -629,6 +687,11 @@ def post_html(items: list[build.Item], guide_posts: list[tuple[str, str]] | None
     <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 28px;">
       <div style="font-weight:900;font-style:italic;letter-spacing:.04em;text-transform:uppercase;color:#ffffff;">Pulso Tech Diario</div>
       <div style="color:#ff7058;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;">Actualizado {today} UTC</div>
+    </div>
+    <div style="margin:0 0 30px;padding:20px 22px;border:1px solid #2f2f2f;background:#101010;">
+      <p style="margin:0 0 10px;color:#ff7058;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;">Lectura editorial del dia</p>
+      <p style="margin:0 0 12px;color:#f7f1e8;font-size:18px;line-height:1.6;">Este resumen selecciona senales recientes sobre {html.escape(focus)} y las ordena para leer rapido sin perder contexto.</p>
+      <p style="margin:0;color:#c8b8aa;font-size:14px;line-height:1.7;">Cada bloque incluye enlace a la fuente original, una explicacion breve y una lectura practica sobre por que el tema puede importar a usuarios, estudiantes, creadores o equipos de trabajo.</p>
     </div>
 """
     ]
@@ -671,11 +734,6 @@ def post_html(items: list[build.Item], guide_posts: list[tuple[str, str]] | None
       </tr>
     </table>
 """
-            )
-    adsense_client = os.environ.get("ADSENSE_CLIENT", "").strip()
-    if adsense_client:
-        blocks.append(
-            '<p style="color:#c8b8aa;"><small>Monetizacion: este blog esta preparado para AdSense desde la configuracion de Blogger y ads.txt personalizado.</small></p>'
         )
     blocks.append(internal_link_block(guide_posts))
     blocks.append("  </div>\n</div>")
