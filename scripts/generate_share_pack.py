@@ -138,13 +138,17 @@ def wrap_text(value: str, max_chars: int, max_lines: int) -> list[str]:
 
 def share_headline(title: str) -> str:
     normalized = clean(title)
+    was_daily_title = False
     if re.fullmatch(r"Pulso Tech Diario:\s*\d{4}-\d{2}-\d{2}", normalized):
         return "IA, chips y ciberseguridad del dia"
     if normalized.startswith("Pulso Tech Diario:"):
         normalized = normalized.replace("Pulso Tech Diario:", "", 1).strip()
     if normalized.startswith("Noticias de tecnologia:"):
+        was_daily_title = True
         normalized = normalized.replace("Noticias de tecnologia:", "", 1).strip()
         normalized = re.sub(r"\s*\|\s*\d{4}-\d{2}-\d{2}\s*$", "", normalized).strip()
+    if was_daily_title and len(normalized) < 12:
+        normalized = f"Noticias de tecnologia: {normalized}" if normalized else "Noticias de tecnologia del dia"
     return normalized or "Tecnologia importante, filtrada a diario"
 
 
